@@ -1,0 +1,33 @@
+{
+    "pages": [
+        "pages/index/index",
+        "pages/cloud-test/index"
+    ],
+    "window": {
+        "backgroundTextStyle": "black",
+        "navigationBarBackgroundColor": "#fff",
+        "navigationBarTitleText": "口袋阅读",
+        "navigationBarTextStyle": "black"
+    },
+    "tabBar": {
+        "color": "#666",
+        "selectedColor": "#6190E8",
+        "backgroundColor": "#fff",
+        "position": "bottom",
+        "borderStyle": "black",
+        "list": [
+            {
+                "pagePath": "pages/index/index",
+                "text": "分类",
+                "iconPath": "images/classify.png",
+                "selectedIconPath": "images/classify_selected.png"
+            },
+            {
+                "pagePath": "pages/index/index",
+                "text": "书架",
+                "iconPath": "images/shelf.png",
+                "selectedIconPath": "images/shelf_selected.png"
+            }
+        ]
+    }
+}

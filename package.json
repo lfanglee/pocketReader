@@ -1,0 +1,79 @@
+{
+  "name": "pocketReader",
+  "version": "0.0.1",
+  "description": "pocketReader - 用于学习微信小程序的阅读小程序",
+  "keywords": [
+    "gulp",
+    "gulpjs",
+    "WeApp",
+    "weapp",
+    "wexin",
+    "weChat",
+    "wxss"
+  ],
+  "scripts": {
+    "server": "nodemon ./server/index.js",
+    "start": "npm run dev",
+    "dev": "gulp dev",
+    "clean": "gulp clean",
+    "cloud": "gulp cloud:dev",
+    "build": "gulp build --type prod",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "test/*",
+      "book/*",
+      "client/*",
+      "bin/*",
+      "node_modules",
+      "dist/*",
+      "package.json"
+    ],
+    "delay": "1000"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "devDependencies": {
+    "@babel/core": "^7.1.5",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+    "@babel/preset-env": "^7.1.5",
+    "ansi-colors": "^3.0.5",
+    "del": "^3.0.0",
+    "eslint": "^5.6.1",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "fancy-log": "^1.3.2",
+    "file-stream-rotator": "^0.3.1",
+    "gulp": "^3.9.1",
+    "gulp-babel": "^8.0.0",
+    "gulp-cssnano": "^2.1.3",
+    "gulp-filter": "^5.1.0",
+    "gulp-htmlmin": "^5.0.1",
+    "gulp-imagemin": "^4.1.0",
+    "gulp-jdists": "^2.2.3",
+    "gulp-jsonminify": "^1.1.0",
+    "gulp-load-plugins": "^1.5.0",
+    "gulp-newer": "^1.4.0",
+    "gulp-postcss": "^8.0.0",
+    "gulp-rename": "^1.4.0",
+    "gulp-replace": "^1.0.0",
+    "gulp-sass": "^4.0.1",
+    "gulp-sourcemaps": "^2.6.4",
+    "gulp-uglify": "^3.0.1",
+    "gulp-watch": "^5.0.1",
+    "minimist": "^1.2.0",
+    "nodemon": "^1.18.4",
+    "postcss-font-base64": "^1.0.5",
+    "postcss-px2rpx": "0.0.4",
+    "request": "^2.88.0",
+    "run-sequence": "^2.2.1",
+    "stream-combiner2": "^1.1.1",
+    "through2": "^2.0.3"
+  },
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}

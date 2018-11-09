@@ -1,0 +1,4 @@
+{
+    "miniprogramRoot": "./",
+    "cloudfunctionRoot": "./cloud-functions/"
+}
