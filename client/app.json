@@ -4,8 +4,9 @@
         "pages/cloud-test/index"
     ],
     "window": {
-        "backgroundTextStyle": "black",
-        "navigationBarBackgroundColor": "#fff",
+        "backgroundTextStyle": "dark",
+        "backgroundColor": "#F9F9F9",
+        "navigationBarBackgroundColor": "#FAFAFA",
         "navigationBarTitleText": "口袋阅读",
         "navigationBarTextStyle": "black"
     },
@@ -27,6 +28,12 @@
                 "text": "书架",
                 "iconPath": "images/shelf.png",
                 "selectedIconPath": "images/shelf_selected.png"
+            },
+            {
+                "pagePath": "pages/index/index",
+                "text": "我的",
+                "iconPath": "images/mine.png",
+                "selectedIconPath": "images/mine_selected.png"
             }
         ]
     }
