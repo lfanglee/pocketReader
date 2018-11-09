@@ -1,6 +1,7 @@
 dist
 node_modules
 client/lib
+client/components
 
 gulpfile.js
 **/*.wxs
