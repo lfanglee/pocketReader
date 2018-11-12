@@ -1,0 +1,35 @@
+$column-width: 80px;
+
+.column-tabs {
+    width: $column-width;
+}
+.i-tabs-column {
+    flex-direction: column;
+    width: $column-width !important;
+    height: 100% !important;
+    &::after {
+        border: none !important;
+    }
+    .i-tab-column {
+        width: $column-width;
+        &::after {
+            content: '';
+            display: block;
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            margin-left: -30px;
+            width: 60px;
+            height: 1px;
+            background: #E9EaEc;
+        }
+        &.i-tabs-tab-current {
+            background: yellow;
+        }
+        & > view {
+            width: 3px;
+            height: 100%;
+            left: 0;
+        }
+    }
+}

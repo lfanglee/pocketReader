@@ -1,11 +1,13 @@
 {
     "pages": [
         "pages/index/index",
-        "pages/cloud-test/index"
+        "pages/cloud-test/index",
+        "pages/classify/index",
+        "pages/rank/index"
     ],
     "window": {
         "backgroundTextStyle": "dark",
-        "backgroundColor": "#F9F9F9",
+        "backgroundColor": "#F8F8F9",
         "navigationBarBackgroundColor": "#FAFAFA",
         "navigationBarTitleText": "口袋阅读",
         "navigationBarTextStyle": "black"

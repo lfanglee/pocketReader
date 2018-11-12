@@ -2,8 +2,6 @@
  * @file 请求类
  */
 import regeneratorRuntime from '../lib/regenerator-runtime/runtime-module';
-import { resolve } from 'path';
-import { rejects } from 'assert';
 
 const zhuishushenqiApi = {
     default: 'http://api.zhuishushenqi.com',
@@ -26,7 +24,15 @@ export default class Request {
                 data,
                 ...config,
                 success: (res) => {
-                    resolve(res);
+                    if (res.data.ok) {
+                        resolve(res.data);
+                    } else {
+                        wx.showToast({
+                            title: 500,
+                            icon: 'none',
+                            duration: 1000
+                        });
+                    }
                 },
                 fail: (res) => {
                     wx.showToast({

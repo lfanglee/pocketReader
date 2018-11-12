@@ -1,0 +1,48 @@
+var moreRank = [{
+    key: 'moreRank',
+    title: '更多榜'
+}];
+
+var getListOnShow = function (rankList, curTab) {
+    if (rankList[curTab]) {
+        var list =  rankList[curTab].filter(function (item) {
+            return !item.collapse;
+        }).map(function (item) {
+            return {
+                key: item._id,
+                title: item.shortTitle
+            };
+        });
+        return list;
+    }
+    return [];
+};
+
+var getCollapseList = function (rankList, curTab) {
+    if (rankList[curTab]) {
+        var list = rankList[curTab].filter(function (item) {
+            return item.collapse;
+        }).map(function (item) {
+            return {
+                key: item._id,
+                title: item.shortTitle
+            };
+        });
+        return list;
+    }
+    return [];
+};
+
+var rankList = function (rankList, curTab, collapse) {
+    if (collapse) {
+        return getListOnShow(rankList, curTab).concat(moreRank);
+    }
+    return getListOnShow(rankList, curTab).concat(moreRank, getCollapseList(rankList, curTab));
+};
+
+module.exports = {
+    moreRank: moreRank,
+    getListOnShow: getListOnShow,
+    getCollapseList: getCollapseList,
+    rankList: rankList
+};

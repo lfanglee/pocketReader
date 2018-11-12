@@ -1,0 +1,10 @@
+<view class="column-tabs">
+    <i-tabs i-class="i-tabs-column" current="{{ newCurrent }}" bindchange="handleChange">
+        <i-tab
+            wx:for="{{tabsList}}"
+            wx:key="{{item.key}}"
+            i-class="i-tab-column"
+            key="{{ item.key }}"
+            title="{{ item.title }}"></i-tab>
+    </i-tabs>
+</view>

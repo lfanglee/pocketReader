@@ -1,0 +1,15 @@
+<wxs src="./index.wxs" module="tools" />
+<view class="page-rank">
+    <i-tabs i-class="fixed-tabs" current="{{ currentTab }}" bindchange="handleTabChange">
+        <i-tab key="male" title="男生"></i-tab>
+        <i-tab key="female" title="女生"></i-tab>
+    </i-tabs>
+    <view class="content">
+        <column-tabs
+            current="{{ currentSubTab }}"
+            tabsList="{{ tools.rankList(rankList, currentTab, isCollapse) }}"
+            bindchange="handleSubTabChange"></column-tabs>
+        <view class="books-list"></view>
+    </view>
+    <i-spin fix wx:if="{{spinShow}}"></i-spin>
+</view>

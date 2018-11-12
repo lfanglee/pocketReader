@@ -1,11 +1,4 @@
-<view class="app">
-    <view>
-        <image class="index_banner_img" src="../../images/gulp.png" mode="aspectFit"></image>
-    </view>
-
-    <view class="index__header">
-        <view class="index__header_title">gulp-WeApp-boilerplate</view>
-        <view class="index__header_desc">基于Gulp的微信小程序开发脚手架</view>
-        <navigator class="index_navigator" url="/pages/cloud-test/index">跳转到新页面</navigator>
-    </view>
+<view class="page-index">
+    <navigator url="/pages/classify/index" hover-class="navigator-hover">分类</navigator>
+    <navigator url="/pages/rank/index" hover-class="navigator-hover">排行榜</navigator>
 </view>
