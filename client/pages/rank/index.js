@@ -11,13 +11,19 @@ Page({
     },
     async onLoad(options) {
         this.setData({ spinShow: true });
-        const rankList = await Request.get('http://api.zhuishushenqi.com/ranking/gender');
+        const rankList = await this.getRankingGender();
         const currentSubTab = rankList[this.data.currentTab][0]['_id'];
 
         this.setData({ rankList, currentSubTab, spinShow: false });
     },
     onPullDownRefresh() {
 
+    },
+    async getRankingGender() {
+        return await Request.get('http://api.zhuishushenqi.com/ranking/gender');
+    },
+    async getRankingBook() {
+        
     },
     handleTabChange({ detail }) {
         this.setData({

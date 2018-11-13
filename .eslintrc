@@ -102,7 +102,8 @@
             }
         ],
         "no-shadow": "off",
-        "arrow-parens": "off"
+        "arrow-parens": "off",
+        "dot-notation": "off"
     },
     "globals": {
         "App": true,
