@@ -6,9 +6,11 @@ $column-width: 80px;
 .i-tabs-column {
     flex-direction: column;
     width: $column-width !important;
-    height: 100% !important;
+    height: auto !important;
+    border-right: 1px solid #E9EaEc;
     &::after {
-        border: none !important;
+        border-bottom-width: 0 !important;
+        border-right-width: 1px;
     }
     .i-tab-column {
         width: $column-width;

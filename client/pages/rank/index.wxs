@@ -40,9 +40,15 @@ var rankList = function (rankList, curTab, collapse) {
     return getListOnShow(rankList, curTab).concat(moreRank, getCollapseList(rankList, curTab));
 };
 
+var getChineseUnit = function (num) {
+    num = parseInt(num);
+    return num > 999 ? (num / 10000).toFixed(1) + '万' : num;
+};
+
 module.exports = {
     moreRank: moreRank,
     getListOnShow: getListOnShow,
     getCollapseList: getCollapseList,
-    rankList: rankList
+    rankList: rankList,
+    getChineseUnit: getChineseUnit
 };

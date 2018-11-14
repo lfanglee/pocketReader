@@ -1,4 +1,4 @@
-<view class="column-tabs">
+<view class="column-tabs i-class">
     <i-tabs i-class="i-tabs-column" current="{{ newCurrent }}" bindchange="handleChange">
         <i-tab
             wx:for="{{tabsList}}"

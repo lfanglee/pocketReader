@@ -3,6 +3,9 @@
         "i-tabs": "../../components/tabs/index",
         "i-tab": "../../components/tab/index",
         "i-spin": "../../components/spin/index",
-        "column-tabs": "../components/column-tabs/index"
+        "column-tabs": "../components/column-tabs/index",
+        "i-row": "../../components/row/index",
+        "i-col": "../../components/col/index",
+        "i-toast": "../../components/toast/index"
     }
 }

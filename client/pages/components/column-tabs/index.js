@@ -1,4 +1,5 @@
 Component({
+    externalClasses: ['i-class'],
     properties: {
         current: {
             type: String,
