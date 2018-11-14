@@ -63,7 +63,6 @@ Page({
             books: await this.getRankingBooks(this.data.currentSubTab),
             scrollTop: 0
         });
-        
     },
     async handleSubTabChange({ detail }) {
         if (detail.key === 'moreRank') {
@@ -76,7 +75,6 @@ Page({
                 books: await this.getRankingBooks(detail.key),
                 scrollTop: 0
             });
-            
         }
     },
     resetCurSubTab() {
