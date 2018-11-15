@@ -20,10 +20,6 @@ Page({
         this.setData({
             rankList, currentSubTab, books, init: true
         });
-        this.toggleLoading(false);
-    },
-    onPullDownRefresh() {
-
     },
     toggleLoading(status = true) {
         if (status) {
@@ -36,9 +32,6 @@ Page({
             wx.nextTick(() => $Toast.hide());
         }
     },
-    scroll({ detail }) {
-        this.setData({ scrollTop: detail.scrollTop });
-    },
     async getRankingGender() {
         this.toggleLoading();
         const result = await Request.get('http://api.zhuishushenqi.com/ranking/gender');
@@ -50,6 +43,22 @@ Page({
         const result = await Request.get(`http://api.zhuishushenqi.com/ranking/${rankingId}`);
         this.toggleLoading(false);
         return this.formatBookInfo(result.ranking.books);
+    },
+    resetCurSubTab() {
+        this.setData({
+            currentSubTab: this.data.rankList[this.data.currentTab][0]['_id'],
+            isSubTabCollapse: true
+        });
+    },
+    formatBookInfo(books) {
+        return books.map(i => {
+            const {
+                _id, title, shortIntro, cover, latelyFollower, retentionRatio
+            } = i;
+            return {
+                _id, title, shortIntro, latelyFollower, retentionRatio, cover: URL.static + cover
+            };
+        });
     },
     async handleTabChange({ detail }) {
         if (detail.key === this.data.currentTab) {
@@ -77,20 +86,10 @@ Page({
             });
         }
     },
-    resetCurSubTab() {
-        this.setData({
-            currentSubTab: this.data.rankList[this.data.currentTab][0]['_id'],
-            isSubTabCollapse: true
-        });
-    },
-    formatBookInfo(books) {
-        return books.map(i => {
-            const {
-                _id, title, shortIntro, cover, latelyFollower, retentionRatio
-            } = i;
-            return {
-                _id, title, shortIntro, latelyFollower, retentionRatio, cover: URL.static + cover
-            };
+    handleItemTap(event) {
+        const bookId = event.currentTarget.dataset.id;
+        wx.navigateTo({
+            url: `/pages/bookInfo/index?bookId=${bookId}`
         });
     }
 });

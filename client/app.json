@@ -3,7 +3,8 @@
         "pages/index/index",
         "pages/cloud-test/index",
         "pages/classify/index",
-        "pages/rank/index"
+        "pages/rank/index",
+        "pages/bookInfo/index"
     ],
     "window": {
         "backgroundTextStyle": "dark",

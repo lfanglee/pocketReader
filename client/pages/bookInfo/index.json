@@ -1,0 +1,10 @@
+{
+    "usingComponents": {
+        "i-spin": "../../components/spin/index",
+        "i-toast": "../../components/toast/index",
+        "i-row": "../../components/row/index",
+        "i-col": "../../components/col/index",
+        "i-rate": "../../components/rate/index",
+        "i-icon": "../../components/icon/index"
+    }
+}

@@ -19,7 +19,8 @@ const paths = {
     src: {
         baseDir: 'client',
         imgSrc: 'client/images',
-        imgFiles: 'client/images/**'
+        imgFiles: 'client/images/**',
+        excludeDir: 'client/components'
     },
     cloud: {
         baseDir: 'server/cloud-functions',
@@ -27,7 +28,8 @@ const paths = {
     },
     dist: {
         baseDir: 'dist',
-        imgDest: 'dist/images'
+        imgDest: 'dist/images',
+        excludeDir: 'dist/components'
     }
 };
 
@@ -42,7 +44,7 @@ const handleError = (err) => {
 
 gulp.task('wxml', () => {
     return gulp
-        .src(`${paths.src.baseDir}/**/*.wxml`)
+        .src([`${paths.src.baseDir}/**/*.wxml`, `!${paths.src.excludeDir}/**/*.*`])
         .pipe(isProd ? plugins.htmlmin({
             collapseWhitespace: true,
             removeComments: true,
@@ -54,7 +56,7 @@ gulp.task('wxml', () => {
 // 关闭自动补全，启用微信小程序开发者工具自带补全功能
 gulp.task('wxss', () => {
     const combined = combiner.obj([
-        gulp.src(`${paths.src.baseDir}/**/*.{wxss,scss}`),
+        gulp.src([`${paths.src.baseDir}/**/*.{wxss,scss}`, `!${paths.src.excludeDir}/**/*.*`]),
         plugins.sass().on('error', plugins.sass.logError),
         plugins.postcss([pxtorpx(), base64()]),
         isProd ? plugins.cssnano({
@@ -72,7 +74,7 @@ gulp.task('wxss', () => {
 
 gulp.task('js', () => {
     const combined = combiner.obj([
-        gulp.src(`${paths.src.baseDir}/**/*.js`),
+        gulp.src([`${paths.src.baseDir}/**/*.js`, `!${paths.src.excludeDir}/**/*.*`]),
         isProd ? plugins.jdists({
             trigger: 'prod'
         }) : plugins.jdists({
@@ -95,13 +97,13 @@ gulp.task('js', () => {
 });
 
 gulp.task('json', () => {
-    return gulp.src(`${paths.src.baseDir}/**/*.json`)
+    return gulp.src([`${paths.src.baseDir}/**/*.json`, `!${paths.src.excludeDir}/**/*.*`])
         .pipe(isProd ? plugins.jsonminify() : through.obj())
         .pipe(gulp.dest(paths.dist.baseDir));
 });
 
 gulp.task('images', () => {
-    return gulp.src(`${paths.src.baseDir}/**/*.{jpg,jpeg,png,gif,svg}`)
+    return gulp.src([`${paths.src.baseDir}/**/*.{jpg,jpeg,png,gif,svg}`, `!${paths.src.excludeDir}/**/*.*`])
         .pipe(plugins.newer(paths.dist.imgDest))
         .pipe(plugins.imagemin({
             progressive: true,
@@ -111,13 +113,20 @@ gulp.task('images', () => {
 });
 
 gulp.task('wxs', () => {
-    return gulp.src(`${paths.src.baseDir}/**/*.wxs`).pipe(gulp.dest(paths.dist.baseDir));
+    return gulp.src([`${paths.src.baseDir}/**/*.wxs`, `!${paths.src.excludeDir}/**/*.*`]).pipe(gulp.dest(paths.dist.baseDir));
 });
 
 gulp.task('extras', () => {
-    return gulp.src([`${paths.src.baseDir}/**/*.*`, `!${paths.src.baseDir}/**/*.{js,wxml,wxss,scss,wxs,json,jpg,jpeg,png,gif,svg}`])
-        .pipe(gulp.dest(paths.dist.baseDir));
+    return gulp.src([
+        `${paths.src.baseDir}/**/*.*`,
+        `!${paths.src.baseDir}/**/*.{js,wxml,wxss,scss,wxs,json,jpg,jpeg,png,gif,svg}`,
+        `!${paths.src.excludeDir}/**/*.*`
+    ]).pipe(gulp.dest(paths.dist.baseDir));
 });
+
+gulp.task('excludes', () => {
+    return gulp.src(`!${paths.src.excludeDir}/**/*.*`).pipe(gulp.dest(paths.dist.excludeDir));
+})
 
 gulp.task('watch', () => {
     const handleWatch = (filePath) => {
@@ -133,7 +142,7 @@ gulp.task('watch', () => {
         }
     };
 
-    plugins.watch(`${paths.src.baseDir}/**`)
+    plugins.watch([`${paths.src.baseDir}/**`, `!${paths.src.excludeDir}/**/*.*`])
         .on('add', (file) => {
             log(colors.green(file) + ' is added');
             handleWatch(file);
@@ -180,11 +189,11 @@ gulp.task('clean', () => {
 });
 
 gulp.task('dev', ['clean'], () => {
-    runSequence('json', 'images', 'wxml', 'wxss', 'js', 'wxs', 'extras', 'cloud', 'watch');
+    runSequence('json', 'images', 'wxml', 'wxss', 'js', 'wxs', 'extras', 'excludes', 'cloud', 'watch');
 });
 
 gulp.task('build', ['clean'], () => {
-    runSequence('json', 'images', 'wxml', 'wxss', 'js', 'wxs', 'extras', 'cloud');
+    runSequence('json', 'images', 'wxml', 'wxss', 'js', 'wxs', 'extras', 'excludes', 'cloud');
 });
 
 gulp.task('cloud:dev', () => {

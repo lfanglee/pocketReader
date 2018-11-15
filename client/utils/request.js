@@ -25,7 +25,7 @@ export default class Request {
                 data,
                 ...config,
                 success: (res) => {
-                    if (res.data.ok) {
+                    if (res.data.ok || config.ignoreError) {
                         resolve(res.data);
                     } else {
                         wx.showToast({

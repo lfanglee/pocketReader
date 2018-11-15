@@ -1,0 +1,13 @@
+var starOfScore = function (score) {
+    return Math.round(Math.floor(score) / 2);
+};
+
+var getChineseUnit = function (num) {
+    num = parseInt(num);
+    return num > 999 ? (num / 10000).toFixed(1) + '万' : num;
+};
+
+module.exports = {
+    starOfScore: starOfScore,
+    getChineseUnit: getChineseUnit
+};

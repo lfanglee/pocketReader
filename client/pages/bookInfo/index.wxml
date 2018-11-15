@@ -1,0 +1,33 @@
+<wxs src="./index.wxs" module="tools"></wxs>
+<view class="page-book-info">
+    <i-row i-class="book-info-panel">
+        <i-col span="8">
+            <image class="cover-image" src="{{bookInfo.cover}}" mode="aspectFit" lazy-load></image>
+        </i-col>
+        <i-col span="16">
+            <text class="book-title">{{bookInfo.title}}\n</text>
+            <text class="book-score" decode>{{bookInfo.rating.score}}&nbsp;&nbsp;</text>
+            <i-rate value="{{tools.starOfScore(bookInfo.rating.score)}}"></i-rate>
+            <text class="rate-count" decode="{{true}}">|&nbsp;&nbsp;{{bookInfo.rating.count}}人评\n</text>
+            <text class="author-and-core" decode><text>{{bookInfo.author}}</text>&nbsp;|&nbsp;{{bookInfo.majorCate}}\n</text>
+            <text class="word-and-update" decode>{{tools.getChineseUnit(bookInfo.wordCount)}}字&nbsp;|&nbsp;{{bookInfo.updated}}</text>
+        </i-col>
+    </i-row>
+    <i-row i-class="book-data">
+        <i-col span="8">
+            <text class="num">{{bookInfo.latelyFollower}}\n</text>
+            <text class="des">追书人气</text>
+        </i-col>
+        <i-col span="8">
+            <text class="num">{{bookInfo.retentionRatio}}\n</text>
+            <text class="des">读者留存</text>
+        </i-col>
+        <i-col span="8">
+            <text class="num">{{bookInfo.serializeWordCount}}\n</text>
+            <text class="des">日更字数</text>
+        </i-col>
+    </i-row>
+    <view class="book-longIntro">{{bookInfo.longIntro}}</view>
+</view>
+<i-spin size="large" fix wx:if="{{!init}}" />
+<i-toast id="toast" />

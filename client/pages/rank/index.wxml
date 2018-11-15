@@ -13,7 +13,7 @@
                 bind:change="handleSubTabChange"></column-tabs>
         </view>
         <scroll-view scroll-y class="books-list" scroll-top="{{scrollTop}}">
-            <i-row i-class="book-info" wx:for="{{books}}" wx:key="{{item._id}}">
+            <i-row i-class="book-info" wx:for="{{books}}" wx:key="{{item._id}}" data-id="{{item._id}}" bind:tap="handleItemTap">
                 <i-col span="7">
                     <image class="cover-image" src="{{item.cover}}" mode="aspectFit" lazy-load></image>
                 </i-col>
