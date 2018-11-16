@@ -6,7 +6,9 @@ import { $Toast } from '../../components/base/index';
 Page({
     data: {
         init: false,
-        bookInfo: {}
+        bookInfo: {},
+        showFullBookIntro: false,
+        isInShelf: false,
     },
     async onLoad(options) {
         const bookInfo = this.formatBookInfo(await this.getBookInfo(options.bookId));
@@ -39,6 +41,22 @@ Page({
         return Object.assign(bookInfo, {
             cover: URL.static + cover,
             updated: moment(updated).locale('zh-cn').fromNow()
+        });
+    },
+    handleBookIntroFold() {
+        this.setData({
+            showFullBookIntro: !this.data.showFullBookIntro
+        });
+    },
+    handleRemoveFromShelf() {
+        // TODO
+    },
+    handleAddToShelf() {
+        // TODO
+    },
+    handleBeginReading() {
+        wx.navigateTo({
+            url: `/pages/read/index?bookId=${this.data.bookInfo['_id']}`
         });
     }
 });

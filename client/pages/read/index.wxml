@@ -1,0 +1,5 @@
+<view class="page-read">
+    read
+</view>
+<i-spin size="large" fix wx:if="{{!init}}" />
+<i-toast id="toast" />

@@ -1,16 +1,16 @@
 <wxs src="./index.wxs" module="tools"></wxs>
 <view class="page-book-info">
     <i-row i-class="book-info-panel">
-        <i-col span="8">
+        <i-col span="7">
             <image class="cover-image" src="{{bookInfo.cover}}" mode="aspectFit" lazy-load></image>
         </i-col>
-        <i-col span="16">
-            <text class="book-title">{{bookInfo.title}}\n</text>
-            <text class="book-score" decode>{{bookInfo.rating.score}}&nbsp;&nbsp;</text>
-            <i-rate value="{{tools.starOfScore(bookInfo.rating.score)}}"></i-rate>
-            <text class="rate-count" decode="{{true}}">|&nbsp;&nbsp;{{bookInfo.rating.count}}人评\n</text>
-            <text class="author-and-core" decode><text>{{bookInfo.author}}</text>&nbsp;|&nbsp;{{bookInfo.majorCate}}\n</text>
-            <text class="word-and-update" decode>{{tools.getChineseUnit(bookInfo.wordCount)}}字&nbsp;|&nbsp;{{bookInfo.updated}}</text>
+        <i-col span="17">
+            <text class="book-title" decode>{{bookInfo.title}}</text>
+            <text class="book-score" decode>{{tools.fixed(bookInfo.rating.score, 1)}}&nbsp;&nbsp;</text>
+            <i-rate i-class="rate-star" value="{{tools.starOfScore(bookInfo.rating.score)}}"></i-rate>
+            <text class="rate-count" decode>|&nbsp;&nbsp;{{bookInfo.rating.count}}人评</text>
+            <text class="author-and-core" decode><text class="author">{{bookInfo.author}}</text>&nbsp;&nbsp;|&nbsp;&nbsp;{{bookInfo.majorCate}}</text>
+            <text class="word-and-update" decode>{{tools.getChineseUnit(bookInfo.wordCount)}}字&nbsp;&nbsp;|&nbsp;&nbsp;{{bookInfo.updated}}</text>
         </i-col>
     </i-row>
     <i-row i-class="book-data">
@@ -27,7 +27,28 @@
             <text class="des">日更字数</text>
         </i-col>
     </i-row>
-    <view class="book-longIntro">{{bookInfo.longIntro}}</view>
+    <view class="book-longIntro">
+        <view class="book-longIntro-title" bind:tap="handleBookIntroFold">
+            简介<i-icon type="{{showFullBookIntro ? 'packup' : 'unfold'}}"></i-icon>
+        </view>
+        <view class="book-longIntro-content-wrapper">
+            <text class="{{showFullBookIntro ? 'book-longIntro-long' : 'book-longIntro-short'}}">{{bookInfo.longIntro}}</text>
+        </view>
+    </view>
+    <i-cell-group>
+        <i-cell
+            i-class="book-latest-chapter"
+            title="最新章节"
+            value="{{bookInfo.lastChapter}}"
+            is-link
+            url="/pages/read/index?bookId={{bookInfo['_id']}}&chapter={{bookInfo.chaptersCount}}"
+            ></i-cell>
+    </i-cell-group>
+    <view class="bottom-btn">
+        <i-button wx:if="{{isInShelf}}" i-class="btn" inline shape="circle" type="ghost" bind:click="handleRemoveFromShelf">移出书架</i-button>
+        <i-button wx:else i-class="btn" inline shape="circle" type="success" bind:click="handleAddToShelf">加入书架</i-button>
+        <i-button i-class="btn" inline shape="circle" type="error" bind:click="handleBeginReading">开始阅读</i-button>
+    </view>
 </view>
 <i-spin size="large" fix wx:if="{{!init}}" />
 <i-toast id="toast" />

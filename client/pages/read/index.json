@@ -1,0 +1,6 @@
+{
+    "usingComponents": {
+        "i-spin": "../../components/spin/index",
+        "i-toast": "../../components/toast/index"
+    }
+}

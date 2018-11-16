@@ -15,12 +15,17 @@ const combiner = require('stream-combiner2');
 
 const isProd = argv.type === 'prod';
 
+const exclude = {
+    dir: 'components',
+    type: ['wxss', 'json', 'scss']
+};
+
 const paths = {
     src: {
         baseDir: 'client',
         imgSrc: 'client/images',
         imgFiles: 'client/images/**',
-        excludeDir: 'client/components'
+        excludeDir: `client/${exclude.dir}`
     },
     cloud: {
         baseDir: 'server/cloud-functions',
@@ -29,7 +34,7 @@ const paths = {
     dist: {
         baseDir: 'dist',
         imgDest: 'dist/images',
-        excludeDir: 'dist/components'
+        excludeDir: `dist/${exclude.dir}`
     }
 };
 
@@ -44,7 +49,7 @@ const handleError = (err) => {
 
 gulp.task('wxml', () => {
     return gulp
-        .src([`${paths.src.baseDir}/**/*.wxml`, `!${paths.src.excludeDir}/**/*.*`])
+        .src([`${paths.src.baseDir}/**/*.wxml`, `!${paths.src.excludeDir}/**/*.{${exclude.type.join(',')}}`])
         .pipe(isProd ? plugins.htmlmin({
             collapseWhitespace: true,
             removeComments: true,
@@ -56,7 +61,7 @@ gulp.task('wxml', () => {
 // 关闭自动补全，启用微信小程序开发者工具自带补全功能
 gulp.task('wxss', () => {
     const combined = combiner.obj([
-        gulp.src([`${paths.src.baseDir}/**/*.{wxss,scss}`, `!${paths.src.excludeDir}/**/*.*`]),
+        gulp.src([`${paths.src.baseDir}/**/*.{wxss,scss}`, `!${paths.src.excludeDir}/**/*.{${exclude.type.join(',')}}`]),
         plugins.sass().on('error', plugins.sass.logError),
         plugins.postcss([pxtorpx(), base64()]),
         isProd ? plugins.cssnano({
@@ -74,7 +79,7 @@ gulp.task('wxss', () => {
 
 gulp.task('js', () => {
     const combined = combiner.obj([
-        gulp.src([`${paths.src.baseDir}/**/*.js`, `!${paths.src.excludeDir}/**/*.*`]),
+        gulp.src([`${paths.src.baseDir}/**/*.js`, `!${paths.src.excludeDir}/**/*.{${exclude.type.join(',')}}`]),
         isProd ? plugins.jdists({
             trigger: 'prod'
         }) : plugins.jdists({
@@ -97,13 +102,13 @@ gulp.task('js', () => {
 });
 
 gulp.task('json', () => {
-    return gulp.src([`${paths.src.baseDir}/**/*.json`, `!${paths.src.excludeDir}/**/*.*`])
+    return gulp.src([`${paths.src.baseDir}/**/*.json`, `!${paths.src.excludeDir}/**/*.{${exclude.type.join(',')}}`])
         .pipe(isProd ? plugins.jsonminify() : through.obj())
         .pipe(gulp.dest(paths.dist.baseDir));
 });
 
 gulp.task('images', () => {
-    return gulp.src([`${paths.src.baseDir}/**/*.{jpg,jpeg,png,gif,svg}`, `!${paths.src.excludeDir}/**/*.*`])
+    return gulp.src([`${paths.src.baseDir}/**/*.{jpg,jpeg,png,gif,svg}`, `!${paths.src.excludeDir}/**/*.{${exclude.type.join(',')}}`])
         .pipe(plugins.newer(paths.dist.imgDest))
         .pipe(plugins.imagemin({
             progressive: true,
@@ -113,20 +118,20 @@ gulp.task('images', () => {
 });
 
 gulp.task('wxs', () => {
-    return gulp.src([`${paths.src.baseDir}/**/*.wxs`, `!${paths.src.excludeDir}/**/*.*`]).pipe(gulp.dest(paths.dist.baseDir));
+    return gulp.src([`${paths.src.baseDir}/**/*.wxs`, `!${paths.src.excludeDir}/**/*.{${exclude.type.join(',')}}`]).pipe(gulp.dest(paths.dist.baseDir));
 });
 
 gulp.task('extras', () => {
     return gulp.src([
         `${paths.src.baseDir}/**/*.*`,
         `!${paths.src.baseDir}/**/*.{js,wxml,wxss,scss,wxs,json,jpg,jpeg,png,gif,svg}`,
-        `!${paths.src.excludeDir}/**/*.*`
+        `!${paths.src.excludeDir}/**/*.{${exclude.type.join(',')}}`
     ]).pipe(gulp.dest(paths.dist.baseDir));
 });
 
 gulp.task('excludes', () => {
-    return gulp.src(`!${paths.src.excludeDir}/**/*.*`).pipe(gulp.dest(paths.dist.excludeDir));
-})
+    return gulp.src(`${paths.src.excludeDir}/**/*.{${exclude.type.join(',')}}`).pipe(gulp.dest(paths.dist.excludeDir));
+});
 
 gulp.task('watch', () => {
     const handleWatch = (filePath) => {
@@ -142,7 +147,7 @@ gulp.task('watch', () => {
         }
     };
 
-    plugins.watch([`${paths.src.baseDir}/**`, `!${paths.src.excludeDir}/**/*.*`])
+    plugins.watch([`${paths.src.baseDir}/**`, `!${paths.src.excludeDir}/**/*.{${exclude.type.join(',')}}`])
         .on('add', (file) => {
             log(colors.green(file) + ' is added');
             handleWatch(file);

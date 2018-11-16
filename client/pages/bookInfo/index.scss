@@ -1,10 +1,118 @@
 .page-book-info {
-    padding: 0 10px;
+    width: 100%;
+    height: 100%;
+    background: #FAFAFA;
     .book-info-panel {
+        padding: 12px 10px 0;
         .cover-image {
-            margin-top: 12px;
             width: 98px;
             height: 128px
+        }
+        .book-title {
+            display: block;
+            font-size: 20px;
+            font-weight: 600;
+            line-height: 20px;
+            color: #222;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            white-space: nowrap;
+            margin-bottom: 12px;
+        }
+        .book-score {
+            font-size: 20px;
+            color: #f5a623;
+            display: inline-block;
+            vertical-align: middle;
+            line-height: 20px;
+
+        }
+        .rate-star {
+            position: relative;
+            top: -2px;
+        }
+        .rate-count {
+            font-size: 14px;
+            color: #999;
+            line-height: 20px;
+            display: inline-block;
+            vertical-align: middle;
+            white-space: nowrap;
+        }
+        .author-and-core, .word-and-update {
+            display: block;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #999;
+            line-height: 20px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            .author {
+                color: #B93321;
+            }
+        }
+    }
+    .book-data {
+        padding: 12px 0;
+        text-align: center;
+        .num {
+            font-size: 16px;
+            font-weight: 600;
+            color: #999;
+        }
+        .des {
+            font-size: 12px;
+            font-weight: 200;
+            color: #999;
+        }
+    }
+    .book-longIntro {
+        padding: 0 10px;
+        .book-longIntro-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            color: #222;
+        }
+        .book-longIntro-content-wrapper {
+            padding: 0 10px;
+            font-size: 14px;
+            color: #222;
+            font-weight: 400;
+        }
+        .book-longIntro-short {
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 3;
+            text-overflow: ellipsis;
+            word-break: break-all;
+            overflow: hidden;
+        }
+        .book-longIntro-long {
+            display: block;
+        }
+    }
+    .book-latest-chapter {
+        margin-top: 12px;
+        background: #FAFAFA;
+        border: 1px solid #e9eaec;
+        border-left-width: 0;
+        border-right-width: o;
+    }
+    .bottom-btn {
+        position: fixed;
+        bottom: 0;
+        display: flex;
+        justify-content: space-between;
+        z-index: 2;
+        width: 100%;
+        border-top: 1px solid #e9eaec;
+        .btn {
+            width: 160px;
         }
     }
 }

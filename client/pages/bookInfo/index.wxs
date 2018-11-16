@@ -7,7 +7,15 @@ var getChineseUnit = function (num) {
     return num > 999 ? (num / 10000).toFixed(1) + '万' : num;
 };
 
+var fixed = function(num, x) {
+    if (num) {
+        return num.toFixed(x);
+    }
+    return '--';
+};
+
 module.exports = {
     starOfScore: starOfScore,
-    getChineseUnit: getChineseUnit
+    getChineseUnit: getChineseUnit,
+    fixed: fixed
 };
