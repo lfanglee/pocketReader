@@ -1,5 +1,7 @@
 $fontFamily: PingFang SC,Helvetica Neue,Helvetica,STHeiTi,sans-serif;
 $defaultBackgroundColor: #eee6dd;
+$defaultFontColor: #5c5d58;
+$defaultTitleColor: #333;
 
 .page-read {
     width: 100%;
@@ -10,15 +12,43 @@ $defaultBackgroundColor: #eee6dd;
         display: block;
         font-size: 20px;
         line-height: 32px;
+        color: $defaultTitleColor;
         background: $defaultBackgroundColor;
         padding: 19px 20px 0;
     }
     .article-body {
         display: block;
         font-size: 18px;
+        color: $defaultFontColor;
         background: $defaultBackgroundColor;
         padding: 10px 20px;
         line-height: 28px;
+        .article-line {
+            display: block;
+            margin: 5px 0;
+            line-height: 1.5;
+            text-align: justify;
+        }
+    }
+    .bottom-btn-group {
+        padding: 0 10px 10px;
+        background: $defaultBackgroundColor;
+        .bottom-btn {
+            display: inline-block;
+            margin: 10px 0 0;
+            background: $defaultBackgroundColor;
+            color: $defaultFontColor;
+            &.btn-n {
+                width: 355px;
+            }
+            &.btn-p {
+                width: 165px;
+                margin-right: 25px;
+            }
+            &.btn-c {
+                width: 165px;
+            }
+        }
     }
 }
 
@@ -64,5 +94,51 @@ $defaultBackgroundColor: #eee6dd;
         left: 0;
         width: 100%;
         margin: 0;
+    }
+}
+
+.bottom-panel {
+    width: 100%;
+    height: 170px;
+    padding: 20px;
+    background-color: rgba(50, 51, 52, .9);
+    transform: translateY(170px);
+    opacity: 0;
+    display: block;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    transition: all 0.2s ease;
+    z-index: 7;
+    &.bottom-panel-show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    .item {
+        margin-bottom: 20px;
+        height: 30px;
+    }
+    .font-btn-w {
+        width: 32px;
+        font-family: $fontFamily;
+        font-size: 20px;
+        line-height: 30px;
+        color: #fff;
+        display: inline-block;
+    }
+    .font-size-progress {
+        display: inline-block;
+        width: 240px;
+        margin: 0 15px;
+        transform: translateY(-4px);
+    }
+    .chapter-handle {
+        display: flex;
+        justify-content: space-between;
+        .chapter-select-btn {
+            font-size: 15px;
+            color: #fff;
+            line-height: 30px;
+        }
     }
 }

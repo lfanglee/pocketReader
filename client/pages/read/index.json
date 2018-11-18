@@ -6,7 +6,8 @@
         "i-button": "../../components/button/index",
         "i-cell-group": "../../components/cell-group/index",
         "i-cell": "../../components/cell/index",
-        "i-icon": "../../components/icon/index"
+        "i-icon": "../../components/icon/index",
+        "i-progress": "../../components/progress/index"
     },
     "navigationBarBackgroundColor": "#eee6dd",
     "backgroundColor": "#eee6dd"

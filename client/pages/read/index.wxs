@@ -1,7 +1,19 @@
 var formatArticle = function (article) {
-    return article.replace(getRegExp('\n\n', 'g'), '\n');
+    return article.split('\n').map(function (item) {
+        return item.trim();
+    });
+};
+
+var isPreChapterActive = function (chapter) {
+    return +chapter !== 1;
+};
+
+var isNextChapterActive = function (chapter, chaptersCount) {
+    return +chapter !== +chaptersCount;
 };
 
 module.exports = {
-    formatArticle: formatArticle
+    formatArticle: formatArticle,
+    isPreChapterActive: isPreChapterActive,
+    isNextChapterActive: isNextChapterActive
 };

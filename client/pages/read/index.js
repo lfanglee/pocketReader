@@ -2,12 +2,15 @@ import regeneratorRuntime from '../../lib/regenerator-runtime/runtime-module';
 import Api from '../../lib/api';
 import { $Toast } from '../../components/base/index';
 
+let isLoadingChapter = false;
+
 Page({
     data: {
         init: false,
         bookId: null,
         sourceId: null,
         showContents: false,
+        showBottomPanel: false,
 
         chapter: 1,
         chaptersCount: 0,
@@ -18,7 +21,9 @@ Page({
         pageSelectArray: [],
 
         title: '',
-        chapterContent: ''
+        chapterContent: '',
+
+        fontSize: 20,  // 0 - 100 对应 20px - 30px
     },
     async onLoad(options) {
         const { bookId, chapter = 1 } = options;
@@ -42,9 +47,6 @@ Page({
             await this.loadChapter(this.data.chapter);
         });
     },
-    onReady() {
-        
-    },
     toggleLoading(status = true) {
         if (status) {
             $Toast({
@@ -59,6 +61,11 @@ Page({
     toggleContents() {
         this.setData({
             showContents: !this.data.showContents
+        });
+    },
+    toggleBottomPanel() {
+        this.setData({
+            showBottomPanel: !this.data.showBottomPanel
         });
     },
     generateChaptersList(list, count, size) {
@@ -87,7 +94,12 @@ Page({
         });
     },
     async getChapter(chapterLink) {
+        if (isLoadingChapter) {
+            return { isLoadingChapter: true };
+        }
+        isLoadingChapter = true;
         const chapterContent = await Api.getChaterContent(encodeURIComponent(chapterLink));
+        isLoadingChapter = false;
 
         return chapterContent.chapter;
     },
@@ -96,7 +108,12 @@ Page({
         const chapterLink = e.currentTarget.dataset.link;
         const chapter = await this.getChapter(chapterLink);
 
-        if (chapter.cpContent && chapter.isVip) {
+        if (chapter.isLoadingChapter) {
+            $Toast({
+                content: '操作太频繁了！',
+                type: 'error'
+            });
+        } else if (chapter.cpContent && chapter.isVip) {
             $Toast({
                 content: '付费章节，尽情期待！',
                 type: 'warning'
@@ -120,7 +137,12 @@ Page({
         const chapterLink = this.data.chapters[Math.floor((chapterIndex - 1) / 100)][(chapterIndex % 100) - 1].link;
         const chapter = await this.getChapter(chapterLink);
 
-        if (chapter.cpContent && chapter.isVip) {
+        if (chapter.isLoadingChapter) {
+            $Toast({
+                content: '操作太频繁了！',
+                type: 'error'
+            });
+        } else if (chapter.cpContent && chapter.isVip) {
             $Toast({
                 content: '付费章节，尽情期待！',
                 type: 'warning'
@@ -136,5 +158,45 @@ Page({
                 duration: 0
             });
         }
+    },
+    async handleNextChapter() {
+        if (this.data.chapter >= this.data.chaptersCount) {
+            return;
+        }
+        this.toggleLoading();
+        this.setData({ showBottomPanel: false });
+        await this.loadChapter(1 + +this.data.chapter);
+        this.toggleLoading(false);
+    },
+    async handlePreChapter() {
+        if (this.data.chapter <= 1) {
+            return;
+        }
+        this.toggleLoading();
+        this.setData({ showBottomPanel: false });
+        await this.loadChapter(+this.data.chapter - 1);
+        this.toggleLoading(false);
+    },
+    handleOpenContents() {
+        this.toggleContents();
+        this.toggleBottomPanel();
+    },
+    addFontSize() {
+        let { fontSize } = this.data;
+        if (fontSize < 100) {
+            fontSize += 20;
+        }
+        this.setData({
+            fontSize
+        });
+    },
+    reduceFontSize() {
+        let { fontSize } = this.data;
+        if (fontSize > 0) {
+            fontSize -= 20;
+        }
+        this.setData({
+            fontSize
+        });
     }
 });
