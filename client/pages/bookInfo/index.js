@@ -1,6 +1,7 @@
 import regeneratorRuntime from '../../lib/regenerator-runtime/runtime-module';
 import moment from '../../lib/moment.zh_cn';
-import Request, { zhuishushenqiApi as URL } from '../../utils/request';
+import { zhuishushenqiApi as URL } from '../../utils/request';
+import  Api from '../../lib/api';
 import { $Toast } from '../../components/base/index';
 
 Page({
@@ -15,6 +16,10 @@ Page({
 
         this.setData({
             bookInfo, init: true
+        }, () => {
+            wx.setNavigationBarTitle({
+                title: bookInfo.title
+            });
         });
     },
     toggleLoading(status = true) {
@@ -30,9 +35,7 @@ Page({
     },
     async getBookInfo(bookId) {
         this.toggleLoading();
-        const result = Request.get(`http://api.zhuishushenqi.com/book/${bookId}`, {}, {
-            ignoreError: true
-        });
+        const result = await Api.getBookInfo(bookId);
         this.toggleLoading(false);
         return result;
     },

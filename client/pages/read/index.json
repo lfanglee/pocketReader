@@ -1,6 +1,13 @@
 {
     "usingComponents": {
         "i-spin": "../../components/spin/index",
-        "i-toast": "../../components/toast/index"
-    }
+        "i-toast": "../../components/toast/index",
+        "i-drawer": "../../components/drawer/index",
+        "i-button": "../../components/button/index",
+        "i-cell-group": "../../components/cell-group/index",
+        "i-cell": "../../components/cell/index",
+        "i-icon": "../../components/icon/index"
+    },
+    "navigationBarBackgroundColor": "#eee6dd",
+    "backgroundColor": "#eee6dd"
 }

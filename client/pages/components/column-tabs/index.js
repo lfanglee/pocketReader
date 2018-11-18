@@ -1,5 +1,8 @@
 Component({
     externalClasses: ['i-class'],
+    options: {
+        addGlobalClass: true
+    },
     properties: {
         current: {
             type: String,

@@ -6,7 +6,7 @@ import regeneratorRuntime from '../lib/regenerator-runtime/runtime-module';
 const zhuishushenqiApi = {
     default: 'http://api.zhuishushenqi.com',
     static: 'http://statics.zhuishushenqi.com',
-    chapter: 'http://http://chapterup.zhuishushenqi.com/chapter',
+    chapter: 'http://chapterup.zhuishushenqi.com',
     newChapterList: 'http://api05iye5.zhuishushenqi.com'
 };
 

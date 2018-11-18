@@ -1,0 +1,7 @@
+var formatArticle = function (article) {
+    return article.replace(getRegExp('\n\n', 'g'), '\n');
+};
+
+module.exports = {
+    formatArticle: formatArticle
+};

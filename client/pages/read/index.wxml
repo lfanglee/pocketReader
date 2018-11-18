@@ -1,5 +1,21 @@
-<view class="page-read">
-    read
+<wxs src="./index.wxs" module="tools" />
+<view wx:if="{{init}}" class="page-read">
+    <text class="article-title">{{title}}\n</text>
+    <text class="article-body">{{ tools.formatArticle(chapterContent) }}</text>
+    <i-button bind:click="toggleContents" type="primary">目录</i-button>
 </view>
+<i-drawer mode="left" visible="{{showContents}}" mask-closable="{{true}}" bind:close="toggleContents">
+    <view class="contents-wrapper">
+        <i-cell-group i-class="contents-list">
+            <i-cell i-class="contents-title" title="目录(共{{chaptersCount}}章)">
+                <picker slot="footer" class="page-select" bindchange="handlePageChange" value="{{page - 1}}" range="{{pageSelectArray}}">
+                    <view>{{pageSelectArray[page - 1]}} <i-icon i-class="unfold" type="unfold" size="12"></i-icon></view>
+                </picker>
+            </i-cell>
+            <i-cell wx:for="{{chapters[page - 1]}}" wx:key="{{index}}" title="{{item.title}}" data-order="{{item.order}}" data-link="{{item.link}}" bind:tap="handleSelectChapter"></i-cell>
+        </i-cell-group>
+        <i-button i-class="closeContentBtn" bind:click="toggleContents" type="ghost">关闭</i-button>
+    </view>
+</i-drawer>
 <i-spin size="large" fix wx:if="{{!init}}" />
 <i-toast id="toast" />

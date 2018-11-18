@@ -1,5 +1,6 @@
 import regeneratorRuntime from '../../lib/regenerator-runtime/runtime-module';
-import Request, { zhuishushenqiApi as URL } from '../../utils/request';
+import Api from '../../lib/api';
+import { zhuishushenqiApi as URL } from '../../utils/request';
 import { $Toast } from '../../components/base/index';
 
 Page({
@@ -34,13 +35,13 @@ Page({
     },
     async getRankingGender() {
         this.toggleLoading();
-        const result = await Request.get('http://api.zhuishushenqi.com/ranking/gender');
+        const result = await Api.getRankingGender();
         this.toggleLoading(false);
         return result;
     },
     async getRankingBooks(rankingId) {
         this.toggleLoading();
-        const result = await Request.get(`http://api.zhuishushenqi.com/ranking/${rankingId}`);
+        const result = await Api.getRankingBooks(rankingId);
         this.toggleLoading(false);
         return this.formatBookInfo(result.ranking.books);
     },

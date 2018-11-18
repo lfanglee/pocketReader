@@ -101,7 +101,13 @@
         background: #FAFAFA;
         border: 1px solid #e9eaec;
         border-left-width: 0;
-        border-right-width: o;
+        border-right-width: 0;
+        .i-cell-ft {
+            max-width: 240px;
+            white-space: nowrap;
+            text-overflow: ellipsis;
+            overflow: hidden;
+        }
     }
     .bottom-btn {
         position: fixed;

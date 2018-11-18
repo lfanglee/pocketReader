@@ -12,6 +12,13 @@
         "no-unused-expressions": "off",
         "no-param-reassign": "off",
         "no-return-await":"off",
+        "no-plusplus": "off",
+        "max-len": [
+            "error",
+            {
+                "code": 120
+            }
+        ],
         "indent": [
             "error",
             4,

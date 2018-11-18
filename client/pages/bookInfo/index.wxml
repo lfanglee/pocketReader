@@ -1,5 +1,5 @@
 <wxs src="./index.wxs" module="tools"></wxs>
-<view class="page-book-info">
+<view wx:if="{{init}}" class="page-book-info">
     <i-row i-class="book-info-panel">
         <i-col span="7">
             <image class="cover-image" src="{{bookInfo.cover}}" mode="aspectFit" lazy-load></image>

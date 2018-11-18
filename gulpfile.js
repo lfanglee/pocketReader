@@ -147,7 +147,7 @@ gulp.task('watch', () => {
         }
     };
 
-    plugins.watch([`${paths.src.baseDir}/**`, `!${paths.src.excludeDir}/**/*.{${exclude.type.join(',')}}`])
+    plugins.watch(`${paths.src.baseDir}/**`)
         .on('add', (file) => {
             log(colors.green(file) + ' is added');
             handleWatch(file);
