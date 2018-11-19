@@ -16,14 +16,14 @@ Page({
         chaptersCount: 0,
         page: 1,
         pageSize: 100,
+        fontSize: 20,  // 0 - 100 对应 20px - 30px
+        pagePattern: 'default',
 
         chapters: {},
         pageSelectArray: [],
 
         title: '',
         chapterContent: '',
-
-        fontSize: 20,  // 0 - 100 对应 20px - 30px
     },
     async onLoad(options) {
         const { bookId, chapter = 1 } = options;
@@ -134,7 +134,7 @@ Page({
         }
     },
     async loadChapter(chapterIndex) {
-        const chapterLink = this.data.chapters[Math.floor((chapterIndex - 1) / 100)][(chapterIndex % 100) - 1].link;
+        const chapterLink = this.data.chapters[Math.floor((chapterIndex - 1) / 100)][(chapterIndex - 1) % 100].link;
         const chapter = await this.getChapter(chapterLink);
 
         if (chapter.isLoadingChapter) {
@@ -181,22 +181,28 @@ Page({
         this.toggleContents();
         this.toggleBottomPanel();
     },
-    addFontSize() {
+    handleFontSizeChange(e) {
+        const { operate } = e.currentTarget.dataset;
         let { fontSize } = this.data;
-        if (fontSize < 100) {
+
+        if (operate === 'plus' && fontSize < 100) {
             fontSize += 20;
-        }
-        this.setData({
-            fontSize
-        });
-    },
-    reduceFontSize() {
-        let { fontSize } = this.data;
-        if (fontSize > 0) {
+        } else if (operate === 'reduce' && fontSize > 0) {
             fontSize -= 20;
         }
-        this.setData({
-            fontSize
-        });
+        this.setData({ fontSize });
+    },
+    handlePagePatternChange(e) {
+        const { pattern } = e.target.dataset;
+        if (pattern === 'default') {
+            this.setData({ pagePattern: pattern });
+        } else if (pattern === 'night') {
+            this.setData({ pagePattern: pattern });
+        } else if (pattern === 'protectEye') {
+            this.setData({ pagePattern: pattern });
+        }
+    },
+    addToShelf() {
+        // TODO
     }
 });

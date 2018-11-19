@@ -14,7 +14,7 @@ $defaultTitleColor: #333;
         line-height: 32px;
         color: $defaultTitleColor;
         background: $defaultBackgroundColor;
-        padding: 19px 20px 0;
+        padding: 10px 20px 0;
     }
     .article-body {
         display: block;
@@ -56,7 +56,7 @@ $defaultTitleColor: #333;
     width: 300px;
     height: 100vh;
     background: #FAFAFA;
-    padding-top: 48px;
+    padding: 48px 0;
     position: relative;
     &::-webkit-scrollbar {
         display: none;
@@ -97,6 +97,32 @@ $defaultTitleColor: #333;
     }
 }
 
+.right-panel {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    .to-book-shelf {
+        position: absolute;
+        width: 80px;
+        height: 30px;
+        background: rgba(50,51,52,.9);
+        border-radius: 30px 0 0 30px;
+        color: #fff;
+        opacity: 0;
+        font-size: 13px;
+        line-height: 30px;
+        padding-left: 15px;
+        top: -223px;
+        right: 0;
+        transition: all .2s ease;
+        transform: translateX(80px);
+        &.to-book-shelf-show {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+}
+
 .bottom-panel {
     width: 100%;
     height: 170px;
@@ -125,6 +151,9 @@ $defaultTitleColor: #333;
         line-height: 30px;
         color: #fff;
         display: inline-block;
+        &.disabled {
+            color: #888;
+        }
     }
     .font-size-progress {
         display: inline-block;
@@ -139,6 +168,27 @@ $defaultTitleColor: #333;
             font-size: 15px;
             color: #fff;
             line-height: 30px;
+            &.disabled {
+                color: #888;
+            }
+        }
+    }
+    .page-pattern-select {
+        display: flex;
+        justify-content: space-between;
+        .page-pattern-btn {
+            display: inline-block;
+            width: 100px;
+            height: 30px;
+            color: #fff;
+            line-height: 30px;
+            text-align: center;
+            border: 1px solid #535353;
+            border-radius: 4px;
+            &.active {
+                color: #b93221;
+                border: 1px solid #b93221;
+            }
         }
     }
 }

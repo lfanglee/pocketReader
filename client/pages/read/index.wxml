@@ -23,15 +23,23 @@
         <i-button i-class="closeContentBtn" bind:click="toggleContents" type="ghost">关闭</i-button>
     </view>
 </i-drawer>
+<view class="right-panel">
+    <view class="to-book-shelf {{showBottomPanel ? 'to-book-shelf-show': ''}}" bind:tap="addToShelf">加入书架</view>
+</view>
 <view class="bottom-panel {{showBottomPanel ? 'bottom-panel-show' : ''}}">
     <view class="item">
-        <view class="font-btn-w" bind:tap="reduceFontSize">Aa-</view>
+        <view class="font-btn-w {{fontSize <= 0 ? 'disabled' : ''}}" data-operate="reduce" bind:tap="handleFontSizeChange">Aa-</view>
         <i-progress i-class="font-size-progress" percent="{{ fontSize }}" hide-info></i-progress>
-        <view class="font-btn-w" bind:tap="addFontSize">Aa+</view>
+        <view class="font-btn-w {{fontSize >= 100 ? 'disabled' : ''}}" data-operate="plus" bind:tap="handleFontSizeChange">Aa+</view>
+    </view>
+    <view class="item page-pattern-select" bind:tap="handlePagePatternChange">
+        <view class="page-pattern-btn {{ pagePattern === 'default' ? 'active' : '' }}" data-operate="default">默认</view>
+        <view class="page-pattern-btn {{ pagePattern === 'night' ? 'active' : '' }}" data-operate="night">夜间</view>
+        <view class="page-pattern-btn {{ pagePattern === 'protectEye' ? 'active' : '' }}" data-operate="protectEye">护眼</view>
     </view>
     <view class="item chapter-handle">
-        <view class="chapter-select-btn" bind:tap="handlePreChapter">上一章</view>
-        <view class="chapter-select-btn" bind:tap="handleOpenContents">目录</view>
+        <view class="chapter-select-btn {{chapter == 1 ? 'disabled' : ''}}" bind:tap="handlePreChapter">上一章</view>
+        <view class="chapter-select-btn {{chapter == chaptersCount ? 'disabled' : ''}}" bind:tap="handleOpenContents">目录</view>
         <view class="chapter-select-btn" bind:tap="handleNextChapter">下一章</view>
     </view>
     <view class="item"></view>
