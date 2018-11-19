@@ -1,13 +1,13 @@
 <wxs src="./index.wxs" module="tools" />
-<view wx:if="{{init}}" class="page-read">
+<view wx:if="{{init}}" class="page-read {{pagePattern === 'night' ? 'night-mode' : ''}} {{pagePattern === 'eye' ? 'eye-mode' : ''}}">
     <text class="article-title">{{title}}\n</text>
     <text class="article-body" style="font-size: {{ (fontSize / 100) * 10 + 18 }}px" bind:tap="toggleBottomPanel">
         <text class="article-line" wx:for="{{tools.formatArticle(chapterContent)}}" wx:if="{{item.length > 0}}" wx:key="index" decode>&emsp;&emsp;{{item}}\n</text>
     </text>
     <view class="bottom-btn-group">        
-        <i-button i-class="bottom-btn btn-n" bind:click="handleNextChapter" disabled="{{!tools.isNextChapterActive(chapter, chaptersCount)}}" type="ghost" shape="circle">下一章</i-button>
-        <i-button i-class="bottom-btn btn-p" bind:click="handlePreChapter" disabled="{{!tools.isPreChapterActive(chapter)}}" type="ghost" shape="circle">上一章</i-button>
-        <i-button i-class="bottom-btn btn-c" bind:click="toggleContents" type="ghost" shape="circle">目录</i-button>
+        <i-button i-class="bottom-btn btn-n" bind:click="handleNextChapter" disabled="{{!tools.isNextChapterActive(chapter, chaptersCount)}}" shape="circle">下一章</i-button>
+        <i-button i-class="bottom-btn btn-p" bind:click="handlePreChapter" disabled="{{!tools.isPreChapterActive(chapter)}}" shape="circle">上一章</i-button>
+        <i-button i-class="bottom-btn btn-c" bind:click="toggleContents" shape="circle">目录</i-button>
     </view>
 </view>
 <i-drawer mode="left" visible="{{showContents}}" mask-closable="{{true}}" bind:close="toggleContents">
@@ -35,7 +35,7 @@
     <view class="item page-pattern-select" bind:tap="handlePagePatternChange">
         <view class="page-pattern-btn {{ pagePattern === 'default' ? 'active' : '' }}" data-operate="default">默认</view>
         <view class="page-pattern-btn {{ pagePattern === 'night' ? 'active' : '' }}" data-operate="night">夜间</view>
-        <view class="page-pattern-btn {{ pagePattern === 'protectEye' ? 'active' : '' }}" data-operate="protectEye">护眼</view>
+        <view class="page-pattern-btn {{ pagePattern === 'eye' ? 'active' : '' }}" data-operate="eye">护眼</view>
     </view>
     <view class="item chapter-handle">
         <view class="chapter-select-btn {{chapter == 1 ? 'disabled' : ''}}" bind:tap="handlePreChapter">上一章</view>

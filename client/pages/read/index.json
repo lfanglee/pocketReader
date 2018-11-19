@@ -8,7 +8,5 @@
         "i-cell": "../../components/cell/index",
         "i-icon": "../../components/icon/index",
         "i-progress": "../../components/progress/index"
-    },
-    "navigationBarBackgroundColor": "#eee6dd",
-    "backgroundColor": "#eee6dd"
+    }
 }

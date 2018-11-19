@@ -3,6 +3,22 @@ import Api from '../../lib/api';
 import { $Toast } from '../../components/base/index';
 
 let isLoadingChapter = false;
+const colorList = {
+    default: {
+        backgroundColor: '#eee6dd',
+        fontColor: '#5c5d58',
+        titleColor: '#333'
+    },
+    night: {
+        backgroundColor: '#0c0c0c',
+        fontColor: '#666',
+        titleColor: '#888'
+    },
+    eye: {
+        backgroundColor: '#b8cd8b',
+        titleColor: '#0c2e10'
+    }
+};
 
 Page({
     data: {
@@ -45,6 +61,12 @@ Page({
                 title: bookInfoRet.title
             });
             await this.loadChapter(this.data.chapter);
+        });
+    },
+    onReady() {
+        wx.setNavigationBarColor({
+            frontColor: '#000000',
+            backgroundColor: colorList.default.backgroundColor
         });
     },
     toggleLoading(status = true) {
@@ -193,13 +215,25 @@ Page({
         this.setData({ fontSize });
     },
     handlePagePatternChange(e) {
-        const { pattern } = e.target.dataset;
+        const { operate: pattern } = e.target.dataset;
         if (pattern === 'default') {
             this.setData({ pagePattern: pattern });
+            wx.setNavigationBarColor({
+                frontColor: '#000000',
+                backgroundColor: colorList.default.backgroundColor
+            });
         } else if (pattern === 'night') {
             this.setData({ pagePattern: pattern });
-        } else if (pattern === 'protectEye') {
+            wx.setNavigationBarColor({
+                frontColor: '#ffffff',
+                backgroundColor: colorList.night.backgroundColor
+            });
+        } else if (pattern === 'eye') {
             this.setData({ pagePattern: pattern });
+            wx.setNavigationBarColor({
+                frontColor: '#000000',
+                backgroundColor: colorList.eye.backgroundColor
+            });
         }
     },
     addToShelf() {

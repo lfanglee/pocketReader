@@ -3,25 +3,66 @@ $defaultBackgroundColor: #eee6dd;
 $defaultFontColor: #5c5d58;
 $defaultTitleColor: #333;
 
+$nightBackgroundColor: #0c0c0c;
+$nightFontColor: #666;
+$nightTitleColor: #888;
+
+$eyeBackgroundColor: #b8cd8b;
+$eyeFontColor: rgba(12, 46, 16, .8);
+$eyeTitleColor: #0c2e10;
+
 .page-read {
     width: 100%;
     height: 100%;
+    color: $defaultFontColor;
     background: $defaultBackgroundColor;
     font-family: $fontFamily;
+    &.night-mode {
+        color: $nightFontColor;
+        background: $nightBackgroundColor;
+        .article-title {
+            color: $nightTitleColor;
+        }
+        .article-body {
+            background: $nightBackgroundColor;
+        }
+        .bottom-btn-group {
+            background: $nightBackgroundColor;
+            .bottom-btn {
+                color: $nightFontColor;
+                background: $nightBackgroundColor;
+            }
+        }
+    }
+    &.eye-mode {
+        color: $eyeFontColor;
+        background: $eyeBackgroundColor;
+        .article-title {
+            color: $eyeTitleColor;
+        }
+        .article-body {
+            background: $eyeBackgroundColor;
+        }
+        .bottom-btn-group {
+            background: $eyeBackgroundColor;
+            .bottom-btn {
+                color: $eyeFontColor;
+                background: $eyeBackgroundColor;
+            }
+        }
+    }
     .article-title {
         display: block;
         font-size: 20px;
-        line-height: 32px;
         color: $defaultTitleColor;
-        background: $defaultBackgroundColor;
+        line-height: 32px;
         padding: 10px 20px 0;
     }
     .article-body {
         display: block;
         font-size: 18px;
-        color: $defaultFontColor;
-        background: $defaultBackgroundColor;
         padding: 10px 20px;
+        background: $defaultBackgroundColor;
         line-height: 28px;
         .article-line {
             display: block;
