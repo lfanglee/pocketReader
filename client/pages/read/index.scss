@@ -107,6 +107,9 @@ $eyeTitleColor: #0c2e10;
         width: 100%;
         overflow-x: hidden;
         overflow-y: scroll;
+        .i-cell.active {
+            color: #b93221;
+        }
     }
     .contents-title {
         position: absolute;

@@ -18,7 +18,7 @@
                     <view>{{pageSelectArray[page - 1]}} <i-icon i-class="unfold" type="unfold" size="12"></i-icon></view>
                 </picker>
             </i-cell>
-            <i-cell wx:for="{{chapters[page - 1]}}" wx:key="{{index}}" title="{{item.title}}" data-order="{{item.order}}" data-link="{{item.link}}" bind:tap="handleSelectChapter"></i-cell>
+            <i-cell i-class="{{chapter == item.order ? 'active' : ''}}" wx:for="{{chapters[page - 1]}}" wx:key="{{index}}" title="{{item.title}}" data-order="{{item.order}}" data-link="{{item.link}}" bind:tap="handleSelectChapter"></i-cell>
         </i-cell-group>
         <i-button i-class="closeContentBtn" bind:click="toggleContents" type="ghost">关闭</i-button>
     </view>

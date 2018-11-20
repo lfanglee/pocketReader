@@ -173,7 +173,7 @@ Page({
                 title: chapter.title,
                 chapterContent: chapter.cpContent,
                 chapter: chapterIndex,
-                page: Math.ceil((chapterIndex - 1) / 100)
+                page: Math.ceil(chapterIndex / 100)
             });
             wx.pageScrollTo({
                 scrollTop: 0,
