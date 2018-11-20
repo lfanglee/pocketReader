@@ -52,9 +52,7 @@ Page({
             chapter,
             chaptersCount: bookInfoRet.chaptersCount,
             sourceId: sourceRet[0]['_id'],
-            chapters: this.generateChaptersList(chaptersRet.chapters,
-                bookInfoRet.chaptersCount,
-                this.data.pageSize),
+            chapters: this.generateChaptersList(chaptersRet.chapters, this.data.pageSize),
             init: true,
         }, async () => {
             wx.setNavigationBarTitle({
@@ -90,7 +88,8 @@ Page({
             showBottomPanel: !this.data.showBottomPanel
         });
     },
-    generateChaptersList(list, count, size) {
+    generateChaptersList(list, size) {
+        const count = list.length;
         const obj = {};
         const length = Math.ceil(count / size);
         for (let i = 0; i < length; i++) {
@@ -173,7 +172,8 @@ Page({
             this.setData({
                 title: chapter.title,
                 chapterContent: chapter.cpContent,
-                chapter: chapterIndex
+                chapter: chapterIndex,
+                page: Math.ceil((chapterIndex - 1) / 100)
             });
             wx.pageScrollTo({
                 scrollTop: 0,
