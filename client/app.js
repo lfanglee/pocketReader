@@ -1,5 +1,13 @@
+import pageInit from './lib/initPage';
+
 App({
     onLaunch() {
+        Page = pageInit(this, Page, {
+            onLoadExtFn() {
+                console.log(this);
+            },
+            utils: {}
+        });
         wx.cloud.init({
             env: 'fresh-weather-5bf15d',
             traceUser: true

@@ -1,4 +1,5 @@
 import regeneratorRuntime from '../../lib/regenerator-runtime/runtime-module';
+import { watch, computed } from '../../lib/vuefy';
 import Api from '../../lib/api';
 import { $Toast } from '../../components/base/index';
 
@@ -26,6 +27,7 @@ Page({
         bookId: null,
         sourceId: null,
         showContents: false,
+        showSources: false,
         showBottomPanel: false,
 
         chapter: 1,
@@ -40,8 +42,35 @@ Page({
 
         title: '',
         chapterContent: '',
+
+        item: {
+            percent: 60,
+            width: 500,
+            strokeWidth: 10,
+            activeColor: '#d4237a',
+            backgroundColor: '#e1e1e1',
+            radius: 5,
+            bufferColor: '#181818',
+            value: 20,
+            min: 0,
+            max: 40,
+            blockColor: '#d4237a',
+            blockSize: 40
+        }
+    },
+    computed: {
+        formatArticle() {
+            return this.data.chapterContent.split('\n').map((item) => item.trim());
+        },
+        isPreChapterActive() {
+            return +this.data.chapter !== 1;
+        },
+        isNextChapterActive() {
+            return +this.data.chapter !== +this.data.chaptersCount;
+        }
     },
     async onLoad(options) {
+        computed(this, this.computed);
         const { bookId, chapter = 1 } = options;
         const bookInfoRet = await Api.getBookInfo(bookId);
         const sourceRet = await Api.getGenuineSource(bookId);
@@ -83,6 +112,11 @@ Page({
             showContents: !this.data.showContents
         });
     },
+    toggleSources() {
+        this.setData({
+            showSources: !this.data.showSources
+        });
+    },
     toggleBottomPanel() {
         this.setData({
             showBottomPanel: !this.data.showBottomPanel
@@ -97,7 +131,7 @@ Page({
         }
         this.setData({
             pageSelectArray: Object.keys(obj).map(i => {
-                i = parseInt(i);
+                i = parseInt(i, 10);
                 if (i < Object.keys(obj).length - 1) {
                     return `${i * size + 1} - ${size * (i + 1)}`;
                 }
@@ -173,7 +207,7 @@ Page({
                 title: chapter.title,
                 chapterContent: chapter.cpContent,
                 chapter: chapterIndex,
-                page: Math.ceil((chapterIndex - 1) / 100)
+                page: Math.ceil(chapterIndex / 100)
             });
             wx.pageScrollTo({
                 scrollTop: 0,
@@ -202,6 +236,9 @@ Page({
     handleOpenContents() {
         this.toggleContents();
         this.toggleBottomPanel();
+    },
+    handleProgress(e) {
+        console.log(e);
     },
     handleFontSizeChange(e) {
         const { operate } = e.currentTarget.dataset;
