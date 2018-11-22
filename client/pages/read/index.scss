@@ -71,6 +71,17 @@ $eyeTitleColor: #0c2e10;
             text-align: justify;
         }
     }
+    .invalid-chapter {
+        text-align: center;
+        padding: 50px 0;
+        .invalid-lead-text {
+            font-size: 16px;
+        }
+        .change-source-btn {
+            margin: 20px auto;
+            width: 100px;
+        }
+    }
     .bottom-btn-group {
         padding: 0 10px 10px;
         background: $defaultBackgroundColor;
@@ -260,7 +271,7 @@ $eyeTitleColor: #0c2e10;
     }
     .chapter-handle {
         display: flex;
-        justify-content: space-between;
+        justify-content: space-around;
         .chapter-select-btn {
             font-size: 15px;
             color: #fff;

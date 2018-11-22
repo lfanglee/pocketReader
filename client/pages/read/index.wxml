@@ -4,8 +4,8 @@
         <text class="article-line" wx:for="{{formatArticle}}" wx:if="{{item.length > 0}}" wx:key="index" decode>&emsp;&emsp;{{item}}\n</text>
     </text>
     <view class="invalid-chapter" wx:if="{{chapterInvalid}}">
-        <text style="text-align: center">付费章节，请换源后阅读</text>
-        <i-button bind:click="handleOpenSources" shape="circle" type="success">去换源</i-button>
+        <text class="invalid-lead-text">付费章节，请换源后阅读</text>
+        <i-button i-class="change-source-btn" bind:click="handleOpenSources" size="small" shape="circle" type="success">去换源</i-button>
     </view>
     <view class="bottom-btn-group">        
         <i-button i-class="bottom-btn btn-n" bind:click="handleNextChapter" disabled="{{!isNextChapterActive}}" shape="circle">下一章</i-button>
