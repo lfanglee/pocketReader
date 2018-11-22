@@ -1,12 +1,15 @@
-<wxs src="./index.wxs" module="tools" />
 <view wx:if="{{init}}" class="page-read {{pagePattern === 'night' ? 'night-mode' : ''}} {{pagePattern === 'eye' ? 'eye-mode' : ''}}">
     <text class="article-title">{{title}}\n</text>
-    <text class="article-body" style="font-size: {{ (fontSize / 100) * 10 + 18 }}px" bind:tap="toggleBottomPanel">
+    <text wx:if="{{!chapterInvalid}}" class="article-body" style="font-size: {{ (fontSize / 100) * 10 + 18 }}px" bind:tap="toggleBottomPanel">
         <text class="article-line" wx:for="{{formatArticle}}" wx:if="{{item.length > 0}}" wx:key="index" decode>&emsp;&emsp;{{item}}\n</text>
     </text>
+    <view class="invalid-chapter" wx:if="{{chapterInvalid}}">
+        <text style="text-align: center">付费章节，请换源后阅读</text>
+        <i-button bind:click="handleOpenSources" shape="circle" type="success">去换源</i-button>
+    </view>
     <view class="bottom-btn-group">        
         <i-button i-class="bottom-btn btn-n" bind:click="handleNextChapter" disabled="{{!isNextChapterActive}}" shape="circle">下一章</i-button>
-        <i-button i-class="bottom-btn btn-p" bind:click="handlePreChapter" disabled="{{isPreChapterActive}}" shape="circle">上一章</i-button>
+        <i-button i-class="bottom-btn btn-p" bind:click="handlePreChapter" disabled="{{!isPreChapterActive}}" shape="circle">上一章</i-button>
         <i-button i-class="bottom-btn btn-c" bind:click="toggleContents" shape="circle">目录</i-button>
     </view>
 </view>
@@ -18,14 +21,32 @@
                     <view>{{pageSelectArray[page - 1]}} <i-icon i-class="unfold" type="unfold" size="12"></i-icon></view>
                 </picker>
             </i-cell>
-            <i-cell i-class="{{chapter == item.order ? 'active' : ''}}" wx:for="{{chapters[page - 1]}}" wx:key="{{index}}" title="{{item.title}}" data-order="{{item.order}}" data-link="{{item.link}}" bind:tap="handleSelectChapter"></i-cell>
+            <i-cell
+                i-class="{{chapter == (100 * (page - 1) + (index + 1)) ? 'active' : ''}}"
+                wx:for="{{chapters[page - 1]}}"
+                wx:key="{{index}}"
+                title="{{item.title}}"
+                data-order="{{index}}"
+                data-link="{{item.link}}"
+                bind:tap="handleSelectChapter"></i-cell>
         </i-cell-group>
         <i-button i-class="closeContentBtn" bind:click="toggleContents" type="ghost">关闭</i-button>
     </view>
 </i-drawer>
 <i-drawer mode="right" visible="{{showSources}}" mask-closable="{{true}}" bind:close="toggleSources">
     <view class="sources-wrapper">
-
+        <i-cell-group>
+            <i-cell i-class="sources-title" title="请选择小说源"></i-cell>
+            <i-cell
+                i-class="{{sourceId === item['_id'] ? 'active' : ''}}"
+                wx:for="{{sourcesList}}"
+                wx:key="{{index}}"
+                title="{{item.name}}"
+                label="最新章节：{{item.lastChapter}}"
+                data-id="{{item['_id']}}"
+                data-count="{{item.chaptersCount}}"
+                bind:tap="handleChangeSources"></i-cell>
+        </i-cell-group>
     </view>
 </i-drawer>
 <view class="right-panel">
@@ -33,7 +54,10 @@
 </view>
 <view class="bottom-panel {{showBottomPanel ? 'bottom-panel-show' : ''}}">
     <view class="item">
-        <i-progress i-class="read-progress" percent="{{ readProgress }}" hide-info></i-progress>
+        <view class="previous-chapter {{chapter == 1 ? 'disabled' : ''}}" bind:tap="handlePreChapter"><i-icon type="return" size="18"/></view>
+        <i-progress i-class="read-progress" percent="{{ readProgress }}" stroke-width="3" hide-info></i-progress>
+        <view class="read-progress-des">{{ readProgress }}%</view>
+        <view class="next-chapter {{chapter == chaptersCount ? 'disabled' : ''}}" bind:tap="handleNextChapter"><i-icon type="enter" size="18" /></view>
     </view>
     <view class="item">
         <view class="font-btn-w {{fontSize <= 0 ? 'disabled' : ''}}" data-operate="reduce" bind:tap="handleFontSizeChange">Aa-</view>
@@ -46,9 +70,8 @@
         <view class="page-pattern-btn {{ pagePattern === 'eye' ? 'active' : '' }}" data-operate="eye">护眼</view>
     </view>
     <view class="item chapter-handle">
-        <view class="chapter-select-btn {{chapter == 1 ? 'disabled' : ''}}" bind:tap="handlePreChapter">上一章</view>
-        <view class="chapter-select-btn {{chapter == chaptersCount ? 'disabled' : ''}}" bind:tap="handleOpenContents">目录</view>
-        <view class="chapter-select-btn" bind:tap="handleNextChapter">下一章</view>
+        <view class="chapter-select-btn" bind:tap="handleOpenContents">目录</view>
+        <view class="chapter-select-btn" bind:tap="handleOpenSources">换源</view>
     </view>
     <view class="item"></view>
 </view>

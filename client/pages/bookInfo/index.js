@@ -2,7 +2,6 @@ import regeneratorRuntime from '../../lib/regenerator-runtime/runtime-module';
 import moment from '../../lib/moment.zh_cn';
 import { zhuishushenqiApi as URL } from '../../utils/request';
 import  Api from '../../lib/api';
-import { $Toast } from '../../components/base/index';
 
 Page({
     data: {
@@ -21,17 +20,6 @@ Page({
                 title: bookInfo.title
             });
         });
-    },
-    toggleLoading(status = true) {
-        if (status) {
-            $Toast({
-                content: '加载中...',
-                type: 'loading',
-                duration: 0
-            });
-        } else {
-            wx.nextTick(() => $Toast.hide());
-        }
     },
     async getBookInfo(bookId) {
         this.toggleLoading();

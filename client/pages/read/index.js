@@ -1,5 +1,4 @@
 import regeneratorRuntime from '../../lib/regenerator-runtime/runtime-module';
-import { watch, computed } from '../../lib/vuefy';
 import Api from '../../lib/api';
 import { $Toast } from '../../components/base/index';
 
@@ -29,6 +28,7 @@ Page({
         showContents: false,
         showSources: false,
         showBottomPanel: false,
+        chapterInvalid: false,
 
         chapter: 1,
         chaptersCount: 0,
@@ -38,25 +38,11 @@ Page({
         pagePattern: 'default',
 
         chapters: {},
+        sourcesList: [],
         pageSelectArray: [],
 
         title: '',
         chapterContent: '',
-
-        item: {
-            percent: 60,
-            width: 500,
-            strokeWidth: 10,
-            activeColor: '#d4237a',
-            backgroundColor: '#e1e1e1',
-            radius: 5,
-            bufferColor: '#181818',
-            value: 20,
-            min: 0,
-            max: 40,
-            blockColor: '#d4237a',
-            blockSize: 40
-        }
     },
     computed: {
         formatArticle() {
@@ -67,10 +53,12 @@ Page({
         },
         isNextChapterActive() {
             return +this.data.chapter !== +this.data.chaptersCount;
-        }
+        },
+        readProgress() {
+            return (100 * (+this.data.chapter / +this.data.chaptersCount)).toFixed(2);
+        },
     },
     async onLoad(options) {
-        computed(this, this.computed);
         const { bookId, chapter = 1 } = options;
         const bookInfoRet = await Api.getBookInfo(bookId);
         const sourceRet = await Api.getGenuineSource(bookId);
@@ -81,6 +69,7 @@ Page({
             chapter,
             chaptersCount: bookInfoRet.chaptersCount,
             sourceId: sourceRet[0]['_id'],
+            sourcesList: sourceRet,
             chapters: this.generateChaptersList(chaptersRet.chapters, this.data.pageSize),
             init: true,
         }, async () => {
@@ -96,16 +85,17 @@ Page({
             backgroundColor: colorList.default.backgroundColor
         });
     },
-    toggleLoading(status = true) {
-        if (status) {
-            $Toast({
-                content: '加载中...',
-                type: 'loading',
-                duration: 0
+    toggle(key) {
+        return (status) => {
+            if (status) {
+                this.setData({
+                    [key]: true
+                });
+            }
+            this.setData({
+                [key]: false
             });
-        } else {
-            wx.nextTick(() => $Toast.hide());
-        }
+        };
     },
     toggleContents() {
         this.setData({
@@ -122,6 +112,7 @@ Page({
             showBottomPanel: !this.data.showBottomPanel
         });
     },
+    // 将长数组切分成多个小数组保存，解决小程序setData长数组失败的问题
     generateChaptersList(list, size) {
         const count = list.length;
         const obj = {};
@@ -169,15 +160,20 @@ Page({
                 type: 'error'
             });
         } else if (chapter.cpContent && chapter.isVip) {
-            $Toast({
-                content: '付费章节，尽情期待！',
-                type: 'warning'
+            this.setData({
+                title: chapter.title,
+                chapterInvalid: true,
+                chapter: 100 * (this.data.page - 1) + e.currentTarget.dataset.order + 1,
+                showContents: false
+            }, () => {
+                this.toggleLoading(false);
             });
         } else {
             this.setData({
                 title: chapter.title,
-                chapterContent: chapter.cpContent,
-                chapter: e.currentTarget.dataset.order,
+                chapterContent: chapter.cpContent || chapter.body,
+                chapterInvalid: false,
+                chapter: 100 * (this.data.page - 1) + e.currentTarget.dataset.order + 1,
                 showContents: false
             }, () => {
                 this.toggleLoading(false);
@@ -187,6 +183,31 @@ Page({
                 duration: 0
             });
         }
+    },
+    async handleChangeSources(e) {
+        this.toggleLoading();
+        const sourceId = e.currentTarget.dataset.id;
+        const chaptersCount = e.currentTarget.dataset.count;
+
+        const chaptersRet = await Api.getChapters(sourceId);
+
+        this.setData({
+            sourceId,
+            chapter: (this.data.chapter > chaptersCount) ? chaptersCount : this.data.chapter,
+            chaptersCount,
+            chapters: this.generateChaptersList(chaptersRet.chapters, this.data.pageSize)
+        }, async () => {
+            await this.loadChapter(this.data.chapter);
+            this.setData({ page: Math.ceil(this.data.chapter / 100) });
+            this.toggleSources();
+            this.toggleLoading(false);
+        });
+    },
+    async getSources() {
+        const sources = await Api.getMixSource(this.data.bookId);
+        this.setData({
+            sourcesList: sources
+        });
     },
     async loadChapter(chapterIndex) {
         const chapterLink = this.data.chapters[Math.floor((chapterIndex - 1) / 100)][(chapterIndex - 1) % 100].link;
@@ -198,14 +219,16 @@ Page({
                 type: 'error'
             });
         } else if (chapter.cpContent && chapter.isVip) {
-            $Toast({
-                content: '付费章节，尽情期待！',
-                type: 'warning'
+            this.setData({
+                title: chapter.title,
+                chapterInvalid: true,
+                chapter: chapterIndex
             });
         } else {
             this.setData({
                 title: chapter.title,
-                chapterContent: chapter.cpContent,
+                chapterContent: chapter.cpContent || chapter.body,
+                chapterInvalid: false,
                 chapter: chapterIndex,
                 page: Math.ceil(chapterIndex / 100)
             });
@@ -235,10 +258,17 @@ Page({
     },
     handleOpenContents() {
         this.toggleContents();
-        this.toggleBottomPanel();
+        this.setData({ showBottomPanel: false });
     },
-    handleProgress(e) {
-        console.log(e);
+    async handleOpenSources() {
+        this.toggleSources();
+        this.setData({ showBottomPanel: false });
+
+        if (this.data.sourcesList.length <= 1) {
+            this.toggleLoading();
+            await this.getSources();
+            this.toggleLoading(false);
+        }
     },
     handleFontSizeChange(e) {
         const { operate } = e.currentTarget.dataset;

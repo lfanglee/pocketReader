@@ -1,7 +1,6 @@
 import regeneratorRuntime from '../../lib/regenerator-runtime/runtime-module';
 import Api from '../../lib/api';
 import { zhuishushenqiApi as URL } from '../../utils/request';
-import { $Toast } from '../../components/base/index';
 
 Page({
     data: {
@@ -21,17 +20,6 @@ Page({
         this.setData({
             rankList, currentSubTab, books, init: true
         });
-    },
-    toggleLoading(status = true) {
-        if (status) {
-            $Toast({
-                content: '加载中...',
-                type: 'loading',
-                duration: 0
-            });
-        } else {
-            wx.nextTick(() => $Toast.hide());
-        }
     },
     async getRankingGender() {
         this.toggleLoading();
