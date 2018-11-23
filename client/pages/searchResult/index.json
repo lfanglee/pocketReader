@@ -1,0 +1,7 @@
+{
+    "usingComponents": {
+        "i-row": "../../components/row/index",
+        "i-col": "../../components/col/index",
+        "i-load-more": "../../components/load-more/index"
+    }
+}

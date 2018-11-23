@@ -60,10 +60,19 @@ Page({
     },
     async onLoad(options) {
         const { bookId, chapter = 1 } = options;
-        const bookInfoRet = await Api.getBookInfo(bookId);
-        const sourceRet = await Api.getGenuineSource(bookId);
-        const chaptersRet = await Api.getChapters(sourceRet[0]['_id']);
-
+        let bookInfoRet;
+        let sourceRet;
+        let chaptersRet;
+        try {
+            bookInfoRet = await Api.getBookInfo(bookId);
+            sourceRet = await Api.getGenuineSource(bookId);
+            chaptersRet = await Api.getChapters(sourceRet[0]['_id']);
+        } catch (e) {
+            wx.showToast({
+                title: '页面渲染出错, 请刷新重试！'
+            });
+            return;
+        }
         this.setData({
             bookId,
             chapter,
@@ -143,16 +152,31 @@ Page({
         if (isLoadingChapter) {
             return { isLoadingChapter: true };
         }
+        let chapterContent;
         isLoadingChapter = true;
-        const chapterContent = await Api.getChaterContent(encodeURIComponent(chapterLink));
-        isLoadingChapter = false;
-
-        return chapterContent.chapter;
+        try {
+            chapterContent = await Api.getChaterContent(encodeURIComponent(chapterLink));
+            isLoadingChapter = false;
+            return chapterContent.chapter;
+        } catch (e) {
+            isLoadingChapter = false;
+            wx.showToast({
+                title: '加载章节内容出错',
+                icon: 'none'
+            });
+            return Promise.reject(new Error('加载章节内容出错'));
+        }
     },
     async handleSelectChapter(e) {
         this.toggleLoading();
         const chapterLink = e.currentTarget.dataset.link;
-        const chapter = await this.getChapter(chapterLink);
+        let chapter;
+        try {
+            chapter = await this.getChapter(chapterLink);
+        } catch (e) {
+            this.toggleLoading(false);
+            return;
+        }
 
         if (chapter.isLoadingChapter) {
             $Toast({
@@ -189,15 +213,30 @@ Page({
         const sourceId = e.currentTarget.dataset.id;
         const chaptersCount = e.currentTarget.dataset.count;
 
-        const chaptersRet = await Api.getChapters(sourceId);
-
+        let chaptersRet;
+        try {
+            chaptersRet = await Api.getChapters(sourceId);
+        } catch (e) {
+            wx.showToast({
+                title: '换源失败',
+                icon: 'none'
+            });
+            return;
+        }
         this.setData({
             sourceId,
             chapter: (this.data.chapter > chaptersCount) ? chaptersCount : this.data.chapter,
             chaptersCount,
             chapters: this.generateChaptersList(chaptersRet.chapters, this.data.pageSize)
         }, async () => {
-            await this.loadChapter(this.data.chapter);
+            try {
+                await this.loadChapter(this.data.chapter);
+            } catch (e) {
+                wx.showToast({
+                    title: '章节加载失败',
+                    icon: 'none'
+                });
+            }
             this.setData({ page: Math.ceil(this.data.chapter / 100) });
             this.toggleSources();
             this.toggleLoading(false);
@@ -211,7 +250,12 @@ Page({
     },
     async loadChapter(chapterIndex) {
         const chapterLink = this.data.chapters[Math.floor((chapterIndex - 1) / 100)][(chapterIndex - 1) % 100].link;
-        const chapter = await this.getChapter(chapterLink);
+        let chapter;
+        try {
+            chapter = await this.getChapter(chapterLink);
+        } catch (e) {
+            return;
+        }
 
         if (chapter.isLoadingChapter) {
             $Toast({

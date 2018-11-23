@@ -1,0 +1,47 @@
+.page-search-result {
+    background: #FAFAFA;
+    width: 100%;
+    position: relative;
+    padding: 10px;
+    .books-list {
+        padding: 0 5px;
+        box-sizing: border-box;
+        .book-info {
+            padding: 5px 0;
+            .book-title {
+                font-weight: bold;
+                font-size: 14px;
+                line-height: 23px;
+                color: #333;
+            }
+            .book-author {
+                font-size: 12px;
+                color: #999;
+                display: flex;
+                line-height: 18px;
+            }
+            .book-short-intro {
+                margin: 0 0 5px;
+                font-size: 12px;
+                color: #999;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 2;
+                text-overflow: ellipsis;
+                word-break: break-all;
+                overflow: hidden;
+            }
+            .hot, .reserve {
+                font-size: 12px;
+                color: #666;
+                .text-red {
+                    color: #b93321;
+                }
+            }
+        }
+        .cover-image {
+            width: 70px;
+            height: 100px;
+        }
+    }
+}

@@ -19,20 +19,21 @@ export default class Request {
         method = method.toUpperCase();
 
         return new Promise((resolve, reject) => {
-            wx.request({
+            const requestTask = wx.request({
                 url,
                 method,
                 data,
                 ...config,
                 success: (res) => {
                     if (res.data.ok || config.ignoreError) {
-                        resolve(res.data);
+                        resolve({ res, requestTask });
                     } else {
                         wx.showToast({
                             title: '500',
                             icon: 'none',
                             duration: 1000
                         });
+                        reject(new Error(500));
                     }
                 },
                 fail: (res) => {
@@ -41,18 +42,26 @@ export default class Request {
                         icon: 'none',
                         duration: 1000
                     });
-                    reject(res);
+                    reject({ res, requestTask });
                 }
             });
         });
     }
 
     static async get(url, data, config) {
-        return await Request.req(url, 'get', data, config);
+        const result = await Request.req(url, 'get', data, config);
+        return {
+            res: result.res.data,
+            requestTask: result.requestTask
+        };
     }
 
     static async post(url, data, config) {
-        return await Request.req(url, 'post', data, config);
+        const result =  await Request.req(url, 'post', data, config);
+        return {
+            res: result.res.data,
+            requestTask: result.requestTask
+        };
     }
 }
 

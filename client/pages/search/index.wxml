@@ -1,0 +1,50 @@
+<view class="page-search">
+    <view class="search-bar">
+        <view class="search-bar-box">
+            <i-icon i-class="icon icon-search" type="search" size="18" color="#748389" />
+            <input class="search-input" type="text" placeholder="请输入搜索内容" confirm-type="search"
+                focus="{{focus}}"
+                value="{{searchText}}" 
+                bindinput="handleSearchInput" 
+                bindconfirm="handleSearch" />
+            <view wx:if="{{hasSearchText}}" class="icon-clear-wrapper" bind:tap="handleClearSearchText">
+                <i-icon i-class="icon icon-clear" type="delete_fill" size="18" color="#748389" />
+            </view>
+        </view>
+    </view>
+    <view wx:if="{{hasSearchText}}" class="auto-complete-list">
+        <view class="keywords-item" wx:for="{{keywords}}" wx:key="index" data-keyword="{{item}}" bind:tap="handleKeywordsTap">
+            <i-icon i-class="icon icon-keywords" type="document" color="#748389" size="18"/>{{item}}
+        </view>
+    </view>
+    <view class="suggest-panel">
+        <view class="search-hotwords panel">
+            <view class="search-hotwords-title panel-title">
+                <view class="title">搜索热词</view>
+                <view class="refresh-btn" bind:tap="handleRefreshSearchHotWords">换一批<i-icon i-class="icon" type="refresh" /></view>
+            </view>
+            <view class="search-hotwords-content panel-content">
+                <view class="word-item" wx:for="{{showSearchHotWords}}" wx:key="{{index}}" data-word="{{item.word}}" bind:tap="handleHotWordTap">{{item.word}}</view>
+            </view>
+        </view>
+        <view class="hotword panel">
+            <view class="hotword-title panel-title">
+                <view class="title">热门推荐</view>
+                <view class="refresh-btn" bind:tap="handleRefreshHotWord">换一批<i-icon i-class="icon" type="refresh" /></view>
+            </view>
+            <view class="hotword-content panel-content">
+                <view class="word-item" wx:for="{{showHotWord}}" wx:key="{{index}}" data-word="{{item}}" bind:tap="handleHotWordTap">{{item}}</view>
+            </view>
+        </view>
+        <view class="history panel">
+            <view class="history-title panel-title">
+                <view class="title">搜索历史</view>
+                <view class="delete-btn">删除历史<i-icon i-class="icon" type="trash" /></view>
+            </view>
+            <view class="history-content panel-content">
+
+            </view>
+        </view>
+    </view>
+</view>
+<i-toast id="toast" />

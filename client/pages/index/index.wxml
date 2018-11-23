@@ -1,4 +1,5 @@
 <view class="page-index">
+    <navigator url="/pages/search/index" hover-class="navigator-hover">搜索</navigator>
     <navigator url="/pages/classify/index" hover-class="navigator-hover">分类</navigator>
     <navigator url="/pages/rank/index" hover-class="navigator-hover">排行榜</navigator>
 </view>

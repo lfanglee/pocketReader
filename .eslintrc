@@ -107,6 +107,8 @@
                 }
             }
         ],
+        "prefer-promise-reject-errors": "off",
+        "prefer-destructuring": "off",
         "no-shadow": "off",
         "arrow-parens": "off",
         "dot-notation": "off"

@@ -6,14 +6,14 @@ export default {
      * 获取所有分类
      */
     async getCats() {
-        return await Request.get(`${URL.default}/cats/lv2/statistics`);
+        return (await Request.get(`${URL.default}/cats/lv2/statistics`)).res;
     },
 
     /**
      * 获取分类下小类别
      */
     async getCatsSubType() {
-        return await Request.get(`${URL.default}/cats/lv2`);
+        return (await Request.get(`${URL.default}/cats/lv2`)).res;
     },
 
     /**
@@ -23,20 +23,20 @@ export default {
      * @params.type (hot: 热门, new: 新书， repulation: 好评, over: 完结, month: 包月)
      * @params.major 大类别
      * @params.minor: 小类别 (非必填)
-     * @start: 分页开始页
-     * @limit 分页条数
+     * @parmas.start: 开始条数
+     * @params.limit 结束条数
      */
     async getBookByCategories(params) {
-        return await Request.get(`${URL.default}/book/by-categories`, {
+        return (await Request.get(`${URL.default}/book/by-categories`, {
             ...params
-        });
+        })).res;
     },
 
     /**
      * 获取排行榜类型
      */
     async getRankingGender() {
-        return await Request.get(`${URL.default}/ranking/gender`);
+        return (await Request.get(`${URL.default}/ranking/gender`)).res;
     },
     
     /**
@@ -44,7 +44,7 @@ export default {
      * @param {String} rankingId 
      */
     async getRankingBooks(rankingId) {
-        return await Request.get(`${URL.default}/ranking/${rankingId}`);
+        return (await Request.get(`${URL.default}/ranking/${rankingId}`)).res;
     },
 
     /**
@@ -52,9 +52,9 @@ export default {
      * @param {String} bookId 小说ID
      */
     async getBookInfo(bookId) {
-        return await Request.get(`${URL.default}/book/${bookId}`, {}, {
+        return (await Request.get(`${URL.default}/book/${bookId}`, {}, {
             ignoreError: true
-        });
+        })).res;
     },
 
     /**
@@ -62,12 +62,12 @@ export default {
      * @param {String} bookId 小说ID
      */
     async getGenuineSource(bookId) {
-        return await Request.get(`${URL.default}/btoc`, {
+        return (await Request.get(`${URL.default}/btoc`, {
             view: 'summary',
             book: bookId
         }, {
             ignoreError: true
-        });
+        })).res;
     },
 
     /**
@@ -75,12 +75,12 @@ export default {
      * @param {String} bookId 小说ID
      */
     async getMixSource(bookId) {
-        return await Request.get(`${URL.default}/atoc`, {
+        return (await Request.get(`${URL.default}/atoc`, {
             view: 'summary',
             book: bookId
         }, {
             ignoreError: true
-        });
+        })).res;
     },
 
     /**
@@ -88,11 +88,21 @@ export default {
      * @param {String} sourceId 小说源ID
      */
     async getChapters(sourceId) {
-        return await Request.get(`${URL.default}/atoc/${sourceId}`, {
-            view: 'chapters'
-        }, {
-            ignoreError: true
-        });
+        try {
+            const resutl = await Request.get(`${URL.default}/atoc/${sourceId}`, {
+                view: 'chapters'
+            }, {
+                ignoreError: true
+            });
+            return  resutl.res;
+        } catch (e) {
+            Promise.reject(new Error('小说章节加载出错'));
+        }
+        // return (await Request.get(`${URL.default}/atoc/${sourceId}`, {
+        //     view: 'chapters'
+        // }, {
+        //     ignoreError: true
+        // })).res;
     },
 
     /**
@@ -100,9 +110,13 @@ export default {
      * @param {String} bookId 小说ID
      */
     async getMixChapters(bookId) {
-        return await Request.get(`${URL.default}/min-atoc/${bookId}`, {
-            view: 'chapters'
-        });
+        try {
+            return (await Request.get(`${URL.default}/min-atoc/${bookId}`, {
+                view: 'chapters'
+            })).res;
+        } catch (e) {
+            Promise.reject(new Error('小说换源失败'));
+        }
     },
 
     /**
@@ -110,14 +124,21 @@ export default {
      * @param {String} chapterUrl 章节URL
      */
     async getChaterContent(chapterUrl) {
-        return await Request.get(`${URL.chapter}/chapter/${chapterUrl}`);
+        return (await Request.get(`${URL.chapter}/chapter/${chapterUrl}`)).res;
     },
 
     /**
      * 获取搜索热词
      */
     async getSearchHotWords() {
-        return await Request.get(`${URL.default}/book/search-hotwords`);
+        return (await Request.get(`${URL.default}/book/search-hotwords`)).res;
+    },
+
+    /**
+     * 获取热门推荐词
+     */
+    async getHotWord() {
+        return (await Request.get(`${URL.default}/book/hot-word`)).res;
     },
 
     /**
@@ -132,12 +153,16 @@ export default {
 
     /**
      * 模糊搜索
-     * @param {String} query 
+     * @param {String} query 查询词
+     * @param {Number} start 开始条数
+     * @param {Number} limit 结束条数
      */
-    async fuzzySearch(query) {
-        return await Request.get(`${URL.default}/book/fuzzy-search`, {
-            query
-        });
+    async fuzzySearch(query, start, limit) {
+        return (await Request.get(`${URL.default}/book/fuzzy-search`, {
+            query,
+            start,
+            limit
+        })).res;
     },
 
     /**
@@ -145,9 +170,9 @@ export default {
      * @param {String} bookId 
      */
     async getBookLatestChapter(bookId) {
-        return await Request.get(`${URL.newChapterList}/book`, {
+        return (await Request.get(`${URL.newChapterList}/book`, {
             view: 'updated',
             id: bookId
-        });
+        })).res;
     }
 };
