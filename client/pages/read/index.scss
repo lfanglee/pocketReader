@@ -159,6 +159,12 @@ $eyeTitleColor: #0c2e10;
     &::-webkit-scrollbar {
         display: none;
     }
+    .sources-list {
+        height: 100%;
+        width: 100%;
+        overflow-x: hidden;
+        overflow-y: scroll;
+    }
     .sources-title {
         position: absolute;
         top: 0;
@@ -169,6 +175,13 @@ $eyeTitleColor: #0c2e10;
     }
     .i-cell.active {
         color: #b93221;
+    }
+    .closeContentBtn {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        margin: 0;
     }
 }
 

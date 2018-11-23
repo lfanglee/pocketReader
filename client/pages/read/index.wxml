@@ -35,7 +35,7 @@
 </i-drawer>
 <i-drawer mode="right" visible="{{showSources}}" mask-closable="{{true}}" bind:close="toggleSources">
     <view class="sources-wrapper">
-        <i-cell-group>
+        <i-cell-group i-class="sources-list">
             <i-cell i-class="sources-title" title="请选择小说源"></i-cell>
             <i-cell
                 i-class="{{sourceId === item['_id'] ? 'active' : ''}}"
@@ -47,6 +47,7 @@
                 data-count="{{item.chaptersCount}}"
                 bind:tap="handleChangeSources"></i-cell>
         </i-cell-group>
+        <i-button i-class="closeContentBtn" bind:click="toggleSources" type="ghost">关闭</i-button>
     </view>
 </i-drawer>
 <view class="right-panel">
