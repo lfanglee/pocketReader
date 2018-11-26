@@ -39,10 +39,10 @@
         <view class="history panel">
             <view class="history-title panel-title">
                 <view class="title">搜索历史</view>
-                <view class="delete-btn">删除历史<i-icon i-class="icon" type="trash" /></view>
+                <view class="delete-btn" bind:tap="handleDeleteHistory">删除历史<i-icon i-class="icon" type="trash" /></view>
             </view>
             <view class="history-content panel-content">
-
+                <view class="history-item" wx:for="{{history}}" wx:key="{{index}}" data-word="{{item}}" bind:tap="handleHotWordTap">{{item}}</view>
             </view>
         </view>
     </view>

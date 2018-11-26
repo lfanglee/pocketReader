@@ -1,4 +1,5 @@
 import regeneratorRuntime from '../../lib/regenerator-runtime/runtime-module';
+import storage from '../../utils/storage';
 import Api from '../../lib/api';
 
 let isLoadingAutoComplete = false;
@@ -15,6 +16,7 @@ Page({
         changeHotWordFlag: new Date(),
         searchHotwords: [],
         hotWord: [],
+        history: [],
     },
     computed: {
         hasSearchText() {
@@ -39,6 +41,11 @@ Page({
         });
         wx.setNavigationBarTitle({
             title: '搜索'
+        });
+    },
+    onShow() {
+        this.setData({
+            history: storage.get('history', [])
         });
     },
     randomArr(arr) {
@@ -95,5 +102,11 @@ Page({
     },
     handleRefreshHotWord() {
         this.setData({ changeHotWordFlag: (new Date()) + Math.random() });
+    },
+    handleDeleteHistory() {
+        storage.remove('history');
+        this.setData({
+            history: storage.get('history', [])
+        });
     }
 });

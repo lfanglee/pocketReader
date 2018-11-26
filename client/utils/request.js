@@ -4,10 +4,10 @@
 import regeneratorRuntime from '../lib/regenerator-runtime/runtime-module';
 
 const zhuishushenqiApi = {
-    default: 'http://api.zhuishushenqi.com',
-    static: 'http://statics.zhuishushenqi.com',
-    chapter: 'http://chapterup.zhuishushenqi.com',
-    newChapterList: 'http://api05iye5.zhuishushenqi.com'
+    default: 'https://api.zhuishushenqi.com',
+    static: 'https://statics.zhuishushenqi.com',
+    chapter: 'https://chapterup.zhuishushenqi.com',
+    newChapterList: 'https://api05iye5.zhuishushenqi.com'
 };
 
 export default class Request {

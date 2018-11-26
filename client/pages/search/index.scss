@@ -84,6 +84,13 @@ $fontFamily: PingFang SC,Helvetica Neue,Helvetica,STHeiTi,sans-serif;
                 background: #efeff4;
                 border-radius: 15px;
             }
+            .history-item {
+                line-height: 52px;
+                font-size: 17px;
+                font-family: $fontFamily;
+                color: #9b9ba3;
+                border-bottom: 1rpx solid #ebebf0;
+            }
         }
     }
 }

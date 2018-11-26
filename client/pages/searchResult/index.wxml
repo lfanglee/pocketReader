@@ -16,3 +16,6 @@
     </view>
 </view>
 <i-spin size="large" fix wx:if="{{!init}}" />
+<i-modal visible="{{showModal}}" show-cancel="{{false}}" ok-text="我知道了" bind:ok="handleModalOk">
+    <view>请输入有效的搜索关键词</view>
+</i-modal>

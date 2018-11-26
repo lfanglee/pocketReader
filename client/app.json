@@ -1,7 +1,7 @@
 {
     "pages": [
         "pages/index/index",
-        "pages/cloud-test/index",
+        "pages/shelf/index",
         "pages/classify/index",
         "pages/rank/index",
         "pages/search/index",
@@ -24,16 +24,16 @@
         "borderStyle": "black",
         "list": [
             {
+                "pagePath": "pages/shelf/index",
+                "text": "书架",
+                "iconPath": "images/shelf.png",
+                "selectedIconPath": "images/shelf_selected.png"
+            },
+            {
                 "pagePath": "pages/index/index",
                 "text": "分类",
                 "iconPath": "images/classify.png",
                 "selectedIconPath": "images/classify_selected.png"
-            },
-            {
-                "pagePath": "pages/index/index",
-                "text": "书架",
-                "iconPath": "images/shelf.png",
-                "selectedIconPath": "images/shelf_selected.png"
             },
             {
                 "pagePath": "pages/index/index",

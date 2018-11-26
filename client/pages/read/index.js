@@ -1,5 +1,6 @@
 import regeneratorRuntime from '../../lib/regenerator-runtime/runtime-module';
 import Api from '../../lib/api';
+import storage from '../../utils/storage';
 import { $Toast } from '../../components/base/index';
 
 let isLoadingChapter = false;
@@ -73,6 +74,7 @@ Page({
             });
             return;
         }
+        this.saveReadRecord(bookInfoRet);
         this.setData({
             bookId,
             chapter,
@@ -94,17 +96,29 @@ Page({
             backgroundColor: colorList.default.backgroundColor
         });
     },
-    toggle(key) {
-        return (status) => {
-            if (status) {
-                this.setData({
-                    [key]: true
-                });
+    saveReadRecord(bookInfo) {
+        let curLocalRecord = storage.get('localRecord', []);
+        let hasRecorded = false;
+        curLocalRecord = curLocalRecord.map(item => {
+            if (item['_id'] === bookInfo['_id']) {
+                item.time = Date.now();
+                hasRecorded = true;
             }
-            this.setData({
-                [key]: false
+            return item;
+        });
+        if (!hasRecorded) {
+            const { _id, cover, title } = bookInfo;
+            curLocalRecord.unshift({
+                _id,
+                title,
+                cover,
+                time: Date.now()
             });
-        };
+            if (curLocalRecord.length > 20) {
+                curLocalRecord.pop();
+            }
+        }
+        storage.set('localRecord', curLocalRecord);
     },
     toggleContents() {
         this.setData({

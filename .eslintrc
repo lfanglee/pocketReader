@@ -15,6 +15,9 @@
         "no-plusplus": "off",
         "no-extra-boolean-cast": "off",
         "no-bitwise": "off",
+        "consistent-return": "off",
+        "no-useless-return": "off",
+        "no-underscore-dangle": "off",
         "max-len": [
             "error",
             {
