@@ -4,16 +4,45 @@
         <i-tab i-class="tabs-item" key="recentRead" title="最近阅读"></i-tab>
     </i-tabs>
     <view wx:if="{{showShelfView}}" class="myShelf-view content">
-
-    </view>
-    <view wx:if="{{showRecentView}}" class="recent-view content">
-        <i-swipeout actions="{{recentActions}}">
-            <i-row wx:for="{{recentList}}" wx:key="index">
-                <i-col span="7">
+        <view wx:if="{{isShelfEmpty}}" class="empty-shelf">书架空空如也，快去逛逛找书吧~</view>
+        <i-swipeout i-class="recent-info"
+            wx:for="{{myBooks}}"
+            wx:key="index"
+            actions="{{actions}}"
+            data-id="{{item['_id']}}"
+            bind:change="handleBooksItemChange">
+            <i-row slot="content" data-id="{{item['_id']}}" bind:tap="handleItemTap">
+                <i-col span="5">
                     <image class="cover-image" src="{{item.cover}}" mode="aspectFit" lazy-load></image>
                 </i-col>
-                <i-col span="17">
-
+                <i-col span="19">
+                    <text class="book-title">{{item.title}}</text>
+                    <text class="recent-time">最后阅读时间{{item.recentTime}}</text>
+                    <text class="recent-chapter">阅读到第{{item.chapter}}章</text>
+                </i-col>
+            </i-row>
+        </i-swipeout>
+    </view>
+    <view wx:if="{{showRecentView}}" class="recent-view content">
+        <view wx:if="{{isRecentListEmpty}}" class="empty-recent"></view>
+        <view class="notice-panel">
+            <view class="notice-des">我们会为你缓存最近读过的20本书籍，遇到喜欢的书籍要及时添加到书架中哦~(可左滑删除单个记录)</view>
+            <view class="clear-btn" bind:tap="handleClearRecent">清空</view>
+        </view>
+        <i-swipeout i-class="recent-info"
+            wx:for="{{recentList}}"
+            wx:key="index"
+            actions="{{actions}}"
+            data-id="{{item['_id']}}"
+            bind:change="handleRecentItemChange">
+            <i-row slot="content" data-id="{{item['_id']}}" bind:tap="handleItemTap">
+                <i-col span="5">
+                    <image class="cover-image" src="{{item.cover}}" mode="aspectFit" lazy-load></image>
+                </i-col>
+                <i-col span="19">
+                    <text class="book-title">{{item.title}}</text>
+                    <text class="recent-time">最后阅读时间{{item.recentTime}}</text>
+                    <text class="recent-chapter">阅读到第{{item.chapter}}章</text>
                 </i-col>
             </i-row>
         </i-swipeout>

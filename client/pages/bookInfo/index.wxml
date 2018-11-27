@@ -50,5 +50,8 @@
         <i-button i-class="btn" inline shape="circle" type="error" bind:click="handleBeginReading">开始阅读</i-button>
     </view>
 </view>
+<i-modal title="收藏提示" visible="{{showAddToShelfNotice}}" bind:ok="handleOkAddToShelfNotice" bind:cancel="handleCancelAddToShelfNotice">
+    <view>是否将本书加入书架？</view>
+</i-modal>
 <i-spin size="large" fix wx:if="{{!init}}" />
 <i-toast id="toast" />

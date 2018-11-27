@@ -30,6 +30,7 @@ Page({
         showSources: false,
         showBottomPanel: false,
         chapterInvalid: false,
+        isBookInShelf: false,
 
         chapter: 1,
         chaptersCount: 0,
@@ -60,30 +61,47 @@ Page({
         },
     },
     async onLoad(options) {
-        const { bookId, chapter = 1 } = options;
+        const { bookId, chapter = 1, source } = options;
         let bookInfoRet;
         let sourceRet;
         let chaptersRet;
         try {
             bookInfoRet = await Api.getBookInfo(bookId);
-            sourceRet = await Api.getGenuineSource(bookId);
-            chaptersRet = await Api.getChapters(sourceRet[0]['_id']);
+            if (source) {
+                sourceRet = await this.getSources(bookId);
+                chaptersRet = await Api.getChapters(source);
+            } else {
+                sourceRet = await Api.getGenuineSource(bookId);
+                chaptersRet = await Api.getChapters(sourceRet[0]['_id']);
+            }
         } catch (e) {
             wx.showToast({
                 title: '页面渲染出错, 请刷新重试！'
             });
             return;
         }
-        this.saveReadRecord(bookInfoRet);
+
+        const myBooks = storage.get('myBooks', []);
+        myBooks.map(i => {
+            if (i['_id'] === bookId) {
+                this.setData({
+                    isBookInShelf: true
+                });
+            }
+            return;
+        });
+        const sourceId = source || sourceRet[0]['_id'];
         this.setData({
             bookId,
             chapter,
+            bookInfo: bookInfoRet,
             chaptersCount: bookInfoRet.chaptersCount,
-            sourceId: sourceRet[0]['_id'],
+            sourceId,
             sourcesList: sourceRet,
             chapters: this.generateChaptersList(chaptersRet.chapters, this.data.pageSize),
             init: true,
         }, async () => {
+            this.saveReadRecord(bookInfoRet);
             wx.setNavigationBarTitle({
                 title: bookInfoRet.title
             });
@@ -96,29 +114,59 @@ Page({
             backgroundColor: colorList.default.backgroundColor
         });
     },
+    onUnload() {
+        if (!this.data.isBookInShelf) {
+            const pages = getCurrentPages();
+            console.log(pages);
+            const prevPage = pages[pages.length - 2];
+            prevPage.setData({
+                backFromRead: true,
+            });
+        }
+    },
     saveReadRecord(bookInfo) {
         let curLocalRecord = storage.get('localRecord', []);
+        let myBooks = storage.get('myBooks', []);
         let hasRecorded = false;
+
+        const {
+            _id, cover, title
+        } = bookInfo;
+        const { chapter, sourceId } = this.data;
         curLocalRecord = curLocalRecord.map(item => {
-            if (item['_id'] === bookInfo['_id']) {
+            if (item['_id'] === _id) {
                 item.time = Date.now();
+                item.chapter = this.data.chapter;
+                item.source = this.data.sourceId;
                 hasRecorded = true;
             }
             return item;
         });
         if (!hasRecorded) {
-            const { _id, cover, title } = bookInfo;
             curLocalRecord.unshift({
                 _id,
                 title,
                 cover,
+                chapter,
+                source: sourceId,
                 time: Date.now()
             });
             if (curLocalRecord.length > 20) {
                 curLocalRecord.pop();
             }
         }
+        if (this.data.isBookInShelf) {
+            myBooks = myBooks.map(item => {
+                if (item['_id'] === _id) {
+                    item.time = Date.now();
+                    item.chapter = this.data.chapter;
+                    item.source = this.data.sourceId;
+                }
+                return item;
+            });
+        }
         storage.set('localRecord', curLocalRecord);
+        storage.set('myBooks', myBooks);
     },
     toggleContents() {
         this.setData({
@@ -204,6 +252,7 @@ Page({
                 chapter: 100 * (this.data.page - 1) + e.currentTarget.dataset.order + 1,
                 showContents: false
             }, () => {
+                this.saveReadRecord(this.data.bookInfo);
                 this.toggleLoading(false);
             });
         } else {
@@ -214,6 +263,7 @@ Page({
                 chapter: 100 * (this.data.page - 1) + e.currentTarget.dataset.order + 1,
                 showContents: false
             }, () => {
+                this.saveReadRecord(this.data.bookInfo);
                 this.toggleLoading(false);
             });
             wx.pageScrollTo({
@@ -256,11 +306,12 @@ Page({
             this.toggleLoading(false);
         });
     },
-    async getSources() {
-        const sources = await Api.getMixSource(this.data.bookId);
+    async getSources(bookId = this.data.bookId) {
+        const sources = await Api.getMixSource(bookId);
         this.setData({
             sourcesList: sources
         });
+        return sources;
     },
     async loadChapter(chapterIndex) {
         const chapterLink = this.data.chapters[Math.floor((chapterIndex - 1) / 100)][(chapterIndex - 1) % 100].link;
@@ -281,6 +332,8 @@ Page({
                 title: chapter.title,
                 chapterInvalid: true,
                 chapter: chapterIndex
+            }, () => {
+                this.saveReadRecord(this.data.bookInfo);
             });
         } else {
             this.setData({
@@ -289,6 +342,8 @@ Page({
                 chapterInvalid: false,
                 chapter: chapterIndex,
                 page: Math.ceil(chapterIndex / 100)
+            }, () => {
+                this.saveReadRecord(this.data.bookInfo);
             });
             wx.pageScrollTo({
                 scrollTop: 0,
@@ -362,6 +417,20 @@ Page({
         }
     },
     addToShelf() {
-        // TODO
+        const myBooks = storage.get('myBooks', []);
+        const { _id, title, cover } = this.data.bookInfo;
+        const { chapter, sourceId } = this.data;
+        if (!this.data.isBookInShelf) {
+            myBooks.unshift({
+                _id,
+                title,
+                cover,
+                chapter,
+                source: sourceId,
+                time: Date.now()
+            });
+            storage.set('myBooks', myBooks);
+            this.setData({ isBookInShelf: true });
+        }
     }
 });

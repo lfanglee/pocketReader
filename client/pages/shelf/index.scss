@@ -11,7 +11,56 @@
     .content {
         padding-top: 42px;
     }
+    .content {
+        .recent-info {
+            .i-swipeout-item {
+                padding: 15px;
+            }
+            .cover-image {
+                width: 58px;
+                height: 77px;
+            }
+            .book-title {
+                font-weight: bold;
+                font-size: 18px;
+                line-height: 28px;
+                color: #333;
+                display: block;
+                margin-bottom: 10px;
+            }
+            .recent-time {
+                font-size: 14px;
+                color: #999;
+                display: flex;
+                line-height: 18px;
+            }
+            .recent-chapter {
+                font-size: 12px;
+                color: #999;
+                line-height: 18px;
+            }
+        }
+    }
     .recent-view {
-        
+        .notice-panel {
+            display: flex;
+            margin: 10px 20px;
+            padding: 15px 20px;
+            background: #ddd;
+            color: #999;
+            border-radius: 10px;
+            justify-content: space-between;
+            align-items: center;
+            .clear-btn {
+                width: 140px;
+                height: 22px;
+                margin-left: 20px;
+                line-height: 22px;
+                border: 1px solid #b93321;
+                color: #b93321;
+                text-align: center;
+                border-radius: 10px;
+            }
+        }
     }
 }

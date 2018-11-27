@@ -51,7 +51,7 @@
     </view>
 </i-drawer>
 <view class="right-panel">
-    <view class="to-book-shelf {{showBottomPanel ? 'to-book-shelf-show': ''}}" bind:tap="addToShelf">加入书架</view>
+    <view wx:if="{{!isBookInShelf}}" class="to-book-shelf {{showBottomPanel ? 'to-book-shelf-show': ''}}" bind:tap="addToShelf">加入书架</view>
 </view>
 <view class="bottom-panel {{showBottomPanel ? 'bottom-panel-show' : ''}}">
     <view class="item">

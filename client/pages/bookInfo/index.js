@@ -2,24 +2,44 @@ import regeneratorRuntime from '../../lib/regenerator-runtime/runtime-module';
 import moment from '../../lib/moment.zh_cn';
 import { zhuishushenqiApi as URL } from '../../utils/request';
 import  Api from '../../lib/api';
+import storage from '../../utils/storage';
 
 Page({
     data: {
         init: false,
-        bookInfo: {},
+        backFromRead: false,
         showFullBookIntro: false,
+        showAddToShelfNotice: false,
+
+        originBookInfo: {},
+        bookInfo: {},
         isInShelf: false,
     },
     async onLoad(options) {
-        const bookInfo = this.formatBookInfo(await this.getBookInfo(options.bookId));
+        const originBookInfo = await this.getBookInfo(options.bookId);
+        const bookInfo = this.formatBookInfo(originBookInfo);
 
+        const myBooks = storage.get('myBooks', []);
+        myBooks.forEach(item => {
+            if (item['_id'] === bookInfo['_id']) {
+                this.setData({ isInShelf: true });
+                return;
+            }
+        });
         this.setData({
-            bookInfo, init: true
+            originBookInfo,
+            bookInfo,
+            init: true
         }, () => {
             wx.setNavigationBarTitle({
                 title: bookInfo.title
             });
         });
+    },
+    onShow() {
+        if (this.data.backFromRead) {
+            this.setData({ showAddToShelfNotice: true });
+        }
     },
     async getBookInfo(bookId) {
         this.toggleLoading();
@@ -29,7 +49,7 @@ Page({
     },
     formatBookInfo(bookInfo) {
         const { cover, updated } = bookInfo;
-        return Object.assign(bookInfo, {
+        return Object.assign({}, bookInfo, {
             cover: URL.static + cover,
             updated: moment(updated).locale('zh-cn').fromNow()
         });
@@ -40,14 +60,59 @@ Page({
         });
     },
     handleRemoveFromShelf() {
-        // TODO
+        const bookId = this.data.bookInfo['_id'];
+        let myBooks = storage.get('myBooks', []);
+        myBooks = myBooks.filter(i => i['_id'] !== bookId);
+        storage.set('myBooks', myBooks);
+        this.setData({ isInShelf: false });
     },
     handleAddToShelf() {
-        // TODO
+        const { _id, title, cover } = this.data.originBookInfo;
+        const myBooks = storage.get('myBooks', []);
+        const localRecords = storage.get('localRecord', []);
+        let chapter = 1;
+        let source;
+        localRecords.forEach(item => {
+            if (item['_id'] === _id) {
+                chapter = item.chapter;
+                source = item.source;
+            }
+        });
+        myBooks.unshift({
+            _id,
+            title,
+            cover,
+            chapter,
+            source,
+            time: Date.now()
+        });
+        storage.set('myBooks', myBooks);
+        this.setData({ isInShelf: true });
+    },
+    handleOkAddToShelfNotice() {
+        this.handleAddToShelf();
+        this.setData({ showAddToShelfNotice: false });
+    },
+    handleCancelAddToShelfNotice() {
+        this.setData({ showAddToShelfNotice: false });
     },
     handleBeginReading() {
+        const bookId = this.data.bookInfo['_id'];
+        const myBooks = storage.get('myBooks', []);
+        const localRecords = storage.get('localRecord', []);
+        let chapter = 1;
+        let source = '';
+        const arr = this.data.isInShelf ? myBooks : localRecords;
+        arr.forEach(item => {
+            if (item['_id'] === bookId) {
+                chapter = item.chapter;
+                source = item.source || '';
+                return;
+            }
+        });
+
         wx.navigateTo({
-            url: `/pages/read/index?bookId=${this.data.bookInfo['_id']}`
+            url: `/pages/read/index?bookId=${bookId}&chapter=${chapter}&source=${source}`
         });
     }
 });
