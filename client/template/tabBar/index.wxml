@@ -1,0 +1,8 @@
+<template name="tabBar">
+    <i-tab-bar current="{{curTab}}" fixed bindchange="handleTabBarChange">
+        <i-tab-bar-item key="bookShelf" img="../../images/bookshelf.png" current-img="../../images/bookshelf-select.png" title="书架"></i-tab-bar-item>
+        <i-tab-bar-item key="catagory" img="../../images/catagory.png" current-img="../../images/catagory-select.png" title="分类"></i-tab-bar-item>
+        <i-tab-bar-item key="rank" img="../../images/rank.png" current-img="../../images/rank-select.png" title="排行榜"></i-tab-bar-item>
+        <i-tab-bar-item key="mine" img="../../images/mine.png" current-img="../../images/mine-select.png" title="我的"></i-tab-bar-item>
+    </i-tab-bar>
+</template>

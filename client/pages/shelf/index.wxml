@@ -1,3 +1,4 @@
+<import src="../../template/tabBar/index.wxml" />
 <view class="page-shelf">
     <i-tabs i-class="shelf-tabs" current="{{curTab}}" bind:change="handleTabChange">
         <i-tab i-class="tabs-item" key="myShelf" title="我的书架"></i-tab>
@@ -48,3 +49,4 @@
         </i-swipeout>
     </view>
 </view>
+<template is="tabBar" data="{{curTab: 'bookShelf'}}" />

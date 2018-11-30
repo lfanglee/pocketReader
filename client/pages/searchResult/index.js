@@ -46,8 +46,11 @@ Page({
     },
     saveHistory(keyword) {
         const curHistory = storage.get('history', []);
-        curHistory.unshift(keyword);
-        storage.set('history', curHistory);
+        if (!curHistory.includes(keyword)) {
+            curHistory.unshift(keyword);
+            storage.set('history', curHistory);
+        }
+        return;
     },
     async fuzzySearch(query) {
         const { pageNo, pageSize } = this.data;

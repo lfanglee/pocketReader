@@ -4,5 +4,8 @@ Page({
     },
     onLoad() {
         // todo
+    },
+    onShow() {
+        wx.hideTabBar();
     }
 });

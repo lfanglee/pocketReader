@@ -17,7 +17,7 @@
             <i-icon i-class="icon icon-keywords" type="document" color="#748389" size="18"/>{{item}}
         </view>
     </view>
-    <view class="suggest-panel">
+    <view wx:if="{{!hasSearchText}}" class="suggest-panel">
         <view class="search-hotwords panel">
             <view class="search-hotwords-title panel-title">
                 <view class="title">搜索热词</view>

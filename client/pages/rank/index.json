@@ -6,6 +6,8 @@
         "column-tabs": "../components/column-tabs/index",
         "i-row": "../../components/row/index",
         "i-col": "../../components/col/index",
-        "i-toast": "../../components/toast/index"
+        "i-toast": "../../components/toast/index",
+        "i-tab-bar": "../../components/tab-bar/index",
+        "i-tab-bar-item": "../../components/tab-bar-item/index"
     }
 }

@@ -26,20 +26,26 @@
             {
                 "pagePath": "pages/shelf/index",
                 "text": "书架",
-                "iconPath": "images/shelf.png",
-                "selectedIconPath": "images/shelf_selected.png"
+                "iconPath": "images/bookshelf.png",
+                "selectedIconPath": "images/bookshelf-select.png"
             },
             {
                 "pagePath": "pages/index/index",
                 "text": "分类",
-                "iconPath": "images/classify.png",
-                "selectedIconPath": "images/classify_selected.png"
+                "iconPath": "images/catagory.png",
+                "selectedIconPath": "images/catagory-select.png"
+            },
+            {
+                "pagePath": "pages/rank/index",
+                "text": "排行榜",
+                "iconPath": "images/rank.png",
+                "selectedIconPath": "images/rank-select.png"
             },
             {
                 "pagePath": "pages/index/index",
                 "text": "我的",
                 "iconPath": "images/mine.png",
-                "selectedIconPath": "images/mine_selected.png"
+                "selectedIconPath": "images/mine-select.png"
             }
         ]
     }

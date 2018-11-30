@@ -21,6 +21,9 @@ Page({
             rankList, currentSubTab, books, init: true
         });
     },
+    onShow() {
+        wx.hideTabBar();
+    },
     async getRankingGender() {
         this.toggleLoading();
         const result = await Api.getRankingGender();

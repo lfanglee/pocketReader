@@ -5,6 +5,8 @@
         "i-tab": "../../components/tab/index",
         "i-swipeout": "../../components/swipeout/index",
         "i-col": "../../components/col/index",
-        "i-row": "../../components/row/index"
+        "i-row": "../../components/row/index",
+        "i-tab-bar": "../../components/tab-bar/index",
+        "i-tab-bar-item": "../../components/tab-bar-item/index"
     }
 }
