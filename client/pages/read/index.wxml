@@ -1,6 +1,6 @@
 <view wx:if="{{init}}" class="page-read {{pagePattern === 'night' ? 'night-mode' : ''}} {{pagePattern === 'eye' ? 'eye-mode' : ''}}">
     <text class="article-title">{{title}}\n</text>
-    <text wx:if="{{!chapterInvalid}}" class="article-body" style="font-size: {{ (fontSize / 100) * 10 + 18 }}px" bind:tap="toggleBottomPanel">
+    <text wx:if="{{!chapterInvalid}}" class="article-body" style="font-size: {{ textFontSize }}px" bind:tap="toggleBottomPanel">
         <text class="article-line" wx:for="{{formatArticle}}" wx:if="{{item.length > 0}}" wx:key="index" decode>&emsp;&emsp;{{item}}\n</text>
     </text>
     <view class="invalid-chapter" wx:if="{{chapterInvalid}}">
@@ -66,9 +66,9 @@
         <view class="font-btn-w {{fontSize >= 100 ? 'disabled' : ''}}" data-operate="plus" bind:tap="handleFontSizeChange">Aa+</view>
     </view>
     <view class="item page-pattern-select" bind:tap="handlePagePatternChange">
-        <view class="page-pattern-btn {{ pagePattern === 'default' ? 'active' : '' }}" data-operate="default">默认</view>
-        <view class="page-pattern-btn {{ pagePattern === 'night' ? 'active' : '' }}" data-operate="night">夜间</view>
-        <view class="page-pattern-btn {{ pagePattern === 'eye' ? 'active' : '' }}" data-operate="eye">护眼</view>
+        <view class="page-pattern-btn pattern-default-btn {{ pagePattern === 'default' ? 'active' : '' }}" data-operate="default">默认</view>
+        <view class="page-pattern-btn pattern-night-btn {{ pagePattern === 'night' ? 'active' : '' }}" data-operate="night">夜间</view>
+        <view class="page-pattern-btn pattern-eye-btn {{ pagePattern === 'eye' ? 'active' : '' }}" data-operate="eye">护眼</view>
     </view>
     <view class="item chapter-handle">
         <view class="chapter-select-btn" bind:tap="handleOpenContents">目录</view>
