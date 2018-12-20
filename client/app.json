@@ -1,6 +1,7 @@
 {
     "pages": [
         "pages/index/index",
+        "pages/categoryItem/index",
         "pages/shelf/index",
         "pages/classify/index",
         "pages/rank/index",

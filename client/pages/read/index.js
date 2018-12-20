@@ -76,7 +76,8 @@ Page({
             }
         } catch (e) {
             wx.showToast({
-                title: '页面渲染出错, 请刷新重试！'
+                title: '页面渲染出错, 请刷新重试！',
+                icon: 'none'
             });
             return;
         }

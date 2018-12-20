@@ -1,7 +1,42 @@
 <import src="../../template/tabBar/index.wxml" />
 <view class="page-index">
-    <navigator url="/pages/search/index" hover-class="navigator-hover">搜索</navigator>
-    <navigator url="/pages/classify/index" hover-class="navigator-hover">分类</navigator>
-    <navigator url="/pages/rank/index" hover-class="navigator-hover">排行榜</navigator>
+    <view class="search-bar">
+        <view class="search-bar-box">
+            <i-icon i-class="icon icon-search" type="search" size="18" color="#748389" />
+            <input class="search-input" type="text" placeholder="请输入搜索内容" confirm-type="search" disabled
+                bind:tap="handleSearch" />
+            <view wx:if="{{hasSearchText}}" class="icon-clear-wrapper" bind:tap="handleClearSearchText">
+                <i-icon i-class="icon icon-clear" type="delete_fill" size="18" color="#748389" />
+            </view>
+        </view>
+    </view>
+    <view v-if="{{init}}" class="content">
+        <view wx:for="{{cats}}" wx:key="{{index}}" class="category-item">
+            <view class="divider">
+                <view class="divider-content">{{item.title}}</view>
+                <view class="divider-line"></view>
+            </view>
+            <view class="category-item-list">
+                <view wx:for="{{item.content}}" wx:for-item="cat" wx:for-index="cat-index" wx:key="{{cat-index}}" class="list-item" data-category="{{cat.name}}" bind:tap="handleCategoryItemTap">
+                    <view class="images">
+                        <image wx:for="{{cat.bookCover}}"
+                            wx:for-index="image-index"
+                            wx:for-item="image"
+                            wx:key="{{image-index}}"
+                            src="{{image}}"
+                            mode="aspectFill"
+                            lazy-load="false" />
+                    </view>
+                    <view class="desc">
+                        <view class="desc-title">{{cat.name}}</view>
+                        <view class="desc-sub-title">{{cat.bookCount}} 本</view>
+                    </view>
+                </view>
+                
+            </view>
+        </view>
+    </view>
 </view>
+<i-toast id="toast" />
+<i-spin size="large" fix wx:if="{{!init}}"></i-spin>
 <template is="tabBar" data="{{curTab: 'catagory'}}"></template>

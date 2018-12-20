@@ -1,0 +1,4 @@
+<view class="page-category-item">
+
+</view>
+<i-spin size="large" fix wx:if="{{!init}}" />
