@@ -20,6 +20,11 @@ const colorList = {
         titleColor: '#0c2e10'
     }
 };
+const readMode = {
+    DEFAULT: 'default',
+    NIGHT: 'night',
+    EYE: 'eye'
+};
 
 Page({
     data: {
@@ -37,7 +42,7 @@ Page({
         page: 1,
         pageSize: 100,
         fontSize: 20,  // 0 - 100 对应 20px - 30px
-        pagePattern: 'default',
+        pagePattern: readMode.DEFAULT,
 
         chapters: {},
         sourcesList: [],
@@ -59,6 +64,9 @@ Page({
         readProgress() {
             return (100 * (+this.data.chapter / +this.data.chaptersCount)).toFixed(2);
         },
+        textFontSize() {
+            return (this.data.fontSize / 100) * 10 + 16;
+        }
     },
     async onLoad(options) {
         const { bookId, chapter = 1, source } = options;
@@ -109,20 +117,43 @@ Page({
             await this.loadChapter(this.data.chapter);
         });
     },
-    onReady() {
-        wx.setNavigationBarColor({
-            frontColor: '#000000',
-            backgroundColor: colorList.default.backgroundColor
-        });
+    onShow() {
+        const setting = storage.get('setting', {});
+        const { readMode: pagePattern = readMode.DEFAULT, fontSize = 20 } = setting;
+        this.setData({ pagePattern, fontSize });
+        this.setNavBarColor(pagePattern);
     },
     onUnload() {
         if (!this.data.isBookInShelf) {
             const pages = getCurrentPages();
-            console.log(pages);
             const prevPage = pages[pages.length - 2];
             prevPage.setData({
                 backFromRead: true,
             });
+        }
+    },
+    setNavBarColor(mode) {
+        switch (mode) {
+            case readMode.DEFAULT:
+                wx.setNavigationBarColor({
+                    frontColor: '#000000',
+                    backgroundColor: colorList.default.backgroundColor
+                });
+                break;
+            case readMode.NIGHT:
+                wx.setNavigationBarColor({
+                    frontColor: '#ffffff',
+                    backgroundColor: colorList.night.backgroundColor
+                });
+                break;
+            case readMode.EYE:
+                wx.setNavigationBarColor({
+                    frontColor: '#000000',
+                    backgroundColor: colorList.eye.backgroundColor
+                });
+                break;
+            default:
+                break;
         }
     },
     saveReadRecord(bookInfo) {
@@ -386,6 +417,7 @@ Page({
     },
     handleFontSizeChange(e) {
         const { operate } = e.currentTarget.dataset;
+        const setting = storage.get('setting', {});
         let { fontSize } = this.data;
 
         if (operate === 'plus' && fontSize < 100) {
@@ -394,28 +426,17 @@ Page({
             fontSize -= 20;
         }
         this.setData({ fontSize });
+        setting.fontSize = fontSize;
+        storage.set('setting', setting);
     },
     handlePagePatternChange(e) {
         const { operate: pattern } = e.target.dataset;
-        if (pattern === 'default') {
-            this.setData({ pagePattern: pattern });
-            wx.setNavigationBarColor({
-                frontColor: '#000000',
-                backgroundColor: colorList.default.backgroundColor
-            });
-        } else if (pattern === 'night') {
-            this.setData({ pagePattern: pattern });
-            wx.setNavigationBarColor({
-                frontColor: '#ffffff',
-                backgroundColor: colorList.night.backgroundColor
-            });
-        } else if (pattern === 'eye') {
-            this.setData({ pagePattern: pattern });
-            wx.setNavigationBarColor({
-                frontColor: '#000000',
-                backgroundColor: colorList.eye.backgroundColor
-            });
-        }
+        this.setNavBarColor(pattern);
+        this.setData({ pagePattern: pattern });
+
+        const setting = storage.get('setting', {});
+        setting.readMode = pattern;
+        storage.set('setting', setting);
     },
     addToShelf() {
         const myBooks = storage.get('myBooks', []);

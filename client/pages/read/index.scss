@@ -11,50 +11,41 @@ $eyeBackgroundColor: #b8cd8b;
 $eyeFontColor: rgba(12, 46, 16, .8);
 $eyeTitleColor: #0c2e10;
 
+@mixin read-mode($fontColor, $titleColor, $bgColor) {
+    color: $fontColor;
+    background: $bgColor;
+    .article-title {
+        color: $titleColor;
+    }
+    .article-body {
+        background: $bgColor;
+    }
+    .bottom-btn-group {
+        background: $bgColor;
+        .bottom-btn {
+            color: $fontColor !important;
+            background: $bgColor !important;
+        }
+    }
+}
+
 .page-read {
     width: 100%;
     height: 100%;
-    color: $defaultFontColor;
-    background: $defaultBackgroundColor;
     font-family: $fontFamily;
+    @include read-mode($defaultFontColor, $defaultTitleColor, $defaultBackgroundColor);
     &.night-mode {
-        color: $nightFontColor;
-        background: $nightBackgroundColor;
-        .article-title {
-            color: $nightTitleColor;
-        }
-        .article-body {
-            background: $nightBackgroundColor;
-        }
-        .bottom-btn-group {
-            background: $nightBackgroundColor;
-            .bottom-btn {
-                color: $nightFontColor;
-                background: $nightBackgroundColor;
-            }
+        @include read-mode($nightFontColor, $nightTitleColor, $nightBackgroundColor);
+        .bottom-btn-group .bottom-btn {
+            box-shadow: inset 0 0 0 1px #5c5d58;
         }
     }
     &.eye-mode {
-        color: $eyeFontColor;
-        background: $eyeBackgroundColor;
-        .article-title {
-            color: $eyeTitleColor;
-        }
-        .article-body {
-            background: $eyeBackgroundColor;
-        }
-        .bottom-btn-group {
-            background: $eyeBackgroundColor;
-            .bottom-btn {
-                color: $eyeFontColor;
-                background: $eyeBackgroundColor;
-            }
-        }
+        @include read-mode($eyeFontColor, $eyeTitleColor, $eyeBackgroundColor);
     }
     .article-title {
         display: block;
         font-size: 20px;
-        color: $defaultTitleColor;
         line-height: 32px;
         padding: 10px 20px 0;
     }
@@ -62,7 +53,6 @@ $eyeTitleColor: #0c2e10;
         display: block;
         font-size: 18px;
         padding: 10px 20px;
-        background: $defaultBackgroundColor;
         line-height: 28px;
         .article-line {
             display: block;
@@ -83,13 +73,10 @@ $eyeTitleColor: #0c2e10;
         }
     }
     .bottom-btn-group {
-        padding: 0 10px 10px;
-        background: $defaultBackgroundColor;
+        padding: 0 10px 50px;
         .bottom-btn {
             display: inline-block;
             margin: 10px 0 0;
-            background: $defaultBackgroundColor;
-            color: $defaultFontColor;
             &.btn-n {
                 width: 355px;
             }
@@ -307,6 +294,12 @@ $eyeTitleColor: #0c2e10;
             &.active {
                 color: #b93221;
                 border: 1px solid #b93221;
+            }
+            &.pattern-night-btn {
+                background: $nightBackgroundColor;
+            }
+            &.pattern-eye-btn {
+                background: $eyeBackgroundColor;
             }
         }
     }

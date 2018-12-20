@@ -77,7 +77,7 @@ Page({
             const localRecords = storage.get('localRecord', []);
             const newLocalRecords = localRecords.filter(i => i['_id'] !== id);
             storage.set('localRecord', newLocalRecords);
-            this.setData({ recentList: newLocalRecords });
+            this.setData({ recentList: this.formatRecords(newLocalRecords) });
         }
     },
     handleBooksItemChange(e) {
@@ -87,7 +87,7 @@ Page({
             const myBooks = storage.get('myBooks', []);
             const newBooks = myBooks.filter(i => i['_id'] !== id);
             storage.set('myBooks', newBooks);
-            this.setData({ myBooks: newBooks });
+            this.setData({ myBooks: this.formatRecords(newBooks) });
         }
     },
     handleClearRecent() {
