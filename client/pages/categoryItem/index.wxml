@@ -1,4 +1,43 @@
 <view class="page-category-item">
-
+    <view class="filter-bar">
+        <view class="filter-bar-content-wrapper">
+            <view class="filter-item">
+                <ul>
+                    <li
+                        class="{{type === item.key ? 'active' : ''}}"
+                        wx:for="{{typeList}}"
+                        wx:key="{{index}}"
+                        data-type="{{item.key}}"
+                        bind:tap="handleTypeItemTap">{{item.name}}</li>
+                </ul>
+            </view>
+            <view class="filter-item">
+                <ul>
+                    <li
+                        class="{{subCat === item ? 'active' : ''}}"
+                        wx:for="{{subCats}}"
+                        wx:key="{{index}}"
+                        data-cat="{{item}}"
+                        bind:tap="handleSubCatsItemTap">{{item}}</li>
+                </ul>
+            </view>
+        </view>
+    </view>
+    <view wx:if="{{!reloading}}" class="books-list">
+        <i-row i-class="book-info" wx:for="{{books}}" wx:key="{{item._id}}" data-id="{{item._id}}" bind:tap="handleItemTap">
+            <i-col span="6">
+                <image class="cover-image" src="{{item.cover}}" mode="aspectFit" lazy-load></image>
+            </i-col>
+            <i-col span="18">
+                <text class="book-title">{{item.title}}</text>
+                <text class="book-author" decode>{{item.author}}&nbsp;&nbsp;|&nbsp;&nbsp;{{item.majorCate}}</text>
+                <text class="book-short-intro">{{item.shortIntro}}</text>
+                <text class="hot" decode><text class="text-red">{{item.latelyFollower}}</text>&nbsp;人气&nbsp;&nbsp;&nbsp;&nbsp;</text>
+                <text class="reserve" decode><text class="text-red">{{item.retentionRatio}}%</text>&nbsp;留存</text>
+            </i-col>
+        </i-row>
+        <i-load-more wx:if="{{init}}" tip="没有更多书籍" loading="{{loading}}" />
+    </view>
 </view>
+<i-toast id="toast" />
 <i-spin size="large" fix wx:if="{{!init}}" />
