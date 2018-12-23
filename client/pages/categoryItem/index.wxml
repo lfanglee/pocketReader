@@ -1,6 +1,6 @@
 <view class="page-category-item">
     <view class="filter-bar">
-        <view class="filter-bar-content-wrapper">
+        <view wx:if="{{isFilterBarExt}}" class="filter-bar-content-wrapper">
             <view class="filter-item">
                 <ul>
                     <li
@@ -21,6 +21,10 @@
                         bind:tap="handleSubCatsItemTap">{{item}}</li>
                 </ul>
             </view>
+        </view>
+        <view wx:else class="filter-bar-result" bind:tap="handleExtFilterBar">
+            <view>{{subCat}} - 按{{mapTypeNameToKey}}</view>
+            <i-icon type="unfold" />
         </view>
     </view>
     <view wx:if="{{!reloading}}" class="books-list">

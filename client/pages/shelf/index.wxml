@@ -5,7 +5,10 @@
         <i-tab i-class="tabs-item" key="recentRead" title="最近阅读"></i-tab>
     </i-tabs>
     <view wx:if="{{showShelfView}}" class="myShelf-view content">
-        <view wx:if="{{isShelfEmpty}}" class="empty-shelf">书架空空如也，快去逛逛找书吧~</view>
+        <view wx:if="{{isShelfEmpty}}" class="empty-shelf">
+            <image src="../../images/empty-shelf.png" mode="aspectFit" lazy-load="false" />
+            书架空空如也，快去逛逛找书吧~
+        </view>
         <i-swipeout i-class="recent-info"
             wx:for="{{myBooks}}"
             wx:key="index"

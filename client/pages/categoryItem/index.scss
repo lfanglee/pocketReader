@@ -2,7 +2,7 @@
     background: #FAFAFA;
     width: 100%;
     position: relative;
-    padding: 10px;
+    padding: 90px 10px 0;
     .filter-bar {
         position: fixed;
         top: 0;
@@ -10,7 +10,7 @@
         width: 100%;
         color: #666;
         background: #fff;
-        z-index: 100;
+        z-index: 1;
         .filter-item {
             position: relative;
             width: 100%;
@@ -33,6 +33,27 @@
                     color: #b93321;
                 }
             }
+        }
+    }
+    .filter-bar-result {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        color: #666;
+        background: #fff;
+        z-index: 1;
+        line-height: 45px;
+        overflow: hidden;
+        background-size: 100% 1px;
+        background-image: linear-gradient(180deg,transparent 50%,#ddd 0);
+        background-repeat: no-repeat;
+        background-position: bottom;
+        text-align: center;
+        & > view {
+            display: inline-block;
+            line-height: 45px;
+            margin-right: 5px;
         }
     }
     .books-list {

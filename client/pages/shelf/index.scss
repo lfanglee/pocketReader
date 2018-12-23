@@ -13,6 +13,15 @@
         padding-bottom: 50px;
     }
     .content {
+        .empty-shelf {
+            text-align: center;
+            image {
+                display: block;
+                margin: 100px auto 25px;
+                width: 100px;
+                height: 100px;
+            }
+        }
         .recent-info {
             .i-swipeout-item {
                 padding: 15px;

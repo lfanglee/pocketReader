@@ -18,6 +18,9 @@ const typeList = [{
     name: 'vip',
     key: 'monthly'
 }];
+let cacheScrollTop = 0;
+let timer;
+let lastTime = Date.now();
 Page({
     data: {
         init: false,
@@ -26,6 +29,7 @@ Page({
         total: 0,
         pageNo: 0,
         pageSize: 20,
+        isFilterBarExt: 'open',
 
         keyword: '',
         subCat: '全部',
@@ -34,6 +38,19 @@ Page({
         typeList,
         subCats: [],
         books: []
+    },
+    computed: {
+        mapTypeNameToKey() {
+            let res;
+            typeList.some(item => {
+                if (item.key === this.data.type) {
+                    res = item.name;
+                    return true;
+                }
+                return false;
+            });
+            return res;
+        }
     },
     async onLoad(options) {
         const keyword = options.keyword;
@@ -84,7 +101,23 @@ Page({
         });
     },
     onPageScroll({ scrollTop }) {
-        console.log(scrollTop);
+        const handleFilterBarStatusByposition = () => {
+            if (scrollTop >= 90 && scrollTop > cacheScrollTop) {
+                this.setData({ isFilterBarExt: false });
+            } else if (scrollTop < 90) {
+                this.setData({ isFilterBarExt: true });
+            }
+            cacheScrollTop = scrollTop;
+        };
+        clearTimeout(timer);
+        if (Date.now() - lastTime >= 50) {
+            handleFilterBarStatusByposition();
+            lastTime = Date.now();
+        } else {
+            timer = setTimeout(() => {
+                handleFilterBarStatusByposition();
+            }, 50);
+        }
     },
     async getSubCat(keyword) {
         let mins;
@@ -148,6 +181,9 @@ Page({
             type,
             reloading: true
         }, () => this.reLoadBooks());
+    },
+    handleExtFilterBar() {
+        this.setData({ isFilterBarExt: true });
     },
     async reLoadBooks() {
         try {

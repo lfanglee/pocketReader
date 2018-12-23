@@ -4,6 +4,8 @@
         "i-col": "../../components/col/index",
         "i-load-more": "../../components/load-more/index",
         "i-modal": "../../components/modal/index",
-        "i-toast": "../../components/toast/index"
+        "i-toast": "../../components/toast/index",
+        "i-spin": "../../components/spin/index",
+        "i-icon": "../../components/icon/index"
     }
 }
