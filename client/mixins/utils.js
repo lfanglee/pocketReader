@@ -27,7 +27,7 @@ export default {
                 break;
             case tabBar.MINE:
                 wx.switchTab({
-                    url: '/pages/mine/index'
+                    url: '/pages/user/index'
                 });
                 break;
             default:

@@ -32,9 +32,6 @@ Page({
         }
         this.toggleLoading(false);
     },
-    onShow() {
-        wx.hideTabBar();
-    },
     async getCats() {
         const result = await Api.getCats();
         return result;

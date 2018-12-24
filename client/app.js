@@ -4,6 +4,7 @@ import utils from './mixins/utils';
 
 App({
     onLaunch() {
+        // init Page
         const nativePage = Page;
         Page = options => {
             const { mixins } = options;
@@ -20,15 +21,12 @@ App({
             env: 'fresh-weather-5bf15d',
             traceUser: true
         });
-        // const logs = wx.getStorageSync('logs') || [];
-        // logs.unshift(Date.now());
-        // wx.setStorageSync('logs', logs);
 
-        wx.login({
-            success: (res) => {
-                console.log(res);
-            }
-        });
+        // wx.login({
+        //     success: (res) => {
+        //         console.log(res);
+        //     }
+        // });
 
         wx.getSetting({
             success: (res) => {

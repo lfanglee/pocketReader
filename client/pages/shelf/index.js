@@ -46,7 +46,6 @@ Page({
         }
     },
     onShow() {
-        wx.hideTabBar();
         const localRecords = this.formatRecords(storage.get('localRecord', []));
         const myBooks = storage.get('myBooks', []);
         this.setData({

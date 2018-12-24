@@ -1,0 +1,5 @@
+<import src="../../template/tabBar/index.wxml" />
+<view class="page-user">
+
+</view>
+<template is="tabBar" data="{{curTab: 'mine'}}"></template>

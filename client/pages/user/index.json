@@ -1,0 +1,9 @@
+{
+    "usingComponents": {
+        "i-spin": "../../components/spin/index",
+        "i-icon": "../../components/icon/index",
+        "i-toast": "../../components/toast/index",
+        "i-tab-bar": "../../components/tab-bar/index",
+        "i-tab-bar-item": "../../components/tab-bar-item/index"
+    }
+}

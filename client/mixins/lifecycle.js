@@ -4,5 +4,8 @@ export default {
     onLoad() {
         computed(this, this.computed || {});
         watch(this, this.watch || {});
-    }
+    },
+    onShow() {
+        wx.hideTabBar();
+    },
 };

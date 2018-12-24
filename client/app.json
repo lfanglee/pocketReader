@@ -8,7 +8,8 @@
         "pages/search/index",
         "pages/searchResult/index",
         "pages/bookInfo/index",
-        "pages/read/index"
+        "pages/read/index",
+        "pages/user/index"
     ],
     "window": {
         "backgroundTextStyle": "dark",
@@ -43,7 +44,7 @@
                 "selectedIconPath": "images/rank-select.png"
             },
             {
-                "pagePath": "pages/index/index",
+                "pagePath": "pages/user/index",
                 "text": "我的",
                 "iconPath": "images/mine.png",
                 "selectedIconPath": "images/mine-select.png"
