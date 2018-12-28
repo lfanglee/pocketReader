@@ -21,8 +21,8 @@
                 </i-col>
                 <i-col span="19">
                     <text class="book-title">{{item.title}}</text>
-                    <text class="recent-time">最后阅读时间{{item.recentTime}}</text>
-                    <text class="recent-chapter">阅读到第{{item.chapter}}章</text>
+                    <text class="recent-time">最后阅读时间 {{item.recentTime}}</text>
+                    <text class="recent-chapter">阅读到第 {{item.chapter}} 章</text>
                 </i-col>
             </i-row>
         </i-swipeout>
@@ -45,8 +45,8 @@
                 </i-col>
                 <i-col span="19">
                     <text class="book-title">{{item.title}}</text>
-                    <text class="recent-time">最后阅读时间{{item.recentTime}}</text>
-                    <text class="recent-chapter">阅读到第{{item.chapter}}章</text>
+                    <text class="recent-time">最后阅读时间 {{item.recentTime}}</text>
+                    <text class="recent-chapter">阅读到第 {{item.chapter}} 章</text>
                 </i-col>
             </i-row>
         </i-swipeout>
