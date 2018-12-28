@@ -56,6 +56,14 @@ export default {
             ignoreError: true
         })).res;
     },
+    
+    /**
+     * 获取推荐小说
+     * @param {String} bookId 小说ID
+     */
+    async getRecommendBooks(bookId) {
+        return (await Request.get(`${URL.default}/book/${bookId}/recommend`)).res;
+    },
 
     /**
      * 获取小说正版源

@@ -1,6 +1,7 @@
 import initPage from './lib/initPage';
 import lifecycle from './mixins/lifecycle';
 import utils from './mixins/utils';
+import storage from './utils/storage';
 
 App({
     onLaunch() {
@@ -22,11 +23,11 @@ App({
             traceUser: true
         });
 
-        // wx.login({
-        //     success: (res) => {
-        //         console.log(res);
-        //     }
-        // });
+        wx.login({
+            success: (res) => {
+                console.log(res);
+            }
+        });
 
         wx.getSetting({
             success: (res) => {
@@ -43,8 +44,11 @@ App({
                 }
             }
         });
+
+        this.globalData.enableLocalCache = storage.get('enableLocalCache', true);
     },
     globalData: {
-        userInfo: null
+        userInfo: null,
+        enableLocalCache: true
     }
 });

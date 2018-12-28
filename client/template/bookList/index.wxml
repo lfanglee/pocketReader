@@ -1,0 +1,16 @@
+<template name="bookList">
+    <view class="books-list">
+        <i-row i-class="book-info" wx:for="{{books}}" wx:key="{{item._id}}" data-id="{{item._id}}" bind:tap="handleItemTap">
+            <i-col span="6">
+                <image class="cover-image" src="{{item.cover}}" mode="aspectFit" lazy-load></image>
+            </i-col>
+            <i-col span="18">
+                <text class="book-title">{{item.title}}</text>
+                <text class="book-author" decode>{{item.author}}&nbsp;&nbsp;|&nbsp;&nbsp;{{item.majorCate}}</text>
+                <text class="book-short-intro">{{item.shortIntro}}</text>
+                <text class="hot" decode><text class="text-red">{{item.latelyFollower}}</text>&nbsp;人气&nbsp;&nbsp;&nbsp;&nbsp;</text>
+                <text class="reserve" decode><text class="text-red">{{item.retentionRatio}}%</text>&nbsp;留存</text>
+            </i-col>
+        </i-row>
+    </view>
+</template>

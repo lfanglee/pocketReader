@@ -1,0 +1,17 @@
+@import "../../template/tabBar/index.scss";
+
+.page-user {
+    background: #FAFAFA;
+    height: 100%;
+    .user-info-panel {
+        margin-bottom: 20px;
+        .no-login-info-panel {
+            padding: 30px 0;
+            text-align: center;
+            .login-btn {
+                margin: 10px auto;
+            }
+        }
+        
+    }
+}

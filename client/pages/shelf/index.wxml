@@ -28,13 +28,13 @@
         </i-swipeout>
     </view>
     <view wx:if="{{showRecentView}}" class="recent-view content">
-        <view wx:if="{{isRecentListEmpty}}" class="empty-recent"></view>
         <view class="notice-panel">
             <view class="notice-des">我们会为你缓存最近读过的20本书籍，遇到喜欢的书籍要及时添加到书架中哦~(可左滑删除单个记录)</view>
             <view class="clear-btn" bind:tap="handleClearRecent">清空</view>
         </view>
+        <view wx:if="{{isRecentListEmpty || !enableLocalCache}}" class="empty-recent"></view>
         <i-swipeout i-class="recent-info"
-            wx:for="{{recentList}}"
+            wx:for="{{!enableLocalCache ? [] : recentList}}"
             wx:key="index"
             actions="{{actions}}"
             data-id="{{item['_id']}}"

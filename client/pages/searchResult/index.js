@@ -2,6 +2,7 @@ import regeneratorRuntime from '../../lib/regenerator-runtime/runtime-module';
 import Api from '../../lib/api';
 import storage from '../../utils/storage';
 import { zhuishushenqiApi as URL } from '../../utils/request';
+import bookListMixin from '../../template/bookList/bookListMixin';
 
 Page({
     data: {
@@ -15,6 +16,7 @@ Page({
         keyword: '',
         books: []
     },
+    mixins: [bookListMixin],
     async onLoad(options) {
         const keyword = options.keyword;
         if (!keyword) {
@@ -62,13 +64,9 @@ Page({
         return books.map(i => {
             const latelyFollower = i.latelyFollower;
             i.cover = URL.static + i.cover;
+            i.majorCate = i.cat;
             i.latelyFollower = latelyFollower > 999 ? `${(latelyFollower / 10000).toFixed(1)}万` : latelyFollower;
             return i;
-        });
-    },
-    handleItemTap(e) {
-        wx.navigateTo({
-            url: `/pages/bookInfo/index?bookId=${e.currentTarget.dataset.id}`
         });
     },
     handleModalOk() {

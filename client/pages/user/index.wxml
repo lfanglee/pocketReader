@@ -1,5 +1,34 @@
 <import src="../../template/tabBar/index.wxml" />
 <view class="page-user">
-
+    <view class="user-info-panel">
+        <view wx:if="{{!hasLogin}}" class="no-login-info-panel">
+            <view class="text">登陆口袋阅读，开启阅读计划</view>
+            <button class="login-btn" type="primary" size="mini" loading="{{loading}}" open-type="getUserInfo" bindgetuserinfo="handleGetUserInfo">
+                登陆
+            </button>
+        </view>
+        <view wx:else class="login-user-info">
+            <i-card thumb="{{userInfo.avatarUrl}}" title="{{userInfo.nickName}}" full></i-card>
+        </view>
+    </view>
+    <view class="setting-panel">
+        <i-cell-group>
+            <i-cell title="阅读主题" is-link bind:click="handleReadingThemeSet"></i-cell>
+            <i-cell title="清除本地缓存" is-link bind:click="handleLocalCacheClear"></i-cell>
+            <i-cell title="启用本地缓存">
+                <switch checked="{{enableLocalCache}}" slot="footer" bind:change="handleSwitchLocalCache" />
+            </i-cell>
+        </i-cell-group>
+    </view>
 </view>
+<i-action-sheet
+    showCancel
+    visible="{{ showThemeSelector }}"
+    actions="{{ themeActions }}"
+    bind:cancel="handleCancelThemeSetting"
+    bind:click="handleThemeSelect"></i-action-sheet>
+<i-modal visible="{{showClearStorageComfirm}}" bind:ok="handleComfirmClearStorage" bind:cancel="handleCancelClearStorage">
+    <view>删除后无法恢复哦</view>
+</i-modal>
+<i-message id="message" />
 <template is="tabBar" data="{{curTab: 'mine'}}"></template>

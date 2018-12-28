@@ -1,37 +1,4 @@
-@import '../../template/tabBar/index.scss';
-
-.page-rank {
-    height: 100%;
-    .fixed-tabs {
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 9;
-    }
-    .content {
-        height: 100%;
-        display: flex;
-        padding: 42px 0 50px;
-        .ranks-list {
-            width: 80px;
-            height: 100%;
-            overflow-x: hidden;
-            overflow-y: scroll;
-            .column-sub-tab {
-                height: 100%;
-                border-right: 1px solid #E9EaEc;
-            }
-            &::-webkit-scrollbar {
-                display: none;
-            }
-        }
-    }
-}
-
 .books-list {
-    height: 100%;
-    flex: 1;
-    overflow: auto;
     padding: 0 5px;
     box-sizing: border-box;
     .book-info {
@@ -42,8 +9,14 @@
             line-height: 23px;
             color: #333;
         }
+        .book-author {
+            font-size: 12px;
+            color: #999;
+            display: flex;
+            line-height: 18px;
+        }
         .book-short-intro {
-            margin: 9px 0 10px;
+            margin: 0 0 5px;
             font-size: 12px;
             color: #999;
             display: -webkit-box;

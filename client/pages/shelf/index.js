@@ -3,6 +3,7 @@ import storage from '../../utils/storage';
 import moment from '../../lib/moment.zh_cn';
 import { zhuishushenqiApi as URL } from '../../utils/request';
 
+const app = getApp();
 const tabs = {
     SHELF: 'myShelf',
     RECENT: 'recentRead'
@@ -30,6 +31,7 @@ Page({
 
         recentList: [],
         myBooks: [],
+        enableLocalCache: app.globalData.enableLocalCache
     },
     computed: {
         showShelfView() {
@@ -50,7 +52,8 @@ Page({
         const myBooks = storage.get('myBooks', []);
         this.setData({
             recentList: localRecords,
-            myBooks: this.formatRecords(myBooks)
+            myBooks: this.formatRecords(myBooks),
+            enableLocalCache: storage.get('enableLocalCache', true);
         });
     },
     formatRecords(arr) {

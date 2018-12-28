@@ -8,6 +8,7 @@
         "pages/search/index",
         "pages/searchResult/index",
         "pages/bookInfo/index",
+        "pages/recommendBooks/index",
         "pages/read/index",
         "pages/user/index"
     ],

@@ -13,10 +13,22 @@ Page({
 
         originBookInfo: {},
         bookInfo: {},
+        recommendBooks: [],
         isInShelf: false,
     },
+    computed: {
+        recommendBooksOnShow() {
+            return this.data.recommendBooks.slice(0, 6).map(item => {
+                item.cover = URL.static + item.cover;
+                return item;
+            });
+        }
+    },
     async onLoad(options) {
-        const originBookInfo = await this.getBookInfo(options.bookId);
+        const [originBookInfo, { books: recommendBooks }] = await Promise.all([
+            this.getBookInfo(options.bookId),
+            Api.getRecommendBooks(options.bookId)
+        ]);
         const bookInfo = this.formatBookInfo(originBookInfo);
 
         const myBooks = storage.get('myBooks', []);
@@ -29,6 +41,7 @@ Page({
         this.setData({
             originBookInfo,
             bookInfo,
+            recommendBooks,
             init: true
         }, () => {
             wx.setNavigationBarTitle({
@@ -113,6 +126,16 @@ Page({
 
         wx.navigateTo({
             url: `/pages/read/index?bookId=${bookId}&chapter=${chapter}&source=${source}`
+        });
+    },
+    handleRecommendItemTap(e) {
+        wx.navigateTo({
+            url: `/pages/bookInfo/index?bookId=${e.currentTarget.dataset.id}`
+        });
+    },
+    handleEnterMoreRecommend() {
+        wx.navigateTo({
+            url: `/pages/recommendBooks/index?bookId=${this.data.bookInfo['_id']}`
         });
     }
 });
