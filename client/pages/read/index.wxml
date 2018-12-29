@@ -28,6 +28,7 @@
                 title="{{item.title}}"
                 data-order="{{index}}"
                 data-link="{{item.link}}"
+                data-title="{{item.title}}"
                 bind:tap="handleSelectChapter"></i-cell>
         </i-cell-group>
         <i-button i-class="closeContentBtn" bind:click="toggleContents" type="ghost">关闭</i-button>
@@ -77,4 +78,4 @@
     <view class="item"></view>
 </view>
 <i-spin size="large" fix wx:if="{{!init}}" />
-<i-toast id="toast" />
+<i-toast id="toast" mask="{{false}}" />

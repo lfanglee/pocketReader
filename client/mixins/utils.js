@@ -39,7 +39,8 @@ export default {
             $Toast({
                 content: '加载中...',
                 type: 'loading',
-                duration: 0
+                duration: 0,
+                mask: false
             });
         } else {
             wx.nextTick(() => $Toast.hide());

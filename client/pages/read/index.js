@@ -3,6 +3,7 @@ import Api from '../../lib/api';
 import storage from '../../utils/storage';
 import { $Toast } from '../../components/base/index';
 
+const app = getApp();
 let isLoadingChapter = false;
 const colorList = {
     default: {
@@ -107,14 +108,14 @@ Page({
             chaptersCount: bookInfoRet.chaptersCount,
             sourceId,
             sourcesList: sourceRet,
-            chapters: this.generateChaptersList(chaptersRet.chapters, this.data.pageSize),
-            init: true,
+            chapters: this.generateChaptersList(chaptersRet.chapters, this.data.pageSize)
         }, async () => {
             this.saveReadRecord(bookInfoRet);
             wx.setNavigationBarTitle({
                 title: bookInfoRet.title
             });
             await this.loadChapter(this.data.chapter);
+            this.setData({ init: true });
         });
     },
     onShow() {
@@ -124,6 +125,7 @@ Page({
         this.setNavBarColor(pagePattern);
     },
     onUnload() {
+        this.saveReadRecord(this.data.bookInfo);
         if (!this.data.isBookInShelf) {
             const pages = getCurrentPages();
             const prevPage = pages[pages.length - 2];
@@ -157,6 +159,9 @@ Page({
         }
     },
     saveReadRecord(bookInfo) {
+        if (!app.globalData.enableLocalCache) {
+            return;
+        }
         let curLocalRecord = storage.get('localRecord', []);
         let myBooks = storage.get('myBooks', []);
         let hasRecorded = false;
@@ -264,6 +269,7 @@ Page({
     async handleSelectChapter(e) {
         this.toggleLoading();
         const chapterLink = e.currentTarget.dataset.link;
+        const title = e.currentTarget.dataset.title;
         let chapter;
         try {
             chapter = await this.getChapter(chapterLink);
@@ -279,7 +285,7 @@ Page({
             });
         } else if (chapter.cpContent && chapter.isVip) {
             this.setData({
-                title: chapter.title,
+                title,
                 chapterInvalid: true,
                 chapter: 100 * (this.data.page - 1) + e.currentTarget.dataset.order + 1,
                 showContents: false
@@ -289,7 +295,7 @@ Page({
             });
         } else {
             this.setData({
-                title: chapter.title,
+                title,
                 chapterContent: chapter.cpContent || chapter.body,
                 chapterInvalid: false,
                 chapter: 100 * (this.data.page - 1) + e.currentTarget.dataset.order + 1,
@@ -346,7 +352,9 @@ Page({
         return sources;
     },
     async loadChapter(chapterIndex) {
-        const chapterLink = this.data.chapters[Math.floor((chapterIndex - 1) / 100)][(chapterIndex - 1) % 100].link;
+        const {
+            link: chapterLink, title
+        } = this.data.chapters[Math.floor((chapterIndex - 1) / 100)][(chapterIndex - 1) % 100];
         let chapter;
         try {
             chapter = await this.getChapter(chapterLink);
@@ -361,7 +369,7 @@ Page({
             });
         } else if (chapter.cpContent && chapter.isVip) {
             this.setData({
-                title: chapter.title,
+                title,
                 chapterInvalid: true,
                 chapter: chapterIndex
             }, () => {
@@ -369,7 +377,7 @@ Page({
             });
         } else {
             this.setData({
-                title: chapter.title,
+                title,
                 chapterContent: chapter.cpContent || chapter.body,
                 chapterInvalid: false,
                 chapter: chapterIndex,

@@ -29,5 +29,5 @@
     </view>
 </view>
 <i-spin size="large" fix wx:if="{{!init}}"></i-spin>
-<i-toast id="toast" />
+<i-toast id="toast" mask="{{false}}" />
 <template is="tabBar" data="{{curTab: 'rank'}}" />

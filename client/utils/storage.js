@@ -19,6 +19,9 @@ class Storage {
             return;
         }
         const retVal = data.getStorageSync(key);
+        if (typeof retVal === 'boolean') {
+            return retVal;
+        }
         return retVal || def;
     }
 

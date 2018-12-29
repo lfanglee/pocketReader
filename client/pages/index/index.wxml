@@ -37,6 +37,6 @@
         </view>
     </view>
 </view>
-<i-toast id="toast" />
+<i-toast id="toast" mask="{{false}}" />
 <i-spin size="large" fix wx:if="{{!init}}"></i-spin>
 <template is="tabBar" data="{{curTab: 'catagory'}}"></template>

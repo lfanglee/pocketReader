@@ -29,7 +29,7 @@
         </view>
     </view>
     <template wx:if="{{!reloading}}" is="bookList" data="{{books}}"></template>
-    <i-load-more wx:if="{{init}}" tip="没有更多书籍" loading="{{loading}}" />
+    <i-load-more wx:if="{{init}}" tip="{{loading ? '加载中...' : '没有更多书籍'}}" loading="{{loading}}" />
 </view>
-<i-toast id="toast" />
+<i-toast id="toast" mask="{{false}}" />
 <i-spin size="large" fix wx:if="{{!init}}" />

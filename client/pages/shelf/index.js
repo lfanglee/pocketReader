@@ -51,9 +51,9 @@ Page({
         const localRecords = this.formatRecords(storage.get('localRecord', []));
         const myBooks = storage.get('myBooks', []);
         this.setData({
-            recentList: localRecords,
-            myBooks: this.formatRecords(myBooks),
-            enableLocalCache: storage.get('enableLocalCache', true);
+            recentList: localRecords.sort((a, b) => b.time - a.time),
+            myBooks: this.formatRecords(myBooks).sort((a, b) => b.time - a.time),
+            enableLocalCache: storage.get('enableLocalCache', true)
         });
     },
     formatRecords(arr) {

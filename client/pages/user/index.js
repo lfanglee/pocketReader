@@ -1,4 +1,3 @@
-
 import storage from '../../utils/storage';
 import { $Message } from '../../components/base/index';
 
@@ -65,6 +64,7 @@ Page({
     },
     handleSwitchLocalCache({ detail }) {
         this.setData({ enableLocalCache: detail.value });
+        app.globalData.enableLocalCache = detail.value;
         storage.set('enableLocalCache', detail.value);
     }
 });

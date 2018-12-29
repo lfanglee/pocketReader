@@ -66,4 +66,4 @@
     <view>是否将本书加入书架？</view>
 </i-modal>
 <i-spin size="large" fix wx:if="{{!init}}" />
-<i-toast id="toast" />
+<i-toast id="toast" mask="{{false}}" />

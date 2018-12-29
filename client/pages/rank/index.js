@@ -12,7 +12,7 @@ Page({
         isSubTabCollapse: true,
         books: []
     },
-    async onLoad(options) {
+    async onLoad() {
         const rankList = await this.getRankingGender();
         const currentSubTab = rankList[this.data.currentTab][0]['_id'];
         const books = await this.getRankingBooks(currentSubTab);

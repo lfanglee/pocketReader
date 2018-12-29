@@ -38,7 +38,7 @@ export default class Request {
                 },
                 fail: (res) => {
                     wx.showToast({
-                        title: res,
+                        title: res.errMsg,
                         icon: 'none',
                         duration: 1000
                     });

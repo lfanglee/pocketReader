@@ -1,2 +1,0 @@
-<view>test云函数请求结果为</view>
-<view>{{answer}}</view>

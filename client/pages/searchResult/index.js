@@ -4,6 +4,7 @@ import storage from '../../utils/storage';
 import { zhuishushenqiApi as URL } from '../../utils/request';
 import bookListMixin from '../../template/bookList/bookListMixin';
 
+const app = getApp();
 Page({
     data: {
         init: false,
@@ -47,6 +48,9 @@ Page({
         });
     },
     saveHistory(keyword) {
+        if (!app.globalData.enableLocalCache) {
+            return;
+        }
         const curHistory = storage.get('history', []);
         if (!curHistory.includes(keyword)) {
             curHistory.unshift(keyword);
