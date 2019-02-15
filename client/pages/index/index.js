@@ -20,7 +20,7 @@ Page({
                 cats: {
                     male: { title: '男生', content: this.formatImagePath(res.male) },
                     female: { title: '女生', content: this.formatImagePath(res.female) },
-                    picture: { title: '漫画', content: this.formatImagePath(res.picture) },
+                    // picture: { title: '漫画', content: this.formatImagePath(res.picture) },
                     press: { title: '出版', content: this.formatImagePath(res.press) }
                 }
             });

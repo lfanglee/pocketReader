@@ -57,6 +57,7 @@ Page({
     handleComfirmClearStorage() {
         storage.remove('history');
         storage.remove('localRecord');
+        storage.remove('readPeriod');
         this.setData({ showClearStorageComfirm: false });
     },
     handleCancelClearStorage() {

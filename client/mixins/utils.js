@@ -1,4 +1,5 @@
 import { $Toast } from '../components/base/index';
+import { thottle } from '../utils/util';
 
 const tabBar = {
     BOOKSHELF: 'bookShelf',
@@ -7,6 +8,7 @@ const tabBar = {
     MINE: 'mine'
 };
 export default {
+    thottle,
     handleTabBarChange({ detail }) {
         const { key } = detail;
         switch (key) {

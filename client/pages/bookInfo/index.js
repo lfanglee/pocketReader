@@ -15,6 +15,7 @@ Page({
         bookInfo: {},
         recommendBooks: [],
         isInShelf: false,
+        hasReaded: false,
     },
     computed: {
         recommendBooksOnShow() {
@@ -32,9 +33,20 @@ Page({
         const bookInfo = this.formatBookInfo(originBookInfo);
 
         const myBooks = storage.get('myBooks', []);
+        const localRecords = storage.get('localRecord', []);
+        let isInShelf = false;
+        let hasReaded = false;
         myBooks.forEach(item => {
             if (item['_id'] === bookInfo['_id']) {
-                this.setData({ isInShelf: true });
+                isInShelf = true;
+                return;
+            }
+        });
+
+        const arr = isInShelf ? myBooks : localRecords;
+        arr.forEach(item => {
+            if (item['_id'] === bookInfo['_id']) {
+                hasReaded = true;
                 return;
             }
         });
@@ -42,6 +54,8 @@ Page({
             originBookInfo,
             bookInfo,
             recommendBooks,
+            isInShelf,
+            hasReaded,
             init: true
         }, () => {
             wx.setNavigationBarTitle({

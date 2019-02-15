@@ -59,7 +59,7 @@
     <view class="bottom-btn">
         <i-button wx:if="{{isInShelf}}" i-class="btn" inline shape="circle" type="ghost" bind:click="handleRemoveFromShelf">移出书架</i-button>
         <i-button wx:else i-class="btn" inline shape="circle" type="success" bind:click="handleAddToShelf">加入书架</i-button>
-        <i-button i-class="btn" inline shape="circle" type="error" bind:click="handleBeginReading">开始阅读</i-button>
+        <i-button i-class="btn" inline shape="circle" type="error" bind:click="handleBeginReading">{{hasReaded ? '继续阅读' : '开始阅读'}}</i-button>
     </view>
 </view>
 <i-modal title="收藏提示" visible="{{showAddToShelfNotice}}" bind:ok="handleOkAddToShelfNotice" bind:cancel="handleCancelAddToShelfNotice">

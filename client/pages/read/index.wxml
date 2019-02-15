@@ -21,7 +21,8 @@
                     <view>{{pageSelectArray[page - 1]}} <i-icon i-class="unfold" type="unfold" size="12"></i-icon></view>
                 </picker>
             </i-cell>
-            <i-cell
+            <scroll-view class="list-scroll-content" scroll-y scroll-top="{{indexScrollTop}}">
+                <i-cell
                 i-class="{{chapter == (100 * (page - 1) + (index + 1)) ? 'active' : ''}}"
                 wx:for="{{chapters[page - 1]}}"
                 wx:key="{{index}}"
@@ -30,6 +31,7 @@
                 data-link="{{item.link}}"
                 data-title="{{item.title}}"
                 bind:tap="handleSelectChapter"></i-cell>
+            </scroll-view>
         </i-cell-group>
         <i-button i-class="closeContentBtn" bind:click="toggleContents" type="ghost">关闭</i-button>
     </view>
@@ -55,6 +57,9 @@
     <view wx:if="{{!isBookInShelf}}" class="to-book-shelf {{showBottomPanel ? 'to-book-shelf-show': ''}}" bind:tap="addToShelf">加入书架</view>
 </view>
 <view class="bottom-panel {{showBottomPanel ? 'bottom-panel-show' : ''}}">
+    <view class="item chapter-title">
+        {{title}}
+    </view>
     <view class="item">
         <view class="previous-chapter {{chapter == 1 ? 'disabled' : ''}}" bind:tap="handlePreChapter"><i-icon type="return" size="18"/></view>
         <i-progress i-class="read-progress" percent="{{ readProgress }}" stroke-width="3" hide-info></i-progress>

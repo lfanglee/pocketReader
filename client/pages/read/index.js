@@ -2,9 +2,12 @@ import regeneratorRuntime from '../../lib/regenerator-runtime/runtime-module';
 import Api from '../../lib/api';
 import storage from '../../utils/storage';
 import { $Toast } from '../../components/base/index';
+import { thottle, debounce } from '../../utils/util';
 
 const app = getApp();
 let isLoadingChapter = false;
+let savedScrollTop;
+let shouldSaveScrollTop = false;
 const colorList = {
     default: {
         backgroundColor: '#eee6dd',
@@ -44,6 +47,8 @@ Page({
         pageSize: 100,
         fontSize: 20,  // 0 - 100 对应 20px - 30px
         pagePattern: readMode.DEFAULT,
+        scrollTop: 0,
+        indexScrollTop: 0,
 
         chapters: {},
         sourcesList: [],
@@ -91,15 +96,6 @@ Page({
             return;
         }
 
-        const myBooks = storage.get('myBooks', []);
-        myBooks.map(i => {
-            if (i['_id'] === bookId) {
-                this.setData({
-                    isBookInShelf: true
-                });
-            }
-            return;
-        });
         const sourceId = source || sourceRet[0]['_id'];
         this.setData({
             bookId,
@@ -115,17 +111,33 @@ Page({
                 title: bookInfoRet.title
             });
             await this.loadChapter(this.data.chapter);
-            this.setData({ init: true });
+            this.setData({ init: true }, () => {
+                this.haveLoaded();
+            });
+        });
+
+        const myBooks = storage.get('myBooks', []);
+        myBooks.map(i => {
+            if (i['_id'] === bookId) {
+                this.setData({
+                    isBookInShelf: true
+                });
+            }
+            return;
         });
     },
-    onShow() {
-        const setting = storage.get('setting', {});
-        const { readMode: pagePattern = readMode.DEFAULT, fontSize = 20 } = setting;
-        this.setData({ pagePattern, fontSize });
-        this.setNavBarColor(pagePattern);
+    onPageScroll({ scrollTop }) {
+        savedScrollTop = scrollTop;
+        this.setScrollTop();
+        if (shouldSaveScrollTop) {
+            shouldSaveScrollTop = false;
+            this.setData({ scrollTop: savedScrollTop }, () => {
+                savedScrollTop && this.saveReadPeriod(savedScrollTop);
+            });
+        }
     },
     onUnload() {
-        this.saveReadRecord(this.data.bookInfo);
+        this.saveReadPeriod(this.data.scrollTop);
         if (!this.data.isBookInShelf) {
             const pages = getCurrentPages();
             const prevPage = pages[pages.length - 2];
@@ -134,6 +146,25 @@ Page({
             });
         }
     },
+    haveLoaded() {
+        const readPeriod = storage.get('readPeriod', []);
+        const setting = storage.get('setting', {});
+        const { readMode: pagePattern = readMode.DEFAULT, fontSize = 20 } = setting;
+        this.setData({ pagePattern, fontSize });
+        this.setNavBarColor(pagePattern);
+        readPeriod.forEach(item => {
+            if (item['_id'] === this.data.bookId) {
+                wx.pageScrollTo({
+                    scrollTop: item.scrollTop,
+                    duration: 0
+                });
+                return;
+            }
+        });
+    },
+    setScrollTop: thottle(() => {
+        shouldSaveScrollTop = true;
+    }, 1000),
     setNavBarColor(mode) {
         switch (mode) {
             case readMode.DEFAULT:
@@ -204,6 +235,25 @@ Page({
         }
         storage.set('localRecord', curLocalRecord);
         storage.set('myBooks', myBooks);
+    },
+    saveReadPeriod(scrollTop) {
+        const { bookId } = this.data;
+        let readPeriod = storage.get('readPeriod', []);
+        let hasRecord = false;
+        readPeriod = readPeriod.map(item => {
+            if (item['_id'] === bookId) {
+                hasRecord = true;
+                item.scrollTop = scrollTop;
+            }
+            return item;
+        });
+        if (!hasRecord) {
+            readPeriod.unshift({
+                _id: bookId,
+                scrollTop
+            });
+        }
+        storage.set('readPeriod', readPeriod);
     },
     toggleContents() {
         this.setData({
@@ -391,6 +441,13 @@ Page({
             });
         }
     },
+    updateIndexScrollTop(scrollTop) {
+        const { page, chapter } = this.data;
+        const index = chapter - 100 * (page - 1);
+        this.setData({
+            indexScrollTop: scrollTop || 48 * (index - 1)
+        });
+    },
     async handleNextChapter() {
         if (this.data.chapter >= this.data.chaptersCount) {
             return;
@@ -398,6 +455,7 @@ Page({
         this.toggleLoading();
         this.setData({ showBottomPanel: false });
         await this.loadChapter(1 + +this.data.chapter);
+        this.updateIndexScrollTop();
         this.toggleLoading(false);
     },
     async handlePreChapter() {
@@ -407,6 +465,7 @@ Page({
         this.toggleLoading();
         this.setData({ showBottomPanel: false });
         await this.loadChapter(+this.data.chapter - 1);
+        this.updateIndexScrollTop();
         this.toggleLoading(false);
     },
     handleOpenContents() {
