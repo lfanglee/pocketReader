@@ -6,7 +6,8 @@ Page({
     data: {
         init: false,
         sex: false,
-        cats: {}
+        cats: {},
+        loadBookCover: false
     },
     async onLoad() {
         this.toggleLoading();
@@ -23,6 +24,8 @@ Page({
                     // picture: { title: '漫画', content: this.formatImagePath(res.picture) },
                     press: { title: '出版', content: this.formatImagePath(res.press) }
                 }
+            }, () => {
+                this.setData({ loadBookCover: true });
             });
         } catch (e) {
             wx.showToast({

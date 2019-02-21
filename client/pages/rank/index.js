@@ -22,15 +22,11 @@ Page({
         });
     },
     async getRankingGender() {
-        this.toggleLoading();
         const result = await Api.getRankingGender();
-        this.toggleLoading(false);
         return result;
     },
     async getRankingBooks(rankingId) {
-        this.toggleLoading();
         const result = await Api.getRankingBooks(rankingId);
-        this.toggleLoading(false);
         return this.formatBookInfo(result.ranking.books);
     },
     resetCurSubTab() {

@@ -16,6 +16,7 @@ Page({
         recommendBooks: [],
         isInShelf: false,
         hasReaded: false,
+        showCover: false
     },
     computed: {
         recommendBooksOnShow() {
@@ -61,6 +62,7 @@ Page({
             wx.setNavigationBarTitle({
                 title: bookInfo.title
             });
+            this.setData({ showCover: true });
         });
     },
     onShow() {
@@ -69,7 +71,7 @@ Page({
         }
     },
     async getBookInfo(bookId) {
-        this.toggleLoading();
+        this.data.init && this.toggleLoading();
         const result = await Api.getBookInfo(bookId);
         this.toggleLoading(false);
         return result;

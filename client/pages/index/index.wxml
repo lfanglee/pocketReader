@@ -19,11 +19,13 @@
             <view class="category-item-list">
                 <view wx:for="{{item.content}}" wx:for-item="cat" wx:for-index="cat-index" wx:key="{{cat-index}}" class="list-item" data-category="{{cat.name}}" bind:tap="handleCategoryItemTap">
                     <view class="images">
-                        <image wx:for="{{cat.bookCover}}"
+                        <image
+                            class="{{loadBookCover ? 'show' : ''}}"
+                            wx:for="{{cat.bookCover}}"
                             wx:for-index="image-index"
                             wx:for-item="image"
                             wx:key="{{image-index}}"
-                            src="{{image}}"
+                            src="{{loadBookCover ? image : '../../images/book-cover.png'}}"
                             mode="aspectFill"
                             lazy-load="false" />
                     </view>

@@ -37,5 +37,10 @@
     .cover-image {
         width: 70px;
         height: 100px;
+        opacity: 0;
+        transition: opacity .5s ease;
+        &.show {
+            opacity: 1;
+        }
     }
 }

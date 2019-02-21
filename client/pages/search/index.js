@@ -31,7 +31,7 @@ Page({
             return this.randomArr(this.data.hotWord).slice(0, 6);
         }
     },
-    async onLoad(options) {
+    async onLoad() {
         const searchHotwordsRet = await Api.getSearchHotWords();
         const hotWordRet = await Api.getHotWord();
 

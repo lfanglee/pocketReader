@@ -2,7 +2,7 @@ import regeneratorRuntime from '../../lib/regenerator-runtime/runtime-module';
 import Api from '../../lib/api';
 import storage from '../../utils/storage';
 import { $Toast } from '../../components/base/index';
-import { thottle, debounce } from '../../utils/util';
+import { thottle } from '../../utils/util';
 
 const app = getApp();
 let isLoadingChapter = false;
@@ -161,6 +161,7 @@ Page({
                 return;
             }
         });
+        this.updateIndexScrollTop();
     },
     setScrollTop: thottle(() => {
         shouldSaveScrollTop = true;
@@ -172,17 +173,26 @@ Page({
                     frontColor: '#000000',
                     backgroundColor: colorList.default.backgroundColor
                 });
+                wx.setBackgroundColor({
+                    backgroundColor: colorList.default.backgroundColor
+                });
                 break;
             case readMode.NIGHT:
                 wx.setNavigationBarColor({
                     frontColor: '#ffffff',
                     backgroundColor: colorList.night.backgroundColor
                 });
+                wx.setBackgroundColor({
+                    backgroundColor: colorList.default.backgroundColor
+                });
                 break;
             case readMode.EYE:
                 wx.setNavigationBarColor({
                     frontColor: '#000000',
                     backgroundColor: colorList.eye.backgroundColor
+                });
+                wx.setBackgroundColor({
+                    backgroundColor: colorList.default.backgroundColor
                 });
                 break;
             default:
@@ -521,5 +531,8 @@ Page({
             storage.set('myBooks', myBooks);
             this.setData({ isBookInShelf: true });
         }
+    },
+    listTouchMove() {
+        return;
     }
 });

@@ -14,7 +14,7 @@
     </view>
 </view>
 <i-drawer mode="left" visible="{{showContents}}" mask-closable="{{true}}" bind:close="toggleContents">
-    <view class="contents-wrapper">
+    <view class="contents-wrapper" catch:touchmove="listTouchMove">
         <i-cell-group i-class="contents-list">
             <i-cell i-class="contents-title" title="目录(共{{chaptersCount}}章)">
                 <picker slot="footer" class="page-select" bindchange="handlePageChange" value="{{page - 1}}" range="{{pageSelectArray}}">
@@ -37,7 +37,7 @@
     </view>
 </i-drawer>
 <i-drawer mode="right" visible="{{showSources}}" mask-closable="{{true}}" bind:close="toggleSources">
-    <view class="sources-wrapper">
+    <view class="sources-wrapper" catch:touchmove="listTouchMove">
         <i-cell-group i-class="sources-list">
             <i-cell i-class="sources-title" title="请选择小说源"></i-cell>
             <i-cell
@@ -56,7 +56,7 @@
 <view class="right-panel">
     <view wx:if="{{!isBookInShelf}}" class="to-book-shelf {{showBottomPanel ? 'to-book-shelf-show': ''}}" bind:tap="addToShelf">加入书架</view>
 </view>
-<view class="bottom-panel {{showBottomPanel ? 'bottom-panel-show' : ''}}">
+<view class="bottom-panel {{showBottomPanel ? 'bottom-panel-show' : ''}}" catch:touchmove="listTouchMove">
     <view class="item chapter-title">
         {{title}}
     </view>

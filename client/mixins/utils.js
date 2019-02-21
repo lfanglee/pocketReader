@@ -1,5 +1,5 @@
 import { $Toast } from '../components/base/index';
-import { thottle } from '../utils/util';
+import { thottle, debounce } from '../utils/util';
 
 const tabBar = {
     BOOKSHELF: 'bookShelf',
@@ -9,6 +9,7 @@ const tabBar = {
 };
 export default {
     thottle,
+    debounce,
     handleTabBarChange({ detail }) {
         const { key } = detail;
         switch (key) {
@@ -47,5 +48,5 @@ export default {
         } else {
             wx.nextTick(() => $Toast.hide());
         }
-    },
+    }
 };

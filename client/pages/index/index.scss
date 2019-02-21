@@ -57,6 +57,11 @@
                     position: relative;
                     image {
                         position: absolute;
+                        transition: opacity 1s ease;
+                        opacity: 0;
+                        &.show {
+                            opacity: 1;
+                        }
                         &:first-of-type {
                             width: 35px;
                             height: 50px;

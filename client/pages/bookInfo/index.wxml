@@ -50,7 +50,7 @@
         </view>
         <view class="recommend-books-list">
             <view wx:for="{{recommendBooksOnShow}}" wx:key="{{index}}" class="recommend-book-item" data-id="{{item._id}}" bind:tap="handleRecommendItemTap">
-                <image class="cover-image" src="{{item.cover}}" mode="aspectFill" lazy-load></image>
+                <image class="cover-image {{showCover ? 'show' : ''}}" src="{{showCover ? item.cover : '../../images/book-cover.png'}}" mode="aspectFill"></image>
                 <view class="recommend-book-title">{{item.title}}</view>
                 <view class="recommend-book-author">{{item.author}}</view>
             </view>

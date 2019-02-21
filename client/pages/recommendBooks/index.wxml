@@ -1,5 +1,5 @@
 <import src="../../template/bookList/index.wxml"></import>
 <view wx:if="{{init}}" class="page-recommend-books">
-    <template is="bookList" data="{{books}}"></template>
+    <template is="bookList" data="{{books, showCover}}"></template>
 </view>
 <i-spin size="large" fix wx:if="{{!init}}" />

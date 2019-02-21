@@ -2,7 +2,7 @@
     <view class="books-list">
         <i-row i-class="book-info" wx:for="{{books}}" wx:key="{{item._id}}" data-id="{{item._id}}" bind:tap="handleItemTap">
             <i-col span="6">
-                <image class="cover-image" src="{{item.cover}}" mode="aspectFit" lazy-load></image>
+                <image class="cover-image {{showCover ? 'show' : ''}}" src="{{showCover ? item.cover : '../../images/book-cover.png'}}" mode="aspectFit"></image>
             </i-col>
             <i-col span="18">
                 <text class="book-title">{{item.title}}</text>

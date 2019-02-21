@@ -98,6 +98,8 @@
     }
     .book-latest-chapter {
         margin-top: 12px;
+        padding-left: 20px;
+        padding-right: 20px;
         background: #FAFAFA;
         border: 1px solid #e9eaec;
         border-left-width: 0;
@@ -142,6 +144,11 @@
                 .cover-image {
                     width: 98px;
                     height: 140px;
+                    opacity: 0;
+                    transition: opacity .3s ease;
+                    &.show {
+                        opacity: 1;
+                    }
                 }
                 .recommend-book-title, .recommend-book-author {
                     display: block;

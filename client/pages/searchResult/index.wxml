@@ -1,6 +1,6 @@
 <import src="../../template/bookList/index.wxml"></import>
 <view wx:if="{{init}}" class="page-search-result">
-    <template is="bookList" data="{{books}}"></template>
+    <template is="bookList" data="{{books, showCover}}"></template>
     <i-load-more wx:if="{{init}}" tip="{{loading ? '加载中...' : '没有更多书籍'}}" loading="{{loading}}" />
 </view>
 <i-spin size="large" fix wx:if="{{!init}}" />

@@ -1,7 +1,7 @@
 import regeneratorRuntime from '../../lib/regenerator-runtime/runtime-module';
 import Api from '../../lib/api';
 import { zhuishushenqiApi as URL } from '../../utils/request';
-
+import { thottle } from '../../utils/util';
 import bookListMixin from '../../template/bookList/bookListMixin'
 
 const typeList = [{
@@ -21,8 +21,7 @@ const typeList = [{
     key: 'monthly'
 }];
 let cacheScrollTop = 0;
-let timer;
-let lastTime = Date.now();
+let isFilterBarExt;
 Page({
     data: {
         init: false,
@@ -104,24 +103,19 @@ Page({
         });
     },
     onPageScroll({ scrollTop }) {
-        const handleFilterBarStatusByposition = () => {
-            if (scrollTop >= 90 && scrollTop > cacheScrollTop) {
-                this.setData({ isFilterBarExt: false });
-            } else if (scrollTop < 90) {
-                this.setData({ isFilterBarExt: true });
-            }
-            cacheScrollTop = scrollTop;
-        };
-        clearTimeout(timer);
-        if (Date.now() - lastTime >= 50) {
-            handleFilterBarStatusByposition();
-            lastTime = Date.now();
-        } else {
-            timer = setTimeout(() => {
-                handleFilterBarStatusByposition();
-            }, 50);
+        this.handleFilterBarStatus(scrollTop);
+        if (this.data.isFilterBarExt !== isFilterBarExt) {
+            this.setData({ isFilterBarExt });
         }
     },
+    handleFilterBarStatus: thottle((scrollTop) => {
+        if (scrollTop >= 90 && scrollTop > cacheScrollTop) {
+            isFilterBarExt = false;
+        } else if (scrollTop < 90) {
+            isFilterBarExt = true;
+        }
+        cacheScrollTop = scrollTop;
+    }, 50),
     async getSubCat(keyword) {
         let mins;
         let gender;
@@ -181,6 +175,7 @@ Page({
         }, () => this.reLoadBooks());
     },
     handleExtFilterBar() {
+        isFilterBarExt = true;
         this.setData({ isFilterBarExt: true });
     },
     async reLoadBooks() {
