@@ -1,32 +1,32 @@
-const thottle = (fn, wait) => {
+const throttle = function (fn, wait) {
     if (!wait) {
         wait = 1000;
     }
     let timer = null;
     let lastTime = null;
-    return (...params) => {
+    return function (...params) {
         clearTimeout(timer);
         const nowTime = +new Date();
         if (nowTime - lastTime > wait || !lastTime) {
-            fn(...params);
+            fn.apply(this, params);
             lastTime = nowTime;
         } else {
             timer = setTimeout(() => {
-                fn(...params);
+                fn.apply(this, params);
             }, wait);
         }
     };
 };
 
-const debounce = (fn, wait) => {
+const debounce = function (fn, wait) {
     let timer = null;
-    return (...params) => {
+    return function (...params) {
         if (timer) {
             clearTimeout(timer);
             timer = null;
         }
         timer = setTimeout(() => {
-            fn(...params);
+            fn.apply(this, params);
         }, wait);
     };
 };
@@ -34,7 +34,7 @@ const debounce = (fn, wait) => {
 const noOp = () => {};
 
 export {
-    thottle,
+    throttle,
     debounce,
     noOp
 };

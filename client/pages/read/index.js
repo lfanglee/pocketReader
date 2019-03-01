@@ -2,7 +2,7 @@ import regeneratorRuntime from '../../lib/regenerator-runtime/runtime-module';
 import Api from '../../lib/api';
 import storage from '../../utils/storage';
 import { $Toast } from '../../components/base/index';
-import { thottle } from '../../utils/util';
+import { throttle } from '../../utils/util';
 
 const app = getApp();
 let isLoadingChapter = false;
@@ -163,7 +163,7 @@ Page({
         });
         this.updateIndexScrollTop();
     },
-    setScrollTop: thottle(() => {
+    setScrollTop: throttle(() => {
         shouldSaveScrollTop = true;
     }, 1000),
     setNavBarColor(mode) {

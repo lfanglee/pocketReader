@@ -96,6 +96,7 @@
                 "asyncArrow": "always"
             }
         ],
+        "func-names": "off",
         "comma-dangle": ["warn", "only-multiline"],
         "no-console": "off",
         "spaced-comment": [
