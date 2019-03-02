@@ -67,9 +67,22 @@ Page({
         this.setData({ curTab: detail.key });
     },
     handleItemTap(e) {
-        const { id } = e.currentTarget.dataset;
+        const { id, type } = e.currentTarget.dataset;
+        const myBooks = storage.get('myBooks', []);
+        const localRecords = storage.get('localRecord', []);
+        let chapter = 1;
+        let source = '';
+        const arr = type === 'shelf' ? myBooks : localRecords;
+        arr.forEach(item => {
+            if (item['_id'] === id) {
+                chapter = item.chapter;
+                source = item.source || '';
+                return;
+            }
+        });
+
         wx.navigateTo({
-            url: `/pages/bookInfo/index?bookId=${id}`
+            url: `/pages/read/index?bookId=${id}&chapter=${chapter}&source=${source}`
         });
     },
     handleRecentItemChange(e) {

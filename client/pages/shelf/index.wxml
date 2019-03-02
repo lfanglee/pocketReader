@@ -15,7 +15,7 @@
             actions="{{actions}}"
             data-id="{{item['_id']}}"
             bind:change="handleBooksItemChange">
-            <i-row slot="content" data-id="{{item['_id']}}" bind:tap="handleItemTap">
+            <i-row slot="content" data-type="shelf" data-id="{{item['_id']}}" bind:tap="handleItemTap">
                 <i-col span="5">
                     <image class="cover-image" src="{{item.cover}}" mode="aspectFit" lazy-load></image>
                 </i-col>
@@ -39,7 +39,7 @@
             actions="{{actions}}"
             data-id="{{item['_id']}}"
             bind:change="handleRecentItemChange">
-            <i-row slot="content" data-id="{{item['_id']}}" bind:tap="handleItemTap">
+            <i-row slot="content" data-type="recent" data-id="{{item['_id']}}" bind:tap="handleItemTap">
                 <i-col span="5">
                     <image class="cover-image" src="{{item.cover}}" mode="aspectFit" lazy-load></image>
                 </i-col>

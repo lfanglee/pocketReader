@@ -2,7 +2,7 @@ import regeneratorRuntime from '../../lib/regenerator-runtime/runtime-module';
 import Api from '../../lib/api';
 import { zhuishushenqiApi as URL } from '../../utils/request';
 import { throttle } from '../../utils/util';
-import bookListMixin from '../../template/bookList/bookListMixin'
+import bookListMixin from '../../template/bookList/bookListMixin';
 
 const typeList = [{
     name: '热门',

@@ -111,9 +111,7 @@ Page({
                 title: bookInfoRet.title
             });
             await this.loadChapter(this.data.chapter);
-            this.setData({ init: true }, () => {
-                this.haveLoaded();
-            });
+            this.haveLoaded();
         });
 
         const myBooks = storage.get('myBooks', []);
@@ -162,6 +160,7 @@ Page({
             }
         });
         this.updateIndexScrollTop();
+        this.setData({ init: true });
     },
     setScrollTop: throttle(() => {
         shouldSaveScrollTop = true;
