@@ -7,7 +7,7 @@
     <view wx:if="{{showShelfView}}" class="myShelf-view content">
         <view wx:if="{{isShelfEmpty}}" class="empty-shelf">
             <image src="../../images/empty-shelf.png" mode="aspectFit" lazy-load="false" />
-            书架空空如也，快去逛逛找书吧~
+            书架空空如也，快去<view class="goto-index" bind:tap="handleGotoIndex">逛逛</view>找书吧~
         </view>
         <i-swipeout i-class="recent-info"
             wx:for="{{myBooks}}"

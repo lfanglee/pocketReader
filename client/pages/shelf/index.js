@@ -66,6 +66,11 @@ Page({
     handleTabChange({ detail }) {
         this.setData({ curTab: detail.key });
     },
+    handleGotoIndex() {
+        wx.switchTab({
+            url: '/pages/index/index'
+        });
+    },
     handleItemTap(e) {
         const { id, type } = e.currentTarget.dataset;
         const myBooks = storage.get('myBooks', []);
