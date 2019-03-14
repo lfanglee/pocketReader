@@ -8,6 +8,11 @@ const app = getApp();
 let isLoadingChapter = false;
 let savedScrollTop;
 let shouldSaveScrollTop = false;
+
+let touchStartX;
+let touchStartY;
+let time; // 记录滑动时间戳
+
 const colorList = {
     default: {
         backgroundColor: '#eee6dd',
@@ -29,6 +34,10 @@ const readMode = {
     NIGHT: 'night',
     EYE: 'eye'
 };
+const pageMode = {
+    ROW: 'row',
+    COLUMN: 'column'
+};
 
 Page({
     data: {
@@ -49,6 +58,9 @@ Page({
         pagePattern: readMode.DEFAULT,
         scrollTop: 0,
         indexScrollTop: 0,
+
+        pageMode: pageMode.COLUMN,
+        animationData: {},
 
         chapters: {},
         sourcesList: [],
@@ -534,5 +546,54 @@ Page({
     },
     listTouchMove() {
         return;
+    },
+    // 滑动阅读相关
+    handleSlideStart(e) {
+        console.log('start:', e);
+        touchStartX = e.changedTouches[0].clientX;
+        touchStartY = e.changedTouches[0].clientY;
+        time = e.timeStamp;
+
+        const animation = wx.createAnimation({
+            duration: 1000,
+            timingFunction: 'ease'
+        });
+        this.animation = animation;
+        this.setData({
+            animation: animation.export()
+        });
+    },
+    handleSlideMove(e) {
+        const touchMove = e.touches[0].pageX;
+        if (touchMove - touchStartX <= -40) {
+
+        }
+    },
+    handleSlideEnd(e) {
+        const x = e.changedTouches[0].clientX;
+        const y = e.changedTouches[0].clientY;
+        const turn = this.getTouchData(x, y, touchStartX, touchStartY);
+        if (turn === 'left') {
+            this.animation.translateX(-360).step();
+            this.setData({
+                animationData: this.animation.export()
+            });
+        } else if (turn === 'right') {
+            this.animation.translateX(360).step();
+            this.setData({
+                animationData: this.animation.export()
+            });
+        }
+    },
+    handleSlideCancel(e) {
+        console.log('cancel:', e);
+    },
+    getTouchData(endX, endY, startX, startY) {
+        if (endX - startX > 50 && Math.abs(endY - startY) < 50) {
+            return 'right';
+        }
+        if (endX - startX < -50 && Math.abs(endY - startY) < 50) {
+            return 'left';
+        }
     }
 });

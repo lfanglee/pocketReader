@@ -43,6 +43,11 @@ $eyeTitleColor: #0c2e10;
     &.eye-mode {
         @include read-mode($eyeFontColor, $eyeTitleColor, $eyeBackgroundColor);
     }
+    .read-mode-column {
+        column-width: 375px;
+        height: 100%;
+        overflow: hidden;
+    }
     .article-title {
         display: block;
         font-size: 20px;
