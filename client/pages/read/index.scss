@@ -43,10 +43,16 @@ $eyeTitleColor: #0c2e10;
     &.eye-mode {
         @include read-mode($eyeFontColor, $eyeTitleColor, $eyeBackgroundColor);
     }
+    // 滑屏样式
     .read-mode-column {
-        column-width: 375px;
+        width: 375px;
         height: 100%;
         overflow: hidden;
+        .slide-wrapper {
+            column-width: 375px;  // 页面分栏展示的关键设置
+            column-gap: 40px;
+            height: 100%;
+        }
     }
     .article-title {
         display: block;

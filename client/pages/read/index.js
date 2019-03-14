@@ -11,7 +11,9 @@ let shouldSaveScrollTop = false;
 
 let touchStartX;
 let touchStartY;
-let time; // 记录滑动时间戳
+let totalPages;
+let index = 1;  // 滑动模式的页数 1开始
+let time;
 
 const colorList = {
     default: {
@@ -86,6 +88,26 @@ Page({
             return (this.data.fontSize / 100) * 10 + 16;
         }
     },
+    watch: {
+        chapterContent(newVal) {
+            index = 1;
+            if (this.animation) {
+                this.animation.translateX(0).step();
+                this.setData({
+                    animationData: this.animation.export()
+                });
+            }
+        },
+        fontSize(newVal) {
+            index = 1;
+            if (this.animation) {
+                this.animation.translateX(0).step();
+                this.setData({
+                    animationData: this.animation.export()
+                });
+            }
+        }
+    },
     async onLoad(options) {
         const { bookId, chapter = 1, source } = options;
         let bookInfoRet;
@@ -134,6 +156,11 @@ Page({
                 });
             }
             return;
+        });
+
+        const query = wx.createSelectorQuery();
+        query.select('.slide-wrapper').boundingClientRect((res) => {debugger
+            pageWidth = res.width;
         });
     },
     onPageScroll({ scrollTop }) {
@@ -548,41 +575,43 @@ Page({
     },
     // 滑动阅读相关
     handleSlideStart(e) {
-        console.log('start:', e);
-        touchStartX = e.changedTouches[0].clientX;
-        touchStartY = e.changedTouches[0].clientY;
-        time = e.timeStamp;
+        const query = wx.createSelectorQuery();
+        query.select('.article-body').boundingClientRect((res) => {
+            totalPages = Math.round(res.width / 415);
 
-        const animation = wx.createAnimation({
-            duration: 1000,
-            timingFunction: 'ease'
-        });
-        this.animation = animation;
-        this.setData({
-            animation: animation.export()
-        });
+            touchStartX = e.changedTouches[0].clientX;
+            touchStartY = e.changedTouches[0].clientY;
+            time = e.timeStamp;
+
+            const animation = wx.createAnimation({
+                duration: 1000,
+                timingFunction: 'ease'
+            });
+            this.animation = animation;
+            this.setData({
+                animation: animation.export()
+            });
+        }).exec();
     },
     handleSlideMove(e) {
-        const touchMove = e.touches[0].pageX;
-        if (touchMove - touchStartX <= -40) {
+        // const touchMove = e.touches[0].pageX;
+        // if (touchMove - touchStartX <= -40) {
 
-        }
+        // }
     },
     handleSlideEnd(e) {
         const x = e.changedTouches[0].clientX;
         const y = e.changedTouches[0].clientY;
         const turn = this.getTouchData(x, y, touchStartX, touchStartY);
-        if (turn === 'left') {
-            this.animation.translateX(-360).step();
-            this.setData({
-                animationData: this.animation.export()
-            });
-        } else if (turn === 'right') {
-            this.animation.translateX(360).step();
-            this.setData({
-                animationData: this.animation.export()
-            });
+        if (turn === 'left' && index < totalPages) {
+            index++;
+        } else if (turn === 'right' && index > 1) {
+            index--;
         }
+        this.animation.translateX(-415 * (index - 1)).step();
+        this.setData({
+            animationData: this.animation.export()
+        });
     },
     handleSlideCancel(e) {
         console.log('cancel:', e);
