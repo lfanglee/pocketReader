@@ -18,7 +18,7 @@
         </view>
     </view>
     <view wx:if="{{!hasSearchText}}" class="suggest-panel">
-        <view class="search-hotwords panel">
+        <view wx:if="{{searchHotwords && searchHotwords.length}}" class="search-hotwords panel">
             <view class="search-hotwords-title panel-title">
                 <view class="title">搜索热词</view>
                 <view class="refresh-btn" bind:tap="handleRefreshSearchHotWords">换一批<i-icon i-class="icon" type="refresh" /></view>
@@ -27,7 +27,7 @@
                 <view class="word-item" wx:for="{{showSearchHotWords}}" wx:key="{{index}}" data-word="{{item.word}}" bind:tap="handleHotWordTap">{{item.word}}</view>
             </view>
         </view>
-        <view class="hotword panel">
+        <view wx:if="{{hotWord && hotWord.length}}" class="hotword panel">
             <view class="hotword-title panel-title">
                 <view class="title">热门推荐</view>
                 <view class="refresh-btn" bind:tap="handleRefreshHotWord">换一批<i-icon i-class="icon" type="refresh" /></view>
@@ -36,7 +36,7 @@
                 <view class="word-item" wx:for="{{showHotWord}}" wx:key="{{index}}" data-word="{{item}}" bind:tap="handleHotWordTap">{{item}}</view>
             </view>
         </view>
-        <view class="history panel">
+        <view wx:if="{{history && history.length}}" class="history panel">
             <view class="history-title panel-title">
                 <view class="title">搜索历史</view>
                 <view class="delete-btn" bind:tap="handleDeleteHistory">删除历史<i-icon i-class="icon" type="trash" /></view>

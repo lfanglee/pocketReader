@@ -1,8 +1,8 @@
 import regeneratorRuntime from '../../lib/regenerator-runtime/runtime-module';
 import Api from '../../lib/api';
 import { zhuishushenqiApi as URL } from '../../utils/request';
-import { thottle } from '../../utils/util';
-import bookListMixin from '../../template/bookList/bookListMixin'
+import { throttle } from '../../utils/util';
+import bookListMixin from '../../template/bookList/bookListMixin';
 
 const typeList = [{
     name: '热门',
@@ -108,7 +108,7 @@ Page({
             this.setData({ isFilterBarExt });
         }
     },
-    handleFilterBarStatus: thottle((scrollTop) => {
+    handleFilterBarStatus: throttle((scrollTop) => {
         if (scrollTop >= 90 && scrollTop > cacheScrollTop) {
             isFilterBarExt = false;
         } else if (scrollTop < 90) {

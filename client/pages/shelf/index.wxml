@@ -7,7 +7,7 @@
     <view wx:if="{{showShelfView}}" class="myShelf-view content">
         <view wx:if="{{isShelfEmpty}}" class="empty-shelf">
             <image src="../../images/empty-shelf.png" mode="aspectFit" lazy-load="false" />
-            书架空空如也，快去逛逛找书吧~
+            书架空空如也，快去<view class="goto-index" bind:tap="handleGotoIndex">逛逛</view>找书吧~
         </view>
         <i-swipeout i-class="recent-info"
             wx:for="{{myBooks}}"
@@ -15,7 +15,7 @@
             actions="{{actions}}"
             data-id="{{item['_id']}}"
             bind:change="handleBooksItemChange">
-            <i-row slot="content" data-id="{{item['_id']}}" bind:tap="handleItemTap">
+            <i-row slot="content" data-type="shelf" data-id="{{item['_id']}}" bind:tap="handleItemTap">
                 <i-col span="5">
                     <image class="cover-image" src="{{item.cover}}" mode="aspectFit" lazy-load></image>
                 </i-col>
@@ -39,7 +39,7 @@
             actions="{{actions}}"
             data-id="{{item['_id']}}"
             bind:change="handleRecentItemChange">
-            <i-row slot="content" data-id="{{item['_id']}}" bind:tap="handleItemTap">
+            <i-row slot="content" data-type="recent" data-id="{{item['_id']}}" bind:tap="handleItemTap">
                 <i-col span="5">
                     <image class="cover-image" src="{{item.cover}}" mode="aspectFit" lazy-load></image>
                 </i-col>

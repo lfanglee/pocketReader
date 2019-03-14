@@ -1,5 +1,5 @@
 import { $Toast } from '../components/base/index';
-import { thottle, debounce } from '../utils/util';
+import { throttle, debounce } from '../utils/util';
 
 const tabBar = {
     BOOKSHELF: 'bookShelf',
@@ -8,7 +8,7 @@ const tabBar = {
     MINE: 'mine'
 };
 export default {
-    thottle,
+    throttle,
     debounce,
     handleTabBarChange({ detail }) {
         const { key } = detail;
