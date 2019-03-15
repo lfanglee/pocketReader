@@ -2,14 +2,11 @@ import regeneratorRuntime from '../../lib/regenerator-runtime/runtime-module';
 import Api from '../../lib/api';
 import storage from '../../utils/storage';
 import { $Toast } from '../../components/base/index';
-import { throttle } from '../../utils/util';
 
 import slideHandle from './slideHander';
 
 const app = getApp();
 let isLoadingChapter = false;
-let savedScrollTop;
-let shouldSaveScrollTop = false;
 
 const colorList = {
     default: {
@@ -55,10 +52,12 @@ Page({
         fontSize: 20,  // 0 - 100 对应 20px - 30px
         pagePattern: readMode.DEFAULT,
         scrollTop: 0,
-        indexScrollTop: 0,
+        indexScrollTop: 0,  // 目录滚动距离
 
         pageMode: pageMode.COLUMN,
         animationData: {},
+        columnModeLoadingChapter: false,
+        slideLoadingChapter: false,
 
         chapters: {},
         sourcesList: [],
@@ -86,18 +85,13 @@ Page({
     },
     watch: {
         chapterContent(newVal) {
-            this.refreshSlideLength(() => {
-                this.slideTo(0, 0);
-            });
+            this.resetActiveIndex();
         },
         fontSize(newVal) {
-            wx.nextTick(() => {
-                this.refreshSlideLength((res) => {debugger
-                    if (res.activeIndex > res.slideLength - 1) {
-                        this.slideTo(res.slideLength - 1, 100);
-                    }
-                });
-            });
+            this.resetActiveIndex();
+        },
+        chapterInvalid(newVal) {
+            this.resetActiveIndex();
         }
     },
     mixins: [slideHandle],
@@ -151,18 +145,7 @@ Page({
             return;
         });
     },
-    onPageScroll({ scrollTop }) {
-        savedScrollTop = scrollTop;
-        this.setScrollTop();
-        if (shouldSaveScrollTop) {
-            shouldSaveScrollTop = false;
-            this.setData({ scrollTop: savedScrollTop }, () => {
-                savedScrollTop && this.saveReadPeriod(savedScrollTop);
-            });
-        }
-    },
     onUnload() {
-        this.saveReadPeriod(this.data.scrollTop);
         if (!this.data.isBookInShelf) {
             const pages = getCurrentPages();
             const prevPage = pages[pages.length - 2];
@@ -172,26 +155,13 @@ Page({
         }
     },
     haveLoaded() {
-        const readPeriod = storage.get('readPeriod', []);
         const setting = storage.get('setting', {});
         const { readMode: pagePattern = readMode.DEFAULT, fontSize = 20 } = setting;
         this.setData({ pagePattern, fontSize });
         this.setNavBarColor(pagePattern);
-        readPeriod.forEach(item => {
-            if (item['_id'] === this.data.bookId) {
-                wx.pageScrollTo({
-                    scrollTop: item.scrollTop,
-                    duration: 0
-                });
-                return;
-            }
-        });
         this.updateIndexScrollTop();
         this.setData({ init: true });
     },
-    setScrollTop: throttle(() => {
-        shouldSaveScrollTop = true;
-    }, 1000),
     setNavBarColor(mode) {
         switch (mode) {
             case readMode.DEFAULT:
@@ -271,25 +241,6 @@ Page({
         }
         storage.set('localRecord', curLocalRecord);
         storage.set('myBooks', myBooks);
-    },
-    saveReadPeriod(scrollTop) {
-        const { bookId } = this.data;
-        let readPeriod = storage.get('readPeriod', []);
-        let hasRecord = false;
-        readPeriod = readPeriod.map(item => {
-            if (item['_id'] === bookId) {
-                hasRecord = true;
-                item.scrollTop = scrollTop;
-            }
-            return item;
-        });
-        if (!hasRecord) {
-            readPeriod.unshift({
-                _id: bookId,
-                scrollTop
-            });
-        }
-        storage.set('readPeriod', readPeriod);
     },
     toggleContents() {
         this.setData({
@@ -486,23 +437,33 @@ Page({
     },
     async handleNextChapter() {
         if (this.data.chapter >= this.data.chaptersCount) {
-            return;
+            wx.showToast({
+                title: '已经最后一章了~',
+                icon: 'none'
+            });
+            return false;
         }
         this.toggleLoading();
         this.setData({ showBottomPanel: false });
         await this.loadChapter(1 + +this.data.chapter);
         this.updateIndexScrollTop();
         this.toggleLoading(false);
+        return true;
     },
     async handlePreChapter() {
         if (this.data.chapter <= 1) {
-            return;
+            wx.showToast({
+                title: '已经是第一章了~',
+                icon: 'none'
+            });
+            return false;
         }
         this.toggleLoading();
         this.setData({ showBottomPanel: false });
         await this.loadChapter(+this.data.chapter - 1);
         this.updateIndexScrollTop();
         this.toggleLoading(false);
+        return true;
     },
     handleOpenContents() {
         this.toggleContents();

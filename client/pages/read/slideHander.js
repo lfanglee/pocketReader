@@ -1,3 +1,4 @@
+import regeneratorRuntime from '../../lib/regenerator-runtime/runtime-module';
 import { getSystemScreenRatio } from '../../utils/util';
 
 let touchStartX;
@@ -27,6 +28,13 @@ export default {
             });
         }).exec();
     },
+    resetActiveIndex() {
+        wx.nextTick(() => {
+            this.refreshSlideLength(() => {
+                this.slideTo(0, 0);
+            });
+        });
+    },
     // 滑动阅读相关
     handleSlideStart(e) {
         this.refreshSlideLength(() => {
@@ -36,7 +44,7 @@ export default {
         });
     },
     handleSlideMove(e) {
-        if (e.timeStamp - touchStartTime < 50 || !isSliding) { // 降低touchMove操作频率
+        if (!isSliding) { // 降低touchMove操作频率
             return;
         }
         const x = e.changedTouches[0].clientX;
@@ -78,10 +86,10 @@ export default {
         const k = distanceX / deltaTime;
         if (k > 0.3 || distanceX > pageWidth / 4) {
             if (direction === 'right') {
-                return activeIndex === 0 ? 'slideBack' : 'slidePre';
+                return activeIndex === 0 ? 'slideLoadPreChapter' : 'slidePre';
             }
             if (direction === 'left') {
-                return activeIndex === slideLength - 1 ? 'slideBack' : 'slideNext';
+                return activeIndex === slideLength - 1 ? 'slideLoadNextChapter' : 'slideNext';
             }
         }
         return 'slideBack';
@@ -103,5 +111,39 @@ export default {
     },
     slideBack(speed) {
         this.slideTo(activeIndex, speed);
+    },
+    slideLoadPreChapter() {
+        this.slideLoadChapter('pre');
+    },
+    slideLoadNextChapter() {
+        this.slideLoadChapter();
+    },
+    async slideLoadChapter(type = 'next') {
+        this.slideTo(0, 0);
+        this.setData({
+            columnModeLoadingChapter: true,
+            slideLoadingChapter: true
+        });
+        if (type === 'next') {
+            const done = await this.handleNextChapter();
+            this.setData({
+                columnModeLoadingChapter: false
+            }, () => {
+                done && this.refreshSlideLength(() => {
+                    this.slideTo(0, 0);
+                });
+                this.setData({ slideLoadingChapter: false });
+            });
+        } else {
+            const done = await this.handlePreChapter();
+            this.setData({
+                columnModeLoadingChapter: false
+            }, () => {
+                done && this.refreshSlideLength((res) => {
+                    this.slideTo(res.slideLength - 1, 0);
+                });
+                this.setData({ slideLoadingChapter: false });
+            });
+        }
     }
 };
