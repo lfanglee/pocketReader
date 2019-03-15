@@ -31,10 +31,16 @@ const debounce = function (fn, wait) {
     };
 };
 
-const noOp = () => {};
+const getSystemScreenRatio = function () {
+    const res = wx.getSystemInfoSync();
+    return 750 / res.screenWidth;
+};
+
+const noop = () => {};
 
 export {
     throttle,
     debounce,
-    noOp
+    getSystemScreenRatio,
+    noop
 };

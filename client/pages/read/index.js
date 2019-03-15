@@ -4,16 +4,12 @@ import storage from '../../utils/storage';
 import { $Toast } from '../../components/base/index';
 import { throttle } from '../../utils/util';
 
+import slideHandle from './slideHander';
+
 const app = getApp();
 let isLoadingChapter = false;
 let savedScrollTop;
 let shouldSaveScrollTop = false;
-
-let touchStartX;
-let touchStartY;
-let totalPages;
-let index = 1;  // 滑动模式的页数 1开始
-let time;
 
 const colorList = {
     default: {
@@ -90,24 +86,21 @@ Page({
     },
     watch: {
         chapterContent(newVal) {
-            index = 1;
-            if (this.animation) {
-                this.animation.translateX(0).step();
-                this.setData({
-                    animationData: this.animation.export()
-                });
-            }
+            this.refreshSlideLength(() => {
+                this.slideTo(0, 0);
+            });
         },
         fontSize(newVal) {
-            index = 1;
-            if (this.animation) {
-                this.animation.translateX(0).step();
-                this.setData({
-                    animationData: this.animation.export()
+            wx.nextTick(() => {
+                this.refreshSlideLength((res) => {debugger
+                    if (res.activeIndex > res.slideLength - 1) {
+                        this.slideTo(res.slideLength - 1, 100);
+                    }
                 });
-            }
+            });
         }
     },
+    mixins: [slideHandle],
     async onLoad(options) {
         const { bookId, chapter = 1, source } = options;
         let bookInfoRet;
@@ -156,11 +149,6 @@ Page({
                 });
             }
             return;
-        });
-
-        const query = wx.createSelectorQuery();
-        query.select('.slide-wrapper').boundingClientRect((res) => {debugger
-            pageWidth = res.width;
         });
     },
     onPageScroll({ scrollTop }) {
@@ -572,56 +560,5 @@ Page({
     },
     listTouchMove() {
         return;
-    },
-    // 滑动阅读相关
-    handleSlideStart(e) {
-        const query = wx.createSelectorQuery();
-        query.select('.article-body').boundingClientRect((res) => {
-            totalPages = Math.round(res.width / 415);
-
-            touchStartX = e.changedTouches[0].clientX;
-            touchStartY = e.changedTouches[0].clientY;
-            time = e.timeStamp;
-
-            const animation = wx.createAnimation({
-                duration: 1000,
-                timingFunction: 'ease'
-            });
-            this.animation = animation;
-            this.setData({
-                animation: animation.export()
-            });
-        }).exec();
-    },
-    handleSlideMove(e) {
-        // const touchMove = e.touches[0].pageX;
-        // if (touchMove - touchStartX <= -40) {
-
-        // }
-    },
-    handleSlideEnd(e) {
-        const x = e.changedTouches[0].clientX;
-        const y = e.changedTouches[0].clientY;
-        const turn = this.getTouchData(x, y, touchStartX, touchStartY);
-        if (turn === 'left' && index < totalPages) {
-            index++;
-        } else if (turn === 'right' && index > 1) {
-            index--;
-        }
-        this.animation.translateX(-415 * (index - 1)).step();
-        this.setData({
-            animationData: this.animation.export()
-        });
-    },
-    handleSlideCancel(e) {
-        console.log('cancel:', e);
-    },
-    getTouchData(endX, endY, startX, startY) {
-        if (endX - startX > 50 && Math.abs(endY - startY) < 50) {
-            return 'right';
-        }
-        if (endX - startX < -50 && Math.abs(endY - startY) < 50) {
-            return 'left';
-        }
     }
 });
