@@ -118,32 +118,34 @@ export default {
     slideLoadNextChapter() {
         this.slideLoadChapter();
     },
-    async slideLoadChapter(type = 'next') {
-        this.slideTo(0, 0);
+    slideLoadChapter(type = 'next') {
         this.setData({
             columnModeLoadingChapter: true,
-            slideLoadingChapter: true
+            slideChapterVisiable: true
+        }, async () => {
+            if (type === 'next') {
+                this.slideTo(slideLength - 1, 0);
+                const done = await this.handleNextChapter();
+                this.setData({
+                    columnModeLoadingChapter: false
+                }, () => {
+                    done && this.refreshSlideLength(() => {
+                        this.slideTo(0, 0);
+                        wx.nextTick(() => this.setData({ slideChapterVisiable: false }));
+                    });
+                });
+            } else {
+                this.slideTo(0, 0);
+                const done = await this.handlePreChapter();
+                this.setData({
+                    columnModeLoadingChapter: false
+                }, () => {
+                    done && this.refreshSlideLength((res) => {
+                        this.slideTo(res.slideLength - 1, 0);
+                        wx.nextTick(() => this.setData({ slideChapterVisiable: false }));
+                    });
+                });
+            }
         });
-        if (type === 'next') {
-            const done = await this.handleNextChapter();
-            this.setData({
-                columnModeLoadingChapter: false
-            }, () => {
-                done && this.refreshSlideLength(() => {
-                    this.slideTo(0, 0);
-                });
-                this.setData({ slideLoadingChapter: false });
-            });
-        } else {
-            const done = await this.handlePreChapter();
-            this.setData({
-                columnModeLoadingChapter: false
-            }, () => {
-                done && this.refreshSlideLength((res) => {
-                    this.slideTo(res.slideLength - 1, 0);
-                });
-                this.setData({ slideLoadingChapter: false });
-            });
-        }
     }
 };

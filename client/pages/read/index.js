@@ -4,31 +4,11 @@ import storage from '../../utils/storage';
 import { $Toast } from '../../components/base/index';
 
 import slideHandle from './slideHander';
+import theme, { colorList, readTheme } from './theme';
 
 const app = getApp();
 let isLoadingChapter = false;
 
-const colorList = {
-    default: {
-        backgroundColor: '#eee6dd',
-        fontColor: '#5c5d58',
-        titleColor: '#333'
-    },
-    night: {
-        backgroundColor: '#0c0c0c',
-        fontColor: '#666',
-        titleColor: '#888'
-    },
-    eye: {
-        backgroundColor: '#b8cd8b',
-        titleColor: '#0c2e10'
-    }
-};
-const readMode = {
-    DEFAULT: 'default',
-    NIGHT: 'night',
-    EYE: 'eye'
-};
 const pageMode = {
     ROW: 'row',
     COLUMN: 'column'
@@ -42,22 +22,21 @@ Page({
         showContents: false,
         showSources: false,
         showBottomPanel: false,
-        chapterInvalid: false,
+        chapterInvalid: false,  // 章节是否需要换源
         isBookInShelf: false,
 
         chapter: 1,
         chaptersCount: 0,
-        page: 1,
-        pageSize: 100,
+        page: 1,  // 目录页数
+        pageSize: 100, // 目录页大小
         fontSize: 20,  // 0 - 100 对应 20px - 30px
-        pagePattern: readMode.DEFAULT,
-        scrollTop: 0,
+        pagePattern: readTheme.DEFAULT,
         indexScrollTop: 0,  // 目录滚动距离
 
         pageMode: pageMode.COLUMN,
         animationData: {},
         columnModeLoadingChapter: false,
-        slideLoadingChapter: false,
+        slideChapterVisiable: false,
 
         chapters: {},
         sourcesList: [],
@@ -94,7 +73,7 @@ Page({
             this.resetActiveIndex();
         }
     },
-    mixins: [slideHandle],
+    mixins: [slideHandle, theme],
     async onLoad(options) {
         const { bookId, chapter = 1, source } = options;
         let bookInfoRet;
@@ -156,44 +135,11 @@ Page({
     },
     haveLoaded() {
         const setting = storage.get('setting', {});
-        const { readMode: pagePattern = readMode.DEFAULT, fontSize = 20 } = setting;
+        const { readTheme: pagePattern = readTheme.DEFAULT, fontSize = 20 } = setting;
         this.setData({ pagePattern, fontSize });
         this.setNavBarColor(pagePattern);
         this.updateIndexScrollTop();
         this.setData({ init: true });
-    },
-    setNavBarColor(mode) {
-        switch (mode) {
-            case readMode.DEFAULT:
-                wx.setNavigationBarColor({
-                    frontColor: '#000000',
-                    backgroundColor: colorList.default.backgroundColor
-                });
-                wx.setBackgroundColor({
-                    backgroundColor: colorList.default.backgroundColor
-                });
-                break;
-            case readMode.NIGHT:
-                wx.setNavigationBarColor({
-                    frontColor: '#ffffff',
-                    backgroundColor: colorList.night.backgroundColor
-                });
-                wx.setBackgroundColor({
-                    backgroundColor: colorList.default.backgroundColor
-                });
-                break;
-            case readMode.EYE:
-                wx.setNavigationBarColor({
-                    frontColor: '#000000',
-                    backgroundColor: colorList.eye.backgroundColor
-                });
-                wx.setBackgroundColor({
-                    backgroundColor: colorList.default.backgroundColor
-                });
-                break;
-            default:
-                break;
-        }
     },
     saveReadRecord(bookInfo) {
         if (!app.globalData.enableLocalCache) {
@@ -493,13 +439,13 @@ Page({
         setting.fontSize = fontSize;
         storage.set('setting', setting);
     },
-    handlePagePatternChange(e) {
+    handlePageThemeChange(e) {
         const { operate: pattern } = e.target.dataset;
         this.setNavBarColor(pattern);
         this.setData({ pagePattern: pattern });
 
         const setting = storage.get('setting', {});
-        setting.readMode = pattern;
+        setting.readTheme = pattern;
         storage.set('setting', setting);
     },
     addToShelf() {
