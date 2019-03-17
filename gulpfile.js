@@ -102,10 +102,15 @@ gulp.task('js', () => {
 });
 
 gulp.task('json', () => {
-    return gulp.src([`${paths.src.baseDir}/**/*.json`, `!${paths.src.excludeDir}/**/*.{${exclude.type.join(',')}}`])
+    return gulp.src([`${paths.src.baseDir}/**/*.json`, `!${paths.src.excludeDir}/**/*.{${exclude.type.join(',')}}`, `!${paths.src.baseDir}/project.config.json`])
         .pipe(isProd ? plugins.jsonminify() : through.obj())
         .pipe(gulp.dest(paths.dist.baseDir));
 });
+gulp.task('generateProjectConfigJson', () => {
+    return gulp.src('${paths.src.baseDir}/project.config.json')
+        .pipe(isProd ? plugins.jsonminify() : through.obj())
+        .pipe(gulp.dest(paths.dist.baseDir));
+})
 
 gulp.task('images', () => {
     return gulp.src([`${paths.src.baseDir}/**/*.{jpg,jpeg,png,gif,svg}`, `!${paths.src.excludeDir}/**/*.{${exclude.type.join(',')}}`])
@@ -137,7 +142,11 @@ gulp.task('watch', () => {
     const handleWatch = (filePath) => {
         const extname = path.extname(filePath).slice(1);
         if (['wxml', 'wxss', 'js', 'json', 'wxs'].includes(extname)) {
-            runSequence(extname);
+            if (filePath.includes('project.config.json')) {
+                runSequence('generateProjectConfigJson');
+            } else {
+                runSequence(extname);
+            }
         } else if (extname === 'scss') {
             runSequence('wxss');
         } else if (['jpg', 'jpeg', 'png', 'gif', 'svg'].includes(extname)) {
@@ -194,11 +203,11 @@ gulp.task('clean', () => {
 });
 
 gulp.task('dev', ['clean'], () => {
-    runSequence('json', 'images', 'wxml', 'wxss', 'js', 'wxs', 'extras', 'excludes', 'cloud', 'watch');
+    runSequence('json', 'generateProjectConfigJson', 'images', 'wxml', 'wxss', 'js', 'wxs', 'extras', 'excludes', 'cloud', 'watch');
 });
 
 gulp.task('build', ['clean'], () => {
-    runSequence('json', 'images', 'wxml', 'wxss', 'js', 'wxs', 'extras', 'excludes', 'cloud');
+    runSequence('json', 'generateProjectConfigJson', 'images', 'wxml', 'wxss', 'js', 'wxs', 'extras', 'excludes', 'cloud');
 });
 
 gulp.task('cloud:dev', () => {

@@ -5,6 +5,7 @@ let touchStartX;
 let slideLength;
 let screenRatio;
 let pageWidth;
+let pageGap;
 let activeIndex = 0;  // 滑动模式的页数 0开始
 let touchStartTime;
 let curTranslateX = 0; // 当前总滑动距离
@@ -13,7 +14,9 @@ let isSliding = false;
 export default {
     onLoad() {
         screenRatio = getSystemScreenRatio();
-        pageWidth = 750 / screenRatio;
+        pageWidth = 710 / screenRatio;
+        pageGap = 40 / screenRatio;
+        console.log(screenRatio, pageWidth);
     },
     refreshSlideLength(cb) {
         const query = wx.createSelectorQuery();
@@ -22,6 +25,7 @@ export default {
                 return;
             }
             slideLength = Math.round(res.width / pageWidth);
+            pageWidth = (res.width - (slideLength - 1) * pageGap) / slideLength + pageGap;
             cb && cb({
                 activeIndex,
                 slideLength
@@ -129,10 +133,10 @@ export default {
                 this.setData({
                     columnModeLoadingChapter: false
                 }, () => {
-                    done && this.refreshSlideLength(() => {
+                    done ? this.refreshSlideLength(() => {
                         this.slideTo(0, 0);
                         wx.nextTick(() => this.setData({ slideChapterVisiable: false }));
-                    });
+                    }) : this.setData({ slideChapterVisiable: false });
                 });
             } else {
                 this.slideTo(0, 0);
@@ -140,10 +144,10 @@ export default {
                 this.setData({
                     columnModeLoadingChapter: false
                 }, () => {
-                    done && this.refreshSlideLength((res) => {
+                    done ? this.refreshSlideLength((res) => {
                         this.slideTo(res.slideLength - 1, 0);
                         wx.nextTick(() => this.setData({ slideChapterVisiable: false }));
-                    });
+                    }) : this.setData({ slideChapterVisiable: false });
                 });
             }
         });

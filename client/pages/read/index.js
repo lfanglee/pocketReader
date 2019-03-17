@@ -4,7 +4,7 @@ import storage from '../../utils/storage';
 import { $Toast } from '../../components/base/index';
 
 import slideHandle from './slideHander';
-import theme, { colorList, readTheme } from './theme';
+import theme, { readTheme } from './theme';
 
 const app = getApp();
 let isLoadingChapter = false;
@@ -30,10 +30,10 @@ Page({
         page: 1,  // 目录页数
         pageSize: 100, // 目录页大小
         fontSize: 20,  // 0 - 100 对应 20px - 30px
-        pagePattern: readTheme.DEFAULT,
+        pagePattern: readTheme.DEFAULT,  // 背景主题
         indexScrollTop: 0,  // 目录滚动距离
 
-        pageMode: pageMode.COLUMN,
+        pageMode: pageMode.COLUMN, // 翻页模式
         animationData: {},
         columnModeLoadingChapter: false,
         slideChapterVisiable: false,
@@ -136,10 +136,9 @@ Page({
     haveLoaded() {
         const setting = storage.get('setting', {});
         const { readTheme: pagePattern = readTheme.DEFAULT, fontSize = 20 } = setting;
-        this.setData({ pagePattern, fontSize });
+        this.setData({ pagePattern, fontSize, init: true });
         this.setNavBarColor(pagePattern);
         this.updateIndexScrollTop();
-        this.setData({ init: true });
     },
     saveReadRecord(bookInfo) {
         if (!app.globalData.enableLocalCache) {
@@ -439,14 +438,11 @@ Page({
         setting.fontSize = fontSize;
         storage.set('setting', setting);
     },
-    handlePageThemeChange(e) {
-        const { operate: pattern } = e.target.dataset;
-        this.setNavBarColor(pattern);
-        this.setData({ pagePattern: pattern });
-
-        const setting = storage.get('setting', {});
-        setting.readTheme = pattern;
-        storage.set('setting', setting);
+    handleReadModeChange(e) {
+        const { operate } = e.target.dataset;
+        this.setData({
+            pageMode: operate
+        });
     },
     addToShelf() {
         const myBooks = storage.get('myBooks', []);

@@ -34,6 +34,7 @@
             </view>
         </view>
     </view>
+    <text wx:if="{{pageMode === 'column'}}" class="article-pagegation">1 / 2</text>
 </view>
 <i-drawer mode="left" visible="{{showContents}}" mask-closable="{{true}}" bind:close="toggleContents">
     <view class="contents-wrapper" catch:touchmove="listTouchMove">
@@ -98,11 +99,14 @@
         <view class="page-pattern-btn pattern-night-btn {{ pagePattern === 'night' ? 'active' : '' }}" data-operate="night">夜间</view>
         <view class="page-pattern-btn pattern-eye-btn {{ pagePattern === 'eye' ? 'active' : '' }}" data-operate="eye">护眼</view>
     </view>
+    <view class="item read-mode-select" bind:tap="handleReadModeChange">
+        <view class="read-mode-btn {{ pageMode === 'row' ? 'active' : '' }}" data-operate="row">上下翻页</view>
+        <view class="read-mode-btn {{ pageMode === 'column' ? 'active' : '' }}" data-operate="column">左右翻页</view>
+    </view>
     <view class="item chapter-handle">
         <view class="chapter-select-btn" bind:tap="handleOpenContents">目录</view>
         <view class="chapter-select-btn" bind:tap="handleOpenSources">换源</view>
     </view>
-    <view class="item"></view>
 </view>
 <i-spin size="large" fix wx:if="{{!init}}" />
 <i-toast id="toast" mask="{{false}}" />

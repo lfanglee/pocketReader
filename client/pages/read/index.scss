@@ -45,19 +45,31 @@ $eyeTitleColor: #0c2e10;
     }
     // 滑屏样式
     .read-mode-column {
+        position: absolute;
         width: 335px;
-        height: 100%;
+        top: 0;
+        bottom: 16px;
         box-sizing: border-box;
         overflow: hidden;
         margin: 0 20px;
         .slide-wrapper {
             column-width: 335px;  // 页面分栏展示的关键设置
-            column-gap: 40px;
+            column-gap: 20px;
             height: 100%;
+            .article-title {
+                padding: 10px 0 0;
+            }
             .article-body {
                 padding: 0;
             }
         }
+    }
+    .article-pagegation {
+        font-size: 12px;
+        position: absolute;
+        bottom: 6px;
+        left: 20px;
+        color: rgba(0, 0, 0, .4);
     }
     .article-title {
         display: block;
@@ -206,7 +218,7 @@ $eyeTitleColor: #0c2e10;
         font-size: 13px;
         line-height: 30px;
         padding-left: 15px;
-        top: -293px;
+        top: -323px;
         right: 0;
         transition: all .2s ease;
         transform: translateX(80px);
@@ -219,10 +231,9 @@ $eyeTitleColor: #0c2e10;
 
 .bottom-panel {
     width: 100%;
-    height: 240px;
     padding: 20px;
     background-color: rgba(50, 51, 52, .9);
-    transform: translateY(220px);
+    transform: translateY(290px);
     opacity: 0;
     display: block;
     position: fixed;
@@ -234,19 +245,20 @@ $eyeTitleColor: #0c2e10;
         opacity: 1;
         transform: translateY(0);
     }
-    .item {
+    .item:not(:last-of-type) {
         margin-bottom: 20px;
         height: 30px;
         white-space: nowrap;
-    }
-    .chapter-title {
-        height: 20px;
-        margin-bottom: 0;
-        font-family: $fontFamily;
-        font-size: 14px;
-        color: #fff;
-        line-height: 20px;
-        text-align: center;
+        &.chapter-title {
+            height: 20px;
+            margin-bottom: 5px;
+            margin-top: -5px;
+            font-family: $fontFamily;
+            font-size: 14px;
+            color: #fff;
+            line-height: 20px;
+            text-align: center;
+        }
     }
     .font-btn-w {
         width: 32px;
@@ -328,6 +340,24 @@ $eyeTitleColor: #0c2e10;
             }
             &.pattern-eye-btn {
                 background: $eyeBackgroundColor;
+            }
+        }
+    }
+    .read-mode-select {
+        display: flex;
+        justify-content: space-between;
+        .read-mode-btn {
+            display: inline-block;
+            width: 150px;
+            height: 30px;
+            color: #fff;
+            line-height: 30px;
+            text-align: center;
+            border: 1px solid #535353;
+            border-radius: 4px;
+            &.active {
+                color: #b93221;
+                border: 1px solid #b93221;
             }
         }
     }

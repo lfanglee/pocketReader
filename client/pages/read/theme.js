@@ -1,3 +1,5 @@
+import storage from '../../utils/storage';
+
 export const colorList = {
     default: {
         backgroundColor: '#eee6dd',
@@ -53,5 +55,14 @@ export default {
             default:
                 break;
         }
+    },
+    handlePageThemeChange(e) {
+        const { operate: pattern } = e.target.dataset;
+        this.setNavBarColor(pattern);
+        this.setData({ pagePattern: pattern });
+
+        const setting = storage.get('setting', {});
+        setting.readTheme = pattern;
+        storage.set('setting', setting);
     },
 };
