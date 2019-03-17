@@ -50,11 +50,11 @@ const handleError = (err) => {
 gulp.task('wxml', () => {
     return gulp
         .src([`${paths.src.baseDir}/**/*.wxml`, `!${paths.src.excludeDir}/**/*.{${exclude.type.join(',')}}`])
-        .pipe(isProd ? plugins.htmlmin({
-            collapseWhitespace: true,
-            removeComments: true,
-            keepClosingSlash: true
-        }) : through.obj())
+        // .pipe(isProd ? plugins.htmlmin({
+        //     collapseWhitespace: true,
+        //     removeComments: true,
+        //     keepClosingSlash: true
+        // }) : through.obj())
         .pipe(gulp.dest(paths.dist.baseDir));
 });
 

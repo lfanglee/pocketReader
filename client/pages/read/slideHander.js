@@ -12,11 +12,14 @@ let curTranslateX = 0; // 当前总滑动距离
 let isSliding = false;
 
 export default {
+    data: {
+        activeIndex: 0,
+        slideLength: null
+    },
     onLoad() {
         screenRatio = getSystemScreenRatio();
         pageWidth = 710 / screenRatio;
         pageGap = 40 / screenRatio;
-        console.log(screenRatio, pageWidth);
     },
     refreshSlideLength(cb) {
         const query = wx.createSelectorQuery();
@@ -25,6 +28,7 @@ export default {
                 return;
             }
             slideLength = Math.round(res.width / pageWidth);
+            this.setData({ slideLength });
             pageWidth = (res.width - (slideLength - 1) * pageGap) / slideLength + pageGap;
             cb && cb({
                 activeIndex,
@@ -104,6 +108,7 @@ export default {
         }
         curTranslateX = -index * pageWidth;
         activeIndex = index;
+        this.setData({ activeIndex });
 
         this.slideAnimation(curTranslateX, speed);
     },

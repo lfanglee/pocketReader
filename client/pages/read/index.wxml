@@ -34,7 +34,7 @@
             </view>
         </view>
     </view>
-    <text wx:if="{{pageMode === 'column'}}" class="article-pagegation">1 / 2</text>
+    <text wx:if="{{pageMode === 'column'}}" class="article-pagegation">{{pagegation}}</text>
 </view>
 <i-drawer mode="left" visible="{{showContents}}" mask-closable="{{true}}" bind:close="toggleContents">
     <view class="contents-wrapper" catch:touchmove="listTouchMove">

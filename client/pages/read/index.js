@@ -60,10 +60,14 @@ Page({
         },
         textFontSize() {
             return (this.data.fontSize / 100) * 10 + 16;
+        },
+        pagegation() {
+            return `${this.data.activeIndex + 1} / ${this.data.slideLength}`;
         }
     },
     watch: {
         chapterContent(newVal) {
+            this.refreshSlideLength();
             this.resetActiveIndex();
         },
         fontSize(newVal) {
